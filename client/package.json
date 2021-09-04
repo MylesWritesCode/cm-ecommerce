@@ -1,5 +1,9 @@
 {
-  "private": true,
+  "name": "cm-ecommerce-client",
+  "version": "0.0.1",
+  "description": "Frontend for cm-ecommerce webapp",
+  "license": "GPL-3.0-or-later",
+   "homepage": "https://github.com/MylesWritesCode/cm-ecommerce",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

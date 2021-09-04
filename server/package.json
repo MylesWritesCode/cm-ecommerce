@@ -1,8 +1,9 @@
 {
-   "name": "server",
+   "name": "cm-ecommerce-server",
    "version": "0.0.1",
-   "description": "Awesome project developed with TypeORM.",
+   "description": "API for cm-commerce, build with GraphQL",
    "license": "GPL-3.0-or-later",
+   "homepage": "https://github.com/MylesWritesCode/cm-ecommerce",
    "devDependencies": {
       "@graphql-codegen/cli": "^2.1.1",
       "@types/express": "^4.17.13",
