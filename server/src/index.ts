@@ -11,7 +11,18 @@
  * HISTORY
  */
 import "reflect-metadata";
+import "./environment/environment"; // set dotenv
+
 import { createConnection } from "typeorm";
-import * as express from "express";
-import { Request, Response } from "express";
-import { User } from "./entity/User";
+import express from "express";
+import cors from "cors";
+
+import { ormConfig } from "./lib/typeorm-config"; // TypeORM Config
+
+const main = async() => {
+  const conn = await createConnection(ormConfig);
+}
+
+main().catch((error => {
+  console.log(error);
+}));

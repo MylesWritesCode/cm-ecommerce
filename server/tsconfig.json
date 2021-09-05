@@ -1,15 +1,22 @@
 {
+   "ts-node": {
+      "transpileOnly": false,
+      "require": [
+         "tsconfig-paths/register"
+      ]
+   },
    "compilerOptions": {
-      "lib": [
-         "es5",
-         "es6"
-      ],
-      "target": "es5",
+      "lib": [ "DOM", "ES6", "ES2020", "ESNext" ],
+      "target": "ES2020",
       "module": "commonjs",
       "moduleResolution": "node",
       "outDir": "./build",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
-      "sourceMap": true
-   }
+      "sourceMap": true,
+      "baseUrl": ".",
+      "esModuleInterop": true 
+   },
+   "include": [ "./src/**/*.ts" ],
+   "exclude": [ "node_modules" ]
 }
