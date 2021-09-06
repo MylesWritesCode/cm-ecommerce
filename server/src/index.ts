@@ -26,13 +26,10 @@ import { UserResolver } from "./resolvers/user";
 
 const main = async() => {
   const env = process.env;
-  try {
-    console.log("Attempting to connect to the db...");
-    // Attempt to open a connection to  the db
-    const conn = await createConnection(ormConfig);
-  } catch (error) {
-    // console.log(error);
-  }
+  
+  // Attempt to open a connection to  the db
+  console.log("Attempting to connect to the db...");
+  const conn = await createConnection(ormConfig);
   
   const app = express();
   const apolloServer = new ApolloServer({
