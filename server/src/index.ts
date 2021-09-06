@@ -15,14 +15,41 @@ import "./environment/environment"; // set dotenv
 
 import { createConnection } from "typeorm";
 import express from "express";
-import cors from "cors";
+import { ApolloServer } from "apollo-server-express";
+import { buildSchema } from "type-graphql";
 
 import { ormConfig } from "./lib/typeorm-config"; // TypeORM Config
 
+// Resolvers for Apollo setup. Probably going to move to a different file
+// when I have everything set up.
+import { UserResolver } from "./resolvers/user";
+
 const main = async() => {
-  const conn = await createConnection(ormConfig);
+  const env = process.env;
+  try {
+    console.log("Attempting to connect to the db...");
+    // Attempt to open a connection to  the db
+    const conn = await createConnection(ormConfig);
+  } catch (error) {
+    // console.log(error);
+  }
+  
+  const app = express();
+  const apolloServer = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [ UserResolver ],
+      validate:  false
+    })
+  })
+
+  await apolloServer.start();
+  apolloServer.applyMiddleware({ app });
+
+  app.listen(env.SERVER_PORT, () => {
+    console.log(`Server started on localhost:${ env.SERVER_PORT }...`);
+  });
 }
 
-main().catch((error => {
+main().catch((error) => {
   console.log(error);
-}));
+});

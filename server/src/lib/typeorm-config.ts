@@ -29,5 +29,6 @@ export const ormConfig: ConnectionOptions = {
       "entitiesDir": "src/entity",
       "migrationsDir": "src/migration",
       "subscribersDir": "src/subscriber"
-   }
+   },
+   "connectTimeoutMS": 10000
 };

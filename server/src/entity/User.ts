@@ -1,16 +1,63 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+/*
+ * File: \src\entity\User.ts
+ * Project: cm-ecommerce\cm-ecommerce-server
+ * Created Date: Friday September 3rd 2021
+ * Author: Myles Berueda
+ * -----
+ * Last Modified: Friday September 3rd 2021 11:30:37 pm
+ * -----
+ * Copyright (c) 2021 MylesWritesCode
+ * -----
+ * HISTORY
+ */
+import { Field, Int, ObjectType } from "type-graphql";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  BaseEntity,
+} from "typeorm";
 
+@ObjectType()
 @Entity()
-export class User {
+export class User extends BaseEntity {
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
-  @Column()
+  @Field(() => String)
+  @Column({ type: "varchar", length: 30, nullable: false, unique: true })
+  username!: String;
+
+  @Field(() => String)
+  @Column({ type: "varchar", length: 30, nullable: false, unique: true })
+  email!: String;
+
+  @Field(() => String)
+  @Column({ type: "varchar", length: 30 })
   firstName: string;
 
-  @Column()
+  @Field(() => String)
+  @Column({ type: "varchar", length: 30 })
   lastName: string;
 
   @Column()
+  @Field(() => Int)
   age: number;
+
+  // @Field(() => String) // Not shown in GraphQL
+  @Column({ type: "text", nullable: false })
+  password!: String;
+
+  // Created At
+  @Field(() => String)
+  @CreateDateColumn()
+  createdAt: Date;
+
+  // Updated At
+  @Field(() => String)
+  @UpdateDateColumn()
+  updatedAt: Date = new Date();
 }
