@@ -36,15 +36,15 @@ export class User extends BaseEntity {
   email!: String;
 
   @Field(() => String)
-  @Column({ type: "varchar", length: 30 })
+  @Column({ type: "varchar", length: 30, nullable: true })
   firstName: string;
 
   @Field(() => String)
-  @Column({ type: "varchar", length: 30 })
+  @Column({ type: "varchar", length: 30, nullable: true })
   lastName: string;
 
-  @Column()
   @Field(() => Int)
+  @Column({ type: "int", nullable: true })
   age: number;
 
   // @Field(() => String) // Not shown in GraphQL

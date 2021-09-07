@@ -20,6 +20,7 @@
    },
    "dependencies": {
       "apollo-server-express": "^3.3.0",
+      "argon2": "^0.28.2",
       "body-parser": "^1.18.1",
       "class-validator": "^0.13.1",
       "express": "^4.17.1",

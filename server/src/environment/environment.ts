@@ -4,12 +4,12 @@
  * Created Date: Saturday September 4th 2021
  * Author: Myles Berueda
  * Note: .env files don't need to be in the build folder, but definitely need
- *       to be in the source folders. In production, we'll set this through
- *       other means such as Docker secrets or env values in the VM. It's
- *       important to be cognizant of how we're accessing secret values, as the
- *       code won't change between production and development. Instead, make
- *       sure to use process.env by setting this to some constant.
- *       
+ *       to be in one of the source folders. In production, we'll set this 
+ *       through other means such as Docker secrets or env values in the VM. 
+ *       It's important to be cognizant of how we're accessing secret values, 
+ *       as the code won't change between production and development. Instead, 
+ *       make sure to use process.env by setting this to some constant.
+ *  
  *       Make sure to change the second argument in path.join to whatever your
  *       .env file is in this folder.
  * -----
@@ -26,5 +26,3 @@ const envPath = path.join(__dirname, ".env.development");
 const result = dotenv.config({ path: envPath }); 
 
 if (result.error) throw result.error;
-
-// console.log(result);
