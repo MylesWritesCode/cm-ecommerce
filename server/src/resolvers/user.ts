@@ -13,6 +13,7 @@
 import {
   Arg,
   Field,
+  InputType,
   Int,
   Mutation,
   ObjectType,
@@ -22,7 +23,7 @@ import {
 import argon2 from "argon2";
 import { User } from "../entity/User";
 import { FieldError } from "./FieldError";
-import { validateAll } from "../utils/validate";
+import { validateAll, validateLogin } from "../utils/validate";
 import { getConnection } from "typeorm";
 
 @ObjectType()
@@ -81,6 +82,45 @@ export class UserResolver {
       // logger eventually.
       console.log(e);
     }
+
+    return { user: user };
+  }
+
+  /** login(email || username, password)========================================
+   * Logs a user in with email and password
+   */
+  @Query(() => UserResponse, {
+    description: "Logs a user in with an email and password",
+  })
+  async login(
+    @Arg("login", () => String) loginCredentialName: string,
+    @Arg("password", () => String) password: string
+  ): Promise<UserResponse> {
+    // General login error
+    const loginError = {
+      errors: [
+        {
+          field: "login",
+          message: "Login information does not match our records.",
+        },
+      ],
+    };
+
+    // Again, error validation
+    const validatorErrors = validateLogin(loginCredentialName, password);
+    if (validatorErrors) return { errors: validatorErrors };
+
+    // First we need to get the user
+    const user = await User.findOne(
+      loginCredentialName.includes("@")
+        ? { where: { email: loginCredentialName }}
+        : { where: { username: loginCredentialName }}
+    );
+
+    if (!user) return loginError;
+
+    const validPassword = await argon2.verify(user.password, password);
+    if (!validPassword) return loginError;
 
     return { user: user };
   }

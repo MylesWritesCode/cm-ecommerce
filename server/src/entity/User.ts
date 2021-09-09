@@ -29,11 +29,11 @@ export class User extends BaseEntity {
 
   @Field(() => String)
   @Column({ type: "varchar", length: 30, nullable: false, unique: true })
-  username!: String;
+  username!: string;
 
   @Field(() => String)
   @Column({ type: "varchar", length: 30, nullable: false, unique: true })
-  email!: String;
+  email!: string;
 
   @Field(() => String)
   @Column({ type: "varchar", length: 30, nullable: true })
@@ -49,7 +49,7 @@ export class User extends BaseEntity {
 
   // @Field(() => String) // Not shown in GraphQL
   @Column({ type: "text", nullable: false })
-  password!: String;
+  password!: string;
 
   // Created At
   @Field(() => String)
