@@ -10,3 +10,14 @@
  * -----
  * HISTORY
  */
+
+import { Resolver } from "type-graphql";
+import {} from "typeorm";
+
+// Entity
+import { Product } from "../entity/Product";
+
+@Resolver()
+export class ProductResolver {
+  
+}

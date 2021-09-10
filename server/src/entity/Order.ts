@@ -10,7 +10,6 @@
  * -----
  * HISTORY
  */
-
 import { Field, Int, ObjectType } from "type-graphql";
 import { BaseEntity, Entity, PrimaryGeneratedColumn } from "typeorm";
 

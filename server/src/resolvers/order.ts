@@ -10,3 +10,13 @@
  * -----
  * HISTORY
  */
+import { Resolver } from "type-graphql";
+import { } from "typeorm";
+
+// Entity
+import { Order } from "../entity/Order";
+
+@Resolver()
+export class OrderResolver {
+
+}

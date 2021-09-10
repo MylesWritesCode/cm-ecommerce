@@ -21,12 +21,16 @@ import {
   Resolver,
 } from "type-graphql";
 import argon2 from "argon2";
-import { User } from "../entity/User";
+import { getConnection } from "typeorm";
+
 import { FieldError } from "./FieldError";
 import { validateAll, validateLogin } from "../utils/validate";
-import { getConnection } from "typeorm";
 import { Context } from "src/types/context";
 
+// Entity
+import { User } from "../entity/User";
+
+// Env variables
 const env = process.env;
 
 @ObjectType()
