@@ -27,6 +27,9 @@ import { validateAll, validateLogin } from "../utils/validate";
 import { getConnection } from "typeorm";
 import { Context } from "src/types/context";
 
+
+const env = process.env;
+
 @ObjectType()
 class UserResponse {
   @Field(() => [FieldError], { nullable: true })
@@ -84,7 +87,7 @@ export class UserResolver {
       // logger eventually.
       console.log(e);
     }
-    
+
     // Set the user session when they first register...
     req.session.userId = user.id;
 
@@ -120,8 +123,8 @@ export class UserResolver {
     // First we need to get the user
     const user = await User.findOne(
       loginCredentialName.includes("@")
-        ? { where: { email: loginCredentialName }}
-        : { where: { username: loginCredentialName }}
+        ? { where: { email: loginCredentialName } }
+        : { where: { username: loginCredentialName } }
     );
 
     if (!user) return loginError;
@@ -131,6 +134,51 @@ export class UserResolver {
 
     req.session.userId = user.id;
     return { user: user };
+  }
+
+  /** logout()==================================================================
+   * Logs a user out based on session user id.
+   */
+  @Query(() => Boolean)
+  async logout(@Ctx() { req, res }: Context): Promise<Boolean> {
+    return new Promise((resolve) => {
+      // Attempts to destroy the cookie. This will also remove the data from 
+      // redis (at least in my testing).
+      req.session.destroy((error) => {
+        if (error) {
+          // If we have an error, console.log it and return false. I'll leave
+          // it like this for now, but I want to set up some logger that will
+          // catch all of these.
+          console.log(error);
+          resolve(false);
+          return;
+        }
+        // If there's no error, send the response to the client, destroying
+        // the cookie in the browser, then return true.
+        res.clearCookie(env.COOKIE_NAME);
+        resolve(true);
+      })
+    })
+  }
+
+  /** me()======================================================================
+   * Returns the current user object based on the session cookie.
+   */
+  @Query(() => UserResponse, {
+    description: "Returns the current user.",
+  })
+  async me(@Ctx() { req }: Context): Promise<UserResponse> {
+    if (!req.session.userId) {
+      return {
+        errors: [
+          { field: "user", message: "You are currently not authenticated." },
+        ],
+      };
+    }
+    
+    return {
+      user: await User.findOne({ where: { id: req.session.userId }})
+    };
   }
 
   /** user(id)==================================================================
