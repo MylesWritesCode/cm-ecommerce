@@ -23,27 +23,37 @@ import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 
 import { ormConfig } from "./lib/typeorm-config"; // TypeORM Config
+import { Context } from "./types/context";
 
 // Resolvers for Apollo setup. Probably going to move to a different file
 // when I have everything set up.
 import { UserResolver } from "./resolvers/user";
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 
-const main = async() => {
+const main = async () => {
   const env = process.env;
-  console.log(env.NODE_ENV);
+
   // Attempt to open a connection to  the db
   console.log("Attempting to connect to the db...");
   const conn = await createConnection(ormConfig);
-  
+
   const app = express();
-  
+
   // CORS setup
+  const corsOrigins = [`${env.CLIENT_URL}:${env.CLIENT_PORT}`];
+
+  // If we're not in production, we probably need access to Apollo's GraphQL
+  // application. Below adds the Apollo server url to the origin array.
+  if (env.NODE_ENV !== "production") {
+    corsOrigins.push("https://studio.apollographql.com");
+  }
+
   app.use(
     cors({
-      origin: `${ env.CLIENT_URL }:${ env.CLIENT_PORT }`,
-      credentials: true,
+      origin: corsOrigins,
+      credentials: true
     })
-  )
+  );
 
   // Connect to redis...
   const RedisStore: connectRedis.RedisStore = connectRedis(session);
@@ -59,8 +69,8 @@ const main = async() => {
       }),
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 7, // 7 day expiry
-        sameSite: "lax",
         httpOnly: true,
+        sameSite: "lax",
         secure: env.NODE_ENV === "production"
       },
       saveUninitialized: false,
@@ -72,19 +82,20 @@ const main = async() => {
   // Setup GraphQL with Apollo
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [ UserResolver ],
-      validate:  false
-    })
+      resolvers: [UserResolver],
+      validate: false,
+    }),
+    context: ({ req, res }): Context => ({ req, res, redis }),
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground]
+
   });
-
-
   await apolloServer.start();
   apolloServer.applyMiddleware({ app, cors: false });
 
   app.listen(env.SERVER_PORT, () => {
-    console.log(`Server started on localhost:${ env.SERVER_PORT }...`);
+    console.log(`Server started on localhost:${env.SERVER_PORT}...`);
   });
-}
+};
 
 main().catch((error) => {
   console.log(error);
