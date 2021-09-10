@@ -27,7 +27,6 @@ import { validateAll, validateLogin } from "../utils/validate";
 import { getConnection } from "typeorm";
 import { Context } from "src/types/context";
 
-
 const env = process.env;
 
 @ObjectType()
@@ -85,7 +84,20 @@ export class UserResolver {
     } catch (e) {
       // Currently console logging, but we should send this to a
       // logger eventually.
-      console.log(e);
+
+      // code 23505 means that a unique field input already exists
+      if (e.code === "23505") {
+        if (e.detail.includes("email")) {
+          return {
+            errors: [{ field: "email", message: "That email is taken." }],
+          };
+        }
+        if (e.detail.includes("username")) {
+          return {
+            errors: [{ field: "username", message: "That username is taken." }],
+          };
+        }
+      }
     }
 
     // Set the user session when they first register...
@@ -142,7 +154,7 @@ export class UserResolver {
   @Query(() => Boolean)
   async logout(@Ctx() { req, res }: Context): Promise<Boolean> {
     return new Promise((resolve) => {
-      // Attempts to destroy the cookie. This will also remove the data from 
+      // Attempts to destroy the cookie. This will also remove the data from
       // redis (at least in my testing).
       req.session.destroy((error) => {
         if (error) {
@@ -157,8 +169,8 @@ export class UserResolver {
         // the cookie in the browser, then return true.
         res.clearCookie(env.COOKIE_NAME);
         resolve(true);
-      })
-    })
+      });
+    });
   }
 
   /** me()======================================================================
@@ -175,9 +187,9 @@ export class UserResolver {
         ],
       };
     }
-    
+
     return {
-      user: await User.findOne({ where: { id: req.session.userId }})
+      user: await User.findOne({ where: { id: req.session.userId } }),
     };
   }
 

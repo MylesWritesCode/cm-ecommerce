@@ -23,9 +23,9 @@ import {
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @Field(() => String)
+  @PrimaryGeneratedColumn("uuid")
+  id!: string;
 
   @Field(() => String)
   @Column({ type: "varchar", length: 30, nullable: false, unique: true })
@@ -35,15 +35,15 @@ export class User extends BaseEntity {
   @Column({ type: "varchar", length: 30, nullable: false, unique: true })
   email!: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Column({ type: "varchar", length: 30, nullable: true })
   firstName: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Column({ type: "varchar", length: 30, nullable: true })
   lastName: string;
 
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   @Column({ type: "int", nullable: true })
   age: number;
 
