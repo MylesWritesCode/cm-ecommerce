@@ -18,7 +18,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
+  OneToMany,
 } from "typeorm";
+import { Product } from "./Product";
 
 @ObjectType()
 @Entity()
@@ -50,6 +52,9 @@ export class User extends BaseEntity {
   // @Field(() => String) // Not shown in GraphQL
   @Column({ type: "text", nullable: false })
   password!: string;
+  
+  @OneToMany(() => Product, product => product.creator)
+  products: Product[];
 
   // Created At
   @Field(() => String)
