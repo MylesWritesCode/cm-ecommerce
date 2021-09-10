@@ -12,8 +12,8 @@
  */
 import {
   Arg,
+  Ctx,
   Field,
-  InputType,
   Int,
   Mutation,
   ObjectType,
@@ -25,6 +25,7 @@ import { User } from "../entity/User";
 import { FieldError } from "./FieldError";
 import { validateAll, validateLogin } from "../utils/validate";
 import { getConnection } from "typeorm";
+import { Context } from "src/types/context";
 
 @ObjectType()
 class UserResponse {
@@ -50,7 +51,8 @@ export class UserResolver {
     @Arg("email") email: string,
     @Arg("firstName", { nullable: true }) firstName: string,
     @Arg("lastName", { nullable: true }) lastName: string,
-    @Arg("age", { nullable: true }) age: number
+    @Arg("age", { nullable: true }) age: number,
+    @Ctx() { req }: Context
   ): Promise<UserResponse> {
     // Common validations;
     const validatorErrors = validateAll(username, password, email);
@@ -82,7 +84,11 @@ export class UserResolver {
       // logger eventually.
       console.log(e);
     }
+    
+    // Set the user session when they first register...
+    req.session.userId = user.id;
 
+    // ...then return the user.
     return { user: user };
   }
 
@@ -94,7 +100,8 @@ export class UserResolver {
   })
   async login(
     @Arg("login", () => String) loginCredentialName: string,
-    @Arg("password", () => String) password: string
+    @Arg("password", () => String) password: string,
+    @Ctx() { req }: Context
   ): Promise<UserResponse> {
     // General login error
     const loginError = {
@@ -122,6 +129,7 @@ export class UserResolver {
     const validPassword = await argon2.verify(user.password, password);
     if (!validPassword) return loginError;
 
+    req.session.userId = user.id;
     return { user: user };
   }
 

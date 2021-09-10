@@ -36,7 +36,7 @@ const main = async() => {
   const conn = await createConnection(ormConfig);
   
   const app = express();
-
+  
   // CORS setup
   app.use(
     cors({
