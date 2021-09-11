@@ -19,16 +19,16 @@ import session from "express-session";
 import connectRedis from "connect-redis";
 import Redis from "ioredis";
 import cors from "cors";
-import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
+import { ApolloServer } from "apollo-server-express";
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 
-import { ormConfig } from "./lib/typeorm-config"; // TypeORM Config
+import { ormConfig } from "./lib/typeorm-config";
 import { Context } from "./types/context";
 
-// Resolvers for Apollo setup. Probably going to move to a different file
-// when I have everything set up.
+// Resolvers
+import { ProductResolver } from "./resolvers/product";
 import { UserResolver } from "./resolvers/user";
-import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 
 const main = async () => {
   const env = process.env;
@@ -51,7 +51,7 @@ const main = async () => {
   app.use(
     cors({
       origin: corsOrigins,
-      credentials: true
+      credentials: true,
     })
   );
 
@@ -71,7 +71,7 @@ const main = async () => {
         maxAge: 1000 * 60 * 60 * 24 * 7, // 7 day expiry
         httpOnly: true,
         sameSite: "lax",
-        secure: env.NODE_ENV === "production"
+        secure: env.NODE_ENV === "production",
       },
       saveUninitialized: false,
       secret: env.REDIS_SECRET,
@@ -82,12 +82,11 @@ const main = async () => {
   // Setup GraphQL with Apollo
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver],
+      resolvers: [UserResolver, ProductResolver],
       validate: false,
     }),
     context: ({ req, res }): Context => ({ req, res, redis }),
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground]
-
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground],
   });
   await apolloServer.start();
   apolloServer.applyMiddleware({ app, cors: false });
