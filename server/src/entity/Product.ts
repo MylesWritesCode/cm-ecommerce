@@ -19,6 +19,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 
+// Entities
 import { User } from "./User";
 
 @ObjectType()
@@ -36,30 +37,30 @@ export class Product extends BaseEntity {
   @Column({ type: "varchar", length: 30, nullable: false })
   brand!: string;
 
-  @Field(() => [String])
-  @Column({ type: "text", array: true })
+  @Field(() => [String], { nullable: true })
+  @Column({ type: "text", array: true, nullable: true })
   categories: string[];
 
-  @Field(() => Float)
+  @Field(() => Float, { nullable: true })
   @Column({ type: "float", nullable: true })
   retailPrice: number;
 
-  @Field(() => Float)
+  @Field(() => Float, { nullable: true })
   @Column({ type: "float", nullable: true })
   wholesalePrice: number;
 
-  @Field(() => String)
-  @Column({ type: "text", nullable: false })
+  @Field(() => String, { nullable: true })
+  @Column({ type: "text", nullable: true })
   description: string;
 
-  @Field(() => [String])
-  @Column({ type: "text", array: true })
+  @Field(() => [String], { nullable: true})
+  @Column({ type: "text", array: true, nullable: true })
   images: string[];
 
   @ManyToOne(() => User, (user) => user.products)
-  creator: string;
+  creator: User;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Column({ type: "text", nullable: true })
   sellerCompany: string;
 }
