@@ -1,5 +1,5 @@
 /*
- * File: \src\resolvers\ErrorResponse.ts
+ * File: \src\resolvers\GeneralError.ts
  * Project: cm-ecommerce\cm-ecommerce-server
  * Created Date: Friday September 10th 2021
  * Author: Myles Berueda
