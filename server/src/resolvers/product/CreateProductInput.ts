@@ -20,18 +20,18 @@ export class CreateProductInput {
   @Field(() => String)
   brand!: string;
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   categories: string[];
 
-  @Field(() => Float)
+  @Field(() => Float, { nullable: true })
   retailPrice: number;
 
-  @Field(() => Float)
+  @Field(() => Float, { nullable: true })
   wholesalePrice: number;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   description: string;
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   images: string[];
 }
