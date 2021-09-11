@@ -45,6 +45,8 @@ class UserResponse {
   errors?: FieldError[];
 }
 
+// type UserResponse = User | FieldError;
+
 @Resolver(User)
 export class UserResolver {
   /** register(username, password, email, firstName, lastName, age)=============
