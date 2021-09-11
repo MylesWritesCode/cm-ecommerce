@@ -10,4 +10,4 @@
  * -----
  * HISTORY
  */
-export * from './order';
+export * from './order.resolver';

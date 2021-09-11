@@ -10,4 +10,4 @@
  * -----
  * HISTORY
  */
-export * from './product';
+export * from './product.resolver';

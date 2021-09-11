@@ -17,8 +17,8 @@ import { Context } from "src/types/context";
 import { ErrorResponse } from "../ErrorResponse";
 
 // Entity
-import { Product } from "../../entity/Product";
-import { User } from "../../entity/User";
+import { Product } from "../../entity/Product.entity";
+import { User } from "../../entity/User.entity";
 
 // Inputs
 import { CreateProductInput } from "./CreateProductInput";

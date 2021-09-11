@@ -20,7 +20,7 @@ import {
 } from "typeorm";
 
 // Entities
-import { User } from "./User";
+import { User } from "./User.entity";
 
 @ObjectType()
 @Entity()

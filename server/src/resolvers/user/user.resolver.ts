@@ -28,7 +28,7 @@ import { validateAll, validateLogin } from "../../utils/validate";
 import { Context } from "src/types/context";
 
 // Entity
-import { User } from "../../entity/User";
+import { User } from "../../entity/User.entity";
 
 // Inputs
 import { CreateUserInput } from "./CreateUserInput";

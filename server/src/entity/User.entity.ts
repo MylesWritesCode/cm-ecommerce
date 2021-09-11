@@ -20,7 +20,7 @@ import {
   BaseEntity,
   OneToMany,
 } from "typeorm";
-import { Product } from "./Product";
+import { Product } from "./Product.entity";
 
 @ObjectType()
 @Entity()

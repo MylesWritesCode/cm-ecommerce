@@ -14,7 +14,7 @@ import { Resolver } from "type-graphql";
 import { } from "typeorm";
 
 // Entity
-import { Order } from "../../entity/Order";
+import { Order } from "../../entity/Order.entity";
 
 @Resolver(Order)
 export class OrderResolver {
