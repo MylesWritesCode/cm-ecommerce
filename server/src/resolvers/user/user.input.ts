@@ -1,5 +1,5 @@
 /*
- * File: \src\resolvers\user\CreateUserInput.ts
+ * File: \src\resolvers\user\user.input.ts
  * Project: cm-ecommerce\cm-ecommerce-server
  * Created Date: Friday September 10th 2021
  * Author: Myles Berueda
@@ -12,6 +12,10 @@
  */
 import { InputType, Field, Int } from "type-graphql";
 
+/** ============================================================================
+ * For use with register route, given that the username, email, and password
+ * are all required with this input.
+ */
 @InputType()
 export class CreateUserInput {
   @Field(() => String, { nullable: false })

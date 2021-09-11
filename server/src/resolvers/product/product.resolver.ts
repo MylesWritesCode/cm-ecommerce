@@ -14,7 +14,6 @@ import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 
 import { Context } from "src/types/context";
-import { ErrorResponse } from "../ErrorResponse";
 
 // Entity
 import { Product } from "../../entity/product.entity";

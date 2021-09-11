@@ -22,8 +22,7 @@ import { User } from "../../entity/user.entity";
 import { UserResponse } from "../../entity/user.response";
 
 // Inputs
-import { CreateUserInput } from "./CreateUserInput";
-import { UserInputError } from "apollo-server-errors";
+import { CreateUserInput } from "./user.input";
 
 // Env variables
 const env = process.env;
