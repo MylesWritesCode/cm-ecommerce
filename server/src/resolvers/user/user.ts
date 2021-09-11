@@ -23,26 +23,26 @@ import {
 import argon2 from "argon2";
 import { getConnection } from "typeorm";
 
-import { FieldError } from "./FieldError";
-import { validateAll, validateLogin } from "../utils/validate";
+import { FieldError } from "../FieldError";
+import { validateAll, validateLogin } from "../../utils/validate";
 import { Context } from "src/types/context";
 
 // Entity
-import { User } from "../entity/User";
+import { User } from "../../entity/User";
 
 // Env variables
 const env = process.env;
 
 @ObjectType()
 class UserResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[];
-
   @Field(() => User, { nullable: true })
   user?: User;
+
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[];
 }
 
-@Resolver()
+@Resolver(User)
 export class UserResolver {
   /** register(username, password, email, firstName, lastName, age)=============
    * Register a user

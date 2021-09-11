@@ -11,7 +11,14 @@
  * HISTORY
  */
 import { Field, Float, ObjectType } from "type-graphql";
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+
 import { User } from "./User";
 
 @ObjectType()
@@ -49,7 +56,7 @@ export class Product extends BaseEntity {
   @Column({ type: "text", array: true })
   images: string[];
 
-  @ManyToOne(() => User, user => user.products)
+  @ManyToOne(() => User, (user) => user.products)
   creator: string;
 
   @Field(() => String)

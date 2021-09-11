@@ -1,23 +1,22 @@
 /*
- * File: \src\resolvers\product.ts
+ * File: \src\resolvers\order.ts
  * Project: cm-ecommerce\cm-ecommerce-server
  * Created Date: Friday September 10th 2021
  * Author: Myles Berueda
  * -----
- * Last Modified: Friday September 10th 2021 1:58:25 pm
+ * Last Modified: Friday September 10th 2021 1:58:14 pm
  * -----
  * Copyright (c) 2021 MylesWritesCode
  * -----
  * HISTORY
  */
-
 import { Resolver } from "type-graphql";
-import {} from "typeorm";
+import { } from "typeorm";
 
 // Entity
-import { Product } from "../entity/Product";
+import { Order } from "../../entity/Order";
 
-@Resolver()
-export class ProductResolver {
-  
+@Resolver(Order)
+export class OrderResolver {
+
 }
