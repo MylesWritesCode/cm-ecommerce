@@ -1,5 +1,5 @@
 /*
- * File: \src\resolvers\product.ts
+ * File: \src\resolvers\product.resolver.ts
  * Project: cm-ecommerce\cm-ecommerce-server
  * Created Date: Friday September 10th 2021
  * Author: Myles Berueda
@@ -18,6 +18,7 @@ import { Context } from "src/types/context";
 // Entity
 import { Product } from "../../entity/product.entity";
 import { User } from "../../entity/user.entity";
+import { ProductResponse } from "../../entity/product.response";
 
 // Inputs
 import { ProductInput, CreateProductInput } from "./product.input";
@@ -27,11 +28,11 @@ export class ProductResolver {
   /** createProduct(CreateProductInput)=========================================
    * Creates a product in the db
    */
-  @Mutation(() => Product)
+  @Mutation(() => [ProductResponse])
   async createProduct(
     @Arg("data") data: CreateProductInput,
     @Ctx() { req }: Context
-  ): Promise<Product | ErrorResponse> {
+  ): Promise<typeof ProductResponse[]> {
     let product: Product;
     const user = await User.findOne(req.session.userId);
 
@@ -48,7 +49,7 @@ export class ProductResolver {
           wholesalePrice: data.wholesalePrice,
           description: data.description,
           images: data.images,
-          creator: user
+          creator: user,
         })
         .returning("*")
         .execute();
@@ -61,25 +62,22 @@ export class ProductResolver {
       // Code 23505 means that a unique field input already exists
       if (e.code === "23505") {
         if (e.detail.includes("name")) {
-          return {
-            error: "name",
-            message: "That product name is taken",
-          };
+          // I guess this no longer matters
         }
       }
     }
 
-    return product;
+    return [product];
   }
 
   /** product(productInput)=====================================================
    * Returns a single product - to be used for product pages. This will utilize
    * the Entity.findOne() method.
    */
-  @Query(() => Product || ErrorResponse)
+  @Query(() => ProductResponse)
   async product(
     @Arg("data") data: ProductInput
-  ): Promise<Product | ErrorResponse> {
+  ): Promise<typeof ProductResponse> {
     let product: Product;
     try {
       const result = await Product.findOne({
@@ -104,10 +102,13 @@ export class ProductResolver {
    * Returns an array of products - to be used for serving browsing pages. This
    * will utalize the Entity.find() method.
    */
-  @Query(() => [Product] || ErrorResponse)
-  async products(): Promise<Product[] | ErrorResponse> {
-    return {
-      error: "n/a", message: "this is not implemented yet"
-    }
+  @Query(() => [ProductResponse])
+  async products(): Promise<typeof ProductResponse[]> {
+    return [
+      {
+        error: "n/a",
+        message: "this is not implemented yet",
+      },
+    ];
   }
 }
