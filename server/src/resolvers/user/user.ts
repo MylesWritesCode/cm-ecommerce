@@ -30,6 +30,9 @@ import { Context } from "src/types/context";
 // Entity
 import { User } from "../../entity/User";
 
+// Inputs
+import { CreateUserInput } from "./CreateUserInput";
+
 // Env variables
 const env = process.env;
 
@@ -52,20 +55,19 @@ export class UserResolver {
     nullable: true,
   })
   async register(
-    @Arg("username") username: string,
-    @Arg("password") password: string,
-    @Arg("email") email: string,
-    @Arg("firstName", { nullable: true }) firstName: string,
-    @Arg("lastName", { nullable: true }) lastName: string,
-    @Arg("age", { nullable: true }) age: number,
+    @Arg("data") data: CreateUserInput,
     @Ctx() { req }: Context
   ): Promise<UserResponse> {
     // Common validations;
-    const validatorErrors = validateAll(username, password, email);
+    const validatorErrors = validateAll(
+      data.username,
+      data.password,
+      data.email
+    );
     if (validatorErrors) return { errors: validatorErrors };
 
     // Hash the plaintext password with Argon2
-    const hashedPassword = await argon2.hash(password);
+    const hashedPassword = await argon2.hash(data.password);
 
     let user;
     try {
@@ -74,22 +76,19 @@ export class UserResolver {
         .insert()
         .into(User)
         .values({
-          username: username,
+          username: data.username,
           password: hashedPassword,
-          email: email,
-          firstName: firstName ? firstName : null,
-          lastName: lastName ? lastName : null,
-          age: age ? age : null,
+          email: data.email,
+          firstName: data.firstName ? data.firstName : null,
+          lastName: data.lastName ? data.lastName : null,
+          age: data.age ? data.age : null,
         })
         .returning("*")
         .execute();
 
       user = result.raw[0];
     } catch (e) {
-      // Currently console logging, but we should send this to a
-      // logger eventually.
-
-      // code 23505 means that a unique field input already exists
+      // Code 23505 means that a unique field input already exists
       if (e.code === "23505") {
         if (e.detail.includes("email")) {
           return {
