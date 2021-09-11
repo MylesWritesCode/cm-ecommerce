@@ -1,5 +1,5 @@
 /*
- * File: \src\entity\User.ts
+ * File: \src\entity\user.entity.ts
  * Project: cm-ecommerce\cm-ecommerce-server
  * Created Date: Friday September 3rd 2021
  * Author: Myles Berueda
@@ -20,7 +20,9 @@ import {
   BaseEntity,
   OneToMany,
 } from "typeorm";
-import { Product } from "./Product.entity";
+
+// Entities
+import { Product } from "./product.entity";
 
 @ObjectType()
 @Entity()

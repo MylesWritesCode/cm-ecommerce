@@ -1,5 +1,5 @@
 /*
- * File: \src\entity\Order.ts
+ * File: \src\entity\order.entity.ts
  * Project: cm-ecommerce\cm-ecommerce-server
  * Created Date: Friday September 10th 2021
  * Author: Myles Berueda
@@ -10,7 +10,7 @@
  * -----
  * HISTORY
  */
-import { Field, Int, ObjectType } from "type-graphql";
+import { Field, ObjectType } from "type-graphql";
 import { BaseEntity, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @ObjectType()

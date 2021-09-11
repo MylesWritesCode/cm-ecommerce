@@ -1,7 +1,7 @@
 export const validatePassword = (password: String) => {
   if (password.length < 5) {
     return {
-      field: "password",
+      error: "password",
       message: "Your password is too short."
     }
   }

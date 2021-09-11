@@ -13,7 +13,7 @@
 export const validateUsername = (username: String) => {
   if (username.length < 5) {
     return {
-      field: "username",
+      error: "username",
       message: "The username must be greater than 5 characters",
     };
   }

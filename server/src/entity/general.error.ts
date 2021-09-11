@@ -20,7 +20,7 @@ export class GeneralError {
   @Field()
   message: string;
 
-  @Field()
+  @Field({ nullable: true })
   code?: string;
 }
 

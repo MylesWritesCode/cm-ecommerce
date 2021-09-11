@@ -15,7 +15,7 @@
 export const validateEmail = (email: String) => {
   if (!email.includes("@")) {
     return {
-      field: "email",
+      error: "email",
       message: "The email is invalid."
     }
   }

@@ -11,18 +11,17 @@
  * HISTORY
  */
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import { Between, getConnection } from "typeorm";
+import { getConnection } from "typeorm";
 
 import { Context } from "src/types/context";
 import { ErrorResponse } from "../ErrorResponse";
 
 // Entity
-import { Product } from "../../entity/Product.entity";
-import { User } from "../../entity/User.entity";
+import { Product } from "../../entity/product.entity";
+import { User } from "../../entity/user.entity";
 
 // Inputs
-import { CreateProductInput } from "./CreateProductInput";
-import { ProductInput } from "./ProductInput";
+import { ProductInput, CreateProductInput } from "./product.input";
 
 @Resolver(Product)
 export class ProductResolver {

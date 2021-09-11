@@ -1,4 +1,16 @@
-import { FieldError } from "src/resolvers/FieldError";
+/*
+ * File: \src\utils\validate\index.ts
+ * Project: cm-ecommerce\cm-ecommerce-server
+ * Created Date: Saturday September 11th 2021
+ * Author: Myles Berueda
+ * -----
+ * Last Modified: Saturday September 11th 2021 5:19:16 am
+ * -----
+ * Copyright (c) 2021 MylesWritesCode
+ * -----
+ * HISTORY
+ */
+import { GeneralError } from "../../entity/general.error";
 import { validateEmail } from "./validateEmail";
 import { validatePassword } from "./validatePassword";
 import { validateUsername } from "./validateUsername";
@@ -7,7 +19,7 @@ export const validateLogin = (
   loginCredentialName: string,
   loginCredentialPassword: string
 ) => {
-  let errors: FieldError[] = [];
+  let errors: GeneralError[] = [];
   let el;
 
   if (loginCredentialName.includes("@")) {
@@ -31,7 +43,7 @@ export const validateAll = (
   password: String,
   email: String
 ) => {
-  let errors: FieldError[] = [];
+  let errors: GeneralError[] = [];
   let eu = validateUsername(username);
   let ep = validatePassword(password);
   let ee = validateEmail(email);

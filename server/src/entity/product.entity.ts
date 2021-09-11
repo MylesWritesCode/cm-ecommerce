@@ -1,5 +1,5 @@
 /*
- * File: \src\entity\Product.ts
+ * File: \src\entity\product.entity.ts
  * Project: cm-ecommerce\cm-ecommerce-server
  * Created Date: Friday September 10th 2021
  * Author: Myles Berueda
@@ -20,7 +20,7 @@ import {
 } from "typeorm";
 
 // Entities
-import { User } from "./User.entity";
+import { User } from './user.entity';
 
 @ObjectType()
 @Entity()
