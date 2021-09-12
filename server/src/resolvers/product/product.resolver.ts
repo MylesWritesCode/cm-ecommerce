@@ -10,10 +10,11 @@
  * -----
  * HISTORY
  */
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
 import { getConnection } from "typeorm";
 
 import { Context } from "src/types/context";
+import { isAuth } from "../../middleware/isAuth";
 
 // Entity
 import { Product } from "../../entity/product.entity";
@@ -29,6 +30,7 @@ export class ProductResolver {
    * Creates a product in the db
    */
   @Mutation(() => [ProductResponse])
+  @UseMiddleware(isAuth)
   async createProduct(
     @Arg("data") data: CreateProductInput,
     @Ctx() { req }: Context
