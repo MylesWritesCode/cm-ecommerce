@@ -103,12 +103,30 @@ export class ProductResolver {
    * will utalize the Entity.find() method.
    */
   @Query(() => [ProductResponse])
-  async products(): Promise<typeof ProductResponse[]> {
-    return [
-      {
-        error: "n/a",
-        message: "this is not implemented yet",
-      },
-    ];
+  async products(
+    @Arg("data") data: ProductInput
+  ): Promise<typeof ProductResponse[]> {
+    let product: Product[];
+
+    try {
+      const result = await Product.find({
+        where: { ...data },
+      });
+
+      if (!result) {
+        return [
+          {
+            error: "product",
+            message: "No products found.",
+          },
+        ];
+      }
+      
+      product = result;
+    } catch (e) {
+      console.log(e);
+    }
+
+    return product;
   }
 }

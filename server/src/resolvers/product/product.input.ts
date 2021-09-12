@@ -1,5 +1,5 @@
 /*
- * File: \src\resolvers\product\ProductInput.ts
+ * File: \src\resolvers\product\product.input.ts
  * Project: cm-ecommerce\cm-ecommerce-server
  * Created Date: Friday September 10th 2021
  * Author: Myles Berueda
@@ -36,7 +36,7 @@ export class ProductInput {
  */
 @InputType()
 export class CreateProductInput {
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   sku: string;
   
   @Field(() => String)
