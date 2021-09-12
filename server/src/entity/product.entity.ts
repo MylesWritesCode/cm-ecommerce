@@ -20,7 +20,7 @@ import {
 } from "typeorm";
 
 // Entities
-import { User } from './user.entity';
+import { User } from "./user.entity";
 
 @ObjectType()
 @Entity()
@@ -30,12 +30,20 @@ export class Product extends BaseEntity {
   id!: string;
 
   @Field(() => String)
+  @Column({ type: "varchar", length: 30, nullable: true })
+  sku: string;
+
+  @Field(() => String)
   @Column({ type: "varchar", length: 50, nullable: false })
   name!: string;
 
   @Field(() => String)
   @Column({ type: "varchar", length: 30, nullable: false })
   brand!: string;
+
+  @Field(() => String, { nullable: true })
+  @Column({ type: "text", nullable: true })
+  description: string;
 
   @Field(() => [String], { nullable: true })
   @Column({ type: "text", array: true, nullable: true })
@@ -49,11 +57,7 @@ export class Product extends BaseEntity {
   @Column({ type: "float", nullable: true })
   wholesalePrice: number;
 
-  @Field(() => String, { nullable: true })
-  @Column({ type: "text", nullable: true })
-  description: string;
-
-  @Field(() => [String], { nullable: true})
+  @Field(() => [String], { nullable: true })
   @Column({ type: "text", array: true, nullable: true })
   images: string[];
 

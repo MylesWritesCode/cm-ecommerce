@@ -54,7 +54,7 @@ export class UserResolver {
     // Hash the plaintext password with Argon2
     const hashedPassword = await argon2.hash(data.password);
 
-    let user;
+    let user: User;
     try {
       const result = await getConnection()
         .createQueryBuilder()
@@ -128,7 +128,7 @@ export class UserResolver {
     if (!user) return loginError;
 
     const validPassword = await argon2.verify(user.password, password);
-    // if (!validPassword) return loginError;
+    if (!validPassword) return loginError;
 
     req.session.userId = user.id;
     return [user];

@@ -37,10 +37,16 @@ export class ProductInput {
 @InputType()
 export class CreateProductInput {
   @Field(() => String)
+  sku: string;
+  
+  @Field(() => String)
   name!: string;
 
   @Field(() => String)
   brand!: string;
+
+  @Field(() => String, { nullable: true })
+  description: string;
 
   @Field(() => [String], { nullable: true })
   categories: string[];
@@ -50,9 +56,6 @@ export class CreateProductInput {
 
   @Field(() => Float, { nullable: true })
   wholesalePrice: number;
-
-  @Field(() => String, { nullable: true })
-  description: string;
 
   @Field(() => [String], { nullable: true })
   images: string[];
