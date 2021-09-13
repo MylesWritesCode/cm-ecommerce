@@ -11,7 +11,7 @@
  * HISTORY
  */
 import { MiddlewareFn } from "type-graphql";
-import { Context } from "../context/context";
+import { Context } from "../context";
 
 export const isAuth: MiddlewareFn<Context> = ({ context, info }, next) => {
  

@@ -15,7 +15,7 @@ import argon2 from "argon2";
 import { getConnection } from "typeorm";
 
 import { validateAll, validateLogin } from "../../utils/validate";
-import { Context } from "../../context/context";
+import { Context } from "../../context";
 
 // Entity
 import { User } from "../../entity/user.entity";

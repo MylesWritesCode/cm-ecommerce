@@ -13,7 +13,7 @@
 import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
 import { getConnection } from "typeorm";
 
-import { Context } from "../../context/context";
+import { Context } from "../../context";
 import { isAuth } from "../../middleware/isAuth";
 
 // Entity
