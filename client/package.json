@@ -3,24 +3,29 @@
   "version": "0.0.1",
   "description": "Frontend for cm-ecommerce webapp",
   "license": "GPL-3.0-or-later",
-   "homepage": "https://github.com/MylesWritesCode/cm-ecommerce",
+  "homepage": "https://github.com/MylesWritesCode/cm-ecommerce",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "gen-env-types": "gen-env-types src/environment/.env.development -o src/types/env.d.ts"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.0",
     "@chakra-ui/react": "^1.4.2",
+    "@chakra-ui/system": "^1.7.3",
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
+    "dotenv": "^10.0.0",
     "framer-motion": "^4.0.3",
     "next": "latest",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.15.5",
     "@types/node": "^16.7.10",
+    "gen-env-types": "^1.3.0",
     "typescript": "^4.4.2"
   }
 }
