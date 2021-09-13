@@ -11,10 +11,7 @@
  * HISTORY
  */
 import { MiddlewareFn } from "type-graphql";
-import { Context } from "../types/context";
-import { ProductResponse } from "../entity/product.response";
-import { GraphQLOutputType, GraphQLUnionType } from "graphql";
-import { resolve } from "path/posix";
+import { Context } from "../context/context";
 
 export const isAuth: MiddlewareFn<Context> = ({ context, info }, next) => {
  

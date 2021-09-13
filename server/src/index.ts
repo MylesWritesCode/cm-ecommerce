@@ -24,7 +24,7 @@ import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 
 import { ormConfig } from "./lib/typeorm-config";
-import { Context } from "./types/context";
+import { Context } from "./context/context";
 
 // Resolvers
 import { ProductResolver } from "./resolvers/product";
