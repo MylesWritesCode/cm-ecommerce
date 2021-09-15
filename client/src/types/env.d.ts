@@ -1,5 +1,5 @@
 declare namespace NodeJS {
   interface ProcessEnv {
-    test_variable: string;
+    NEXT_PUBLIC_API_URL: string;
   }
 }
