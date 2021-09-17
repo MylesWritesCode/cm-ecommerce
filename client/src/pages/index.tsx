@@ -1,11 +1,85 @@
-import { Container } from '../components/Container'
+import { Container } from "../components/Container";
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Input,
+} from "@chakra-ui/react";
+import { Formik, Field, Form } from "formik";
+import React, { useState } from "react";
 
+const Index: React.FC<{}> = ({}) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  return (
+    // <Container height="100vh">
+    <Container>
+      <Flex my={5}>
+        <Formik
+          initialValues={{
+            login: "",
+            password: "",
+          }}
+          onSubmit={async (values) => {
+            console.log(values);
+            setIsSubmitting(true);
+          }}
+        >
+          <Form>
+            <Field name="login">
+              {({ field, form }) => (
+                <FormControl id="login" isRequired py={3}>
+                  <FormLabel mb={0} fontSize="xs">
+                    Username or email
+                  </FormLabel>
+                  <Input
+                    {...field}
+                    type="login"
+                    placeholder="Enter a username or email address"
+                    size="sm"
+                  />
+                  <FormHelperText>
+                    We'll never share your email with anyone.
+                  </FormHelperText>
+                </FormControl>
+              )}
+            </Field>
 
-const Index: React.FC<{}> = ({}) => (
-  <Container height="100vh">
-    <h1>Hello there, general kenobi</h1>
-    <h1>{ process.env.NEXT_PUBLIC_API_URL }</h1>
-  </Container>
-)
+            <Field name="password">
+              {({ field, form }) => (
+                <FormControl id="password" isRequired py={3}>
+                  <FormLabel mb={0} fontSize="xs">
+                    Password
+                  </FormLabel>
+                  <Input
+                    {...field}
+                    name="password"
+                    type="password"
+                    placeholder="Enter your password"
+                    size="sm"
+                  />
+                </FormControl>
+              )}
+            </Field>
+            <Flex>
+              <Button
+                size="sm"
+                colorScheme="blue"
+                type="submit"
+                ml="auto"
+                borderRadius={0}
+                // isLoading={isSubmitting}
+              >
+                Login
+              </Button>
+            </Flex>
+          </Form>
+        </Formik>
+      </Flex>
+    </Container>
+    // </Container>
+  );
+};
 
-export default Index
+export default Index;
