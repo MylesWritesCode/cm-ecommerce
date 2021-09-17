@@ -40,7 +40,7 @@ export const ChakraInput: React.FC<ChakraInputProps> = ({ ...props }) => {
           width={ width ? width : [270]}
           isInvalid={form.errors[name] && form.touched[name]}
         >
-          <FormLabel htmlFor={name} fontSize="xs" mb={0}>
+          <FormLabel htmlFor={name} fontSize="xs" mb={1}>
             {label}
           </FormLabel>
           <Input id={name} size="sm" {...field} {...rest} />
