@@ -33,7 +33,7 @@ const Index: React.FC<{}> = ({}) => {
             <ChakraInput
               name="password"
               label="Password"
-              placeholder="Password"
+              placeholder="Enter your password"
               type="password"
             />
             <Flex>
