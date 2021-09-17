@@ -15,7 +15,7 @@ const Index: React.FC<{}> = ({}) => {
   return (
     // <Container height="100vh">
     <Container>
-      <Flex my={5} minWidth="768px" justifyContent="center" alignItems="center">
+      <Flex my={5} width={[768]} justifyContent="center" alignItems="center">
         <Formik
           initialValues={{
             login: "",
@@ -29,7 +29,7 @@ const Index: React.FC<{}> = ({}) => {
           <Form>
             <Field name="login">
               {({ field, form }) => (
-                <FormControl id="login" isRequired py={3} minWidth="270px">
+                <FormControl id="login" isRequired py={3} width={[270]}>
                   <FormLabel mb={0} fontSize="xs">
                     Username or email
                   </FormLabel>
@@ -48,7 +48,7 @@ const Index: React.FC<{}> = ({}) => {
 
             <Field name="password">
               {({ field, form }) => (
-                <FormControl id="password" isRequired py={3} minWidth="270px">
+                <FormControl id="password" isRequired py={3} width={[270]}>
                   <FormLabel mb={0} fontSize="xs">
                     Password
                   </FormLabel>
