@@ -27,7 +27,7 @@ const Index: React.FC<{}> = ({}) => {
             <ChakraInput
               name="login"
               label="Login"
-              placeholder="Enter a username or password"
+              placeholder="Enter your username or email"
               helperText="We'll never share your email with anyone."
             />
             <ChakraInput
