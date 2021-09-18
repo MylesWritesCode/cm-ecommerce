@@ -10,14 +10,13 @@
  * -----
  * HISTORY
  */
-import React, { useState } from "react";
+import React from "react";
 import { Container } from "../components/Container";
 
 // Components
 import { Login } from "../components/Login";
 
 const Index: React.FC<{}> = ({}) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   return (
     // <Container height="100vh">
     <Container>
