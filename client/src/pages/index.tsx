@@ -1,8 +1,5 @@
 import { Container } from "../components/Container";
-import {
-  Button,
-  Flex,
-} from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import React, { useState } from "react";
 import { ChakraInput } from "../components/ChakraInput";
@@ -12,7 +9,14 @@ const Index: React.FC<{}> = ({}) => {
   return (
     // <Container height="100vh">
     <Container>
-      <Flex my={5} width={[768]} justifyContent="center" alignItems="center">
+      <Flex
+        my={5}
+        p={10}
+        justifyContent="center"
+        alignItems="center"
+        border="0.5px solid #E2E8F0"
+        borderRadius={5}
+      >
         <Formik
           initialValues={{
             login: "",
