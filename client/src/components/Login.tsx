@@ -3,6 +3,8 @@
  * Project: cm-ecommerce/cm-ecommerce-client
  * Created Date: Friday September 17th 2021
  * Author: Myles Berueda
+ * Note: The current use for this is to be able to load the login component as
+ *       a modal on other pages for the user to log in.
  * -----
  * Last Modified: Friday September 17th 2021 4:29:18 pm
  * -----
@@ -28,7 +30,7 @@ export const Login: React.FC<LoginProps> = () => {
       justifyContent="center"
       alignItems="center"
       border="0.5px solid #E2E8F0"
-      borderRadius={5}
+      borderRadius={0}
       boxShadow="md"
     >
       <Formik
