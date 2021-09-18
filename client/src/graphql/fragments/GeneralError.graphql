@@ -1,3 +1,15 @@
+###
+# File: /src/graphql/fragments/GeneralError.graphql
+# Project: cm-ecommerce/cm-ecommerce-client
+# Created Date: Friday September 17th 2021
+# Author: Myles Berueda
+# -----
+# Last Modified: Friday September 17th 2021 5:14:27 pm
+# -----
+# Copyright (c) 2021 MylesWritesCode
+# -----
+# HISTORY
+###
 fragment GeneralError on GeneralError {
   error
   message

@@ -1,3 +1,15 @@
+###
+# File: /src/graphql/fragments/FullUser.graphql
+# Project: cm-ecommerce/cm-ecommerce-client
+# Created Date: Friday September 17th 2021
+# Author: Myles Berueda
+# -----
+# Last Modified: Friday September 17th 2021 5:16:57 pm
+# -----
+# Copyright (c) 2021 MylesWritesCode
+# -----
+# HISTORY
+###
 fragment FullUser on User {
   id
   username

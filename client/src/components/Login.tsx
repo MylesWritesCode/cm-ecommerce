@@ -18,11 +18,13 @@ import { Button } from "@chakra-ui/button";
 import { Flex } from "@chakra-ui/layout";
 import { Formik, Form } from "formik";
 import { ChakraInput } from "./ChakraInput";
+import { useLoginQuery } from "../generated/graphql";
 
 interface LoginProps {};
 
 export const Login: React.FC<LoginProps> = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [login] = useLoginQuery();
   return (
     <Flex
       my={5}
@@ -41,6 +43,8 @@ export const Login: React.FC<LoginProps> = () => {
         onSubmit={async (values) => {
           console.log(values);
           setIsSubmitting(true);
+          const response = await login(values);
+          console.log(response);
         }}
       >
         <Form>
@@ -73,3 +77,5 @@ export const Login: React.FC<LoginProps> = () => {
     </Flex>
   );
 };
+
+export default Login;

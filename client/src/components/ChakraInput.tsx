@@ -51,3 +51,5 @@ export const ChakraInput: React.FC<ChakraInputProps> = ({ ...props }) => {
     </Field>
   );
 };
+
+export default ChakraInput;
