@@ -1,60 +1,27 @@
-import { Container } from "../components/Container";
-import { Button, Flex } from "@chakra-ui/react";
-import { Formik, Form } from "formik";
+/*
+ * File: /src/pages/index.tsx
+ * Project: cm-ecommerce/cm-ecommerce-client
+ * Created Date: Sunday September 12th 2021
+ * Author: Myles Berueda
+ * -----
+ * Last Modified: Sunday September 12th 2021 10:22:49 am
+ * -----
+ * Copyright (c) 2021 MylesWritesCode
+ * -----
+ * HISTORY
+ */
 import React, { useState } from "react";
-import { ChakraInput } from "../components/ChakraInput";
+import { Container } from "../components/Container";
+
+// Components
+import { Login } from "../components/Login";
 
 const Index: React.FC<{}> = ({}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   return (
     // <Container height="100vh">
     <Container>
-      <Flex
-        my={5}
-        p={10}
-        justifyContent="center"
-        alignItems="center"
-        border="0.5px solid #E2E8F0"
-        borderRadius={5}
-      >
-        <Formik
-          initialValues={{
-            login: "",
-            password: "",
-          }}
-          onSubmit={async (values) => {
-            console.log(values);
-            setIsSubmitting(true);
-          }}
-        >
-          <Form>
-            <ChakraInput
-              name="login"
-              label="Login"
-              placeholder="Enter your username or email"
-              helperText="We'll never share your email with anyone."
-            />
-            <ChakraInput
-              name="password"
-              label="Password"
-              placeholder="Enter your password"
-              type="password"
-            />
-            <Flex>
-              <Button
-                size="sm"
-                colorScheme="blue"
-                type="submit"
-                ml="auto"
-                borderRadius={0}
-                // isLoading={isSubmitting}
-              >
-                Login
-              </Button>
-            </Flex>
-          </Form>
-        </Formik>
-      </Flex>
+      <Login />
     </Container>
     // </Container>
   );
