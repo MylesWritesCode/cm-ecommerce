@@ -11,18 +11,27 @@
  * HISTORY
  */
 import React from "react";
-import { Container } from "../components/Container";
+import { Flex, useColorMode } from "@chakra-ui/react";
 
 // Components
 import { Login } from "../components/Login";
 
 const Index: React.FC<{}> = ({}) => {
+  // Color mode for bg
+  const { colorMode } = useColorMode();
+  const bgColor = { light: "gray.50", dark: "gray.900" };
+  const color = { light: "black", dark: "white" };
+
   return (
-    // <Container height="100vh">
-    <Container>
+    <Flex
+      height="100vh"
+      background={bgColor[colorMode]}
+      direction="column"
+      alignItems="center"
+      justifyContent="flex-start"
+    >
       <Login />
-    </Container>
-    // </Container>
+    </Flex>
   );
 };
 

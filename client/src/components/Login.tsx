@@ -12,53 +12,111 @@
  * -----
  * HISTORY
  */
-
 import React, { useState } from "react";
-import { Button } from "@chakra-ui/button";
-import { Flex } from "@chakra-ui/layout";
-import { Formik, Form } from "formik";
-import { ChakraInput } from "./ChakraInput";
-import { useLoginQuery } from "../generated/graphql";
+import { Formik, Form, FormikHelpers } from "formik";
+import { Flex, Button } from "@chakra-ui/react";
 
-interface LoginProps {};
+import { ChakraInput } from "./ChakraInput";
+import { useLoginMutation } from "../generated/graphql";
+
+interface LoginProps {}
+
+function validate(value: string): string {
+  let error: string;
+  if (!value) {
+    error = "This field is required.";
+  }
+
+  return error;
+}
+
+interface LoginValues {
+  login: string;
+  password: string;
+}
 
 export const Login: React.FC<LoginProps> = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [login] = useLoginQuery();
+  const [error, setError] = useState("");
+  const [login] = useLoginMutation();
   return (
     <Flex
       my={5}
       p={10}
+      height="max-content"
       justifyContent="center"
       alignItems="center"
       border="0.5px solid #E2E8F0"
       borderRadius={0}
       boxShadow="md"
+      backgroundColor="white"
     >
       <Formik
         initialValues={{
           login: "",
           password: "",
         }}
-        onSubmit={async (values) => {
-          console.log(values);
+        onSubmit={async (
+          values: LoginValues,
+          { setStatus }: FormikHelpers<LoginValues>
+        ) => {
           setIsSubmitting(true);
-          const response = await login(values);
-          console.log(response);
+          const { data, errors } = await login({ variables: values });
+
+          // We are no longer submitting, we should have something from backend.
+          setIsSubmitting(false);
+          
+          // This means we have GraphQL errors.
+          if (errors) {
+            // Just tell the user there was an internal error.
+            setError("Internal server error");
+          }
+
+          // We have a general error here. Let's parse it.
+          if (data.login[0].__typename === "GeneralError") {
+            const error = data.login[0];
+            if (error.code === "NO_MATCH") {
+              // We want to set the field's error message here.
+              setError(error.message);
+            }
+          }
+
+          // If the first element in the array is a user, we have a user.
+          if (data.login[0].__typename === "User") {
+            // And if we have a user, we should just do something else with the
+            // component. IMO, since I want to use this as a modal, I think the
+            // best bet is to close the component.
+          }
         }}
       >
         <Form>
+          {error ? (
+            <Flex
+              px={0}
+              margin="auto"
+              alignItems="center"
+              justifyContent="center"
+              textAlign="center"
+              fontSize="xs"
+              color="red"
+              maxWidth="fit-content"
+            >
+              {error}
+            </Flex>
+          ) : null}
           <ChakraInput
             name="login"
             label="Login"
             placeholder="Enter your username or email"
             helperText="We'll never share your email with anyone."
+            validateCallback={validate}
           />
           <ChakraInput
             name="password"
             label="Password"
             placeholder="Enter your password"
             type="password"
+            validateCallback={validate}
           />
           <Flex>
             <Button

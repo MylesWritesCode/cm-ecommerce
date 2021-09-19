@@ -27,17 +27,19 @@ interface ChakraInputProps {
   placeholder?: string;
   helperText?: string;
   width?: string | Array<number>;
+  validateCallback?: (value: string) => string;
 }
 
 export const ChakraInput: React.FC<ChakraInputProps> = ({ ...props }) => {
-  const { label, name, helperText, width, ...rest } = props;
+  const { label, name, helperText, width, validateCallback, ...rest } = props;
+  
   return (
-    <Field name={name}>
+    <Field name={name} validate={validateCallback}>
       {({ field, form }) => (
         <FormControl
           id={name}
           py={3}
-          width={ width ? width : [270]}
+          width={width ? width : [270]}
           isInvalid={form.errors[name] && form.touched[name]}
         >
           <FormLabel htmlFor={name} fontSize="xs" mb={1}>
@@ -45,7 +47,9 @@ export const ChakraInput: React.FC<ChakraInputProps> = ({ ...props }) => {
           </FormLabel>
           <Input id={name} size="sm" {...field} {...rest} />
           <FormHelperText fontSize="xx-small">{helperText}</FormHelperText>
-          <FormErrorMessage>{form.errors[name]}</FormErrorMessage>
+          <FormErrorMessage fontSize="xx-small">
+            {form.errors[name]}
+          </FormErrorMessage>
         </FormControl>
       )}
     </Field>

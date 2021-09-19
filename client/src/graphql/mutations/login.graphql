@@ -1,5 +1,5 @@
 ###
-# File: /src/graphql/queries/login.graphql
+# File: /src/graphql/mutations/login.graphql
 # Project: cm-ecommerce/cm-ecommerce-client
 # Created Date: Friday September 17th 2021
 # Author: Myles Berueda
@@ -10,7 +10,7 @@
 # -----
 # HISTORY
 ###
-query Login($login: String!, $password: String!) {
+mutation Login($login: String!, $password: String!) {
   login(login: $login, password: $password) {
     __typename
     ...FullUser

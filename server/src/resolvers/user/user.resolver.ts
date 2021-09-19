@@ -96,7 +96,7 @@ export class UserResolver {
   /** login(email || username, password)========================================
    * Logs a user in with email and password
    */
-  @Query(() => [UserResponse], {
+  @Mutation(() => [UserResponse], {
     description: "Logs a user in with an email and password",
   })
   async login(
@@ -107,6 +107,7 @@ export class UserResolver {
     // General login error
     const loginError = [
       {
+        code: "NO_MATCH",
         error: "login",
         message: "Login information does not match our records.",
       },
@@ -126,7 +127,7 @@ export class UserResolver {
     );
 
     if (!user) return loginError;
-
+    
     const validPassword = await argon2.verify(user.password, password);
     if (!validPassword) return loginError;
 
