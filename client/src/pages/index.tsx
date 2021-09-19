@@ -11,7 +11,20 @@
  * HISTORY
  */
 import React from "react";
-import { Flex, useColorMode } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Link,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useColorMode,
+  useDisclosure,
+} from "@chakra-ui/react";
 
 // Components
 import { Login } from "../components/Login";
@@ -22,6 +35,9 @@ const Index: React.FC<{}> = ({}) => {
   const bgColor = { light: "gray.50", dark: "gray.900" };
   const color = { light: "black", dark: "white" };
 
+  // Modal stuff
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Flex
       height="100vh"
@@ -30,7 +46,18 @@ const Index: React.FC<{}> = ({}) => {
       alignItems="center"
       justifyContent="flex-start"
     >
-      <Login />
+      <Button my={10} colorScheme="messenger" onClick={onOpen}>
+        Login
+      </Button>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody>
+            <Login />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Flex>
   );
 };
