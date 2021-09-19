@@ -18,6 +18,7 @@ import {
   FormLabel,
   Input,
   FormErrorMessage,
+  Flex,
 } from "@chakra-ui/react";
 
 interface ChakraInputProps {
@@ -32,7 +33,7 @@ interface ChakraInputProps {
 
 export const ChakraInput: React.FC<ChakraInputProps> = ({ ...props }) => {
   const { label, name, helperText, width, validateCallback, ...rest } = props;
-  
+
   return (
     <Field name={name} validate={validateCallback}>
       {({ field, form }) => (
@@ -42,14 +43,16 @@ export const ChakraInput: React.FC<ChakraInputProps> = ({ ...props }) => {
           width={width ? width : [270]}
           isInvalid={form.errors[name] && form.touched[name]}
         >
-          <FormLabel htmlFor={name} fontSize="xs" mb={1}>
-            {label}
-          </FormLabel>
+          <Flex justifyContent="space-between" alignItems="center">
+            <FormLabel htmlFor={name} fontSize="xs" mb={1}>
+              {label}
+            </FormLabel>
+            <FormErrorMessage fontSize="xx-small" my={0}>
+              {form.errors[name]}
+            </FormErrorMessage>
+          </Flex>
           <Input id={name} size="sm" {...field} {...rest} />
           <FormHelperText fontSize="xx-small">{helperText}</FormHelperText>
-          <FormErrorMessage fontSize="xx-small">
-            {form.errors[name]}
-          </FormErrorMessage>
         </FormControl>
       )}
     </Field>
