@@ -89,7 +89,7 @@ export const Login: React.FC<LoginProps> = ({ ...props }) => {
           >
             <Heading
               as="em"
-              fontSize="4vw"
+              size="xl"
               bgGradient="linear(to-b, #ffffff, #ffffff)"
               backgroundClip="text"
             >
