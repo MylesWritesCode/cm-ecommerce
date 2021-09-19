@@ -44,7 +44,11 @@ export const ChakraInput: React.FC<ChakraInputProps> = ({ ...props }) => {
           isInvalid={form.errors[name] && form.touched[name]}
         >
           <Flex justifyContent="space-between" alignItems="center">
-            <FormLabel htmlFor={name} fontSize="xs" mb={1}>
+            <FormLabel
+              htmlFor={name}
+              fontSize="xs"
+              mb={1}
+            >
               {label}
             </FormLabel>
             <FormErrorMessage fontSize="xx-small" my={0}>

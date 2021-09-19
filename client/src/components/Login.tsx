@@ -5,6 +5,10 @@
  * Author: Myles Berueda
  * Note: The current use for this is to be able to load the login component as
  *       a modal on other pages for the user to log in.
+ *
+ *       While I'd like to stick the modal in it's own component, there's too
+ *       many things that I need to control within the modal. For this reason,
+ *       I'm going to leave all the code within this component.
  * -----
  * Last Modified: Friday September 17th 2021 4:29:18 pm
  * -----
@@ -13,18 +17,20 @@
  * HISTORY
  */
 import React, { useState } from "react";
-import { Formik, Form, FormikHelpers } from "formik";
+import { Formik, Form } from "formik";
 import {
   Flex,
   Button,
+  Text,
   Modal,
   ModalBody,
   ModalContent,
   ModalOverlay,
   ModalHeader,
   Heading,
+  ModalFooter,
 } from "@chakra-ui/react";
-
+import { SITE_TITLE } from "../constants";
 import { ChakraInput } from "./ChakraInput";
 import { useLoginMutation } from "../generated/graphql";
 
@@ -35,11 +41,11 @@ interface LoginProps {
 }
 
 function validate(value: string): string {
+  // todo: write out some better validations
   let error: string;
   if (!value) {
     error = "This field is required.";
   }
-
   return error;
 }
 
@@ -76,9 +82,8 @@ export const Login: React.FC<LoginProps> = ({ ...props }) => {
           justifyContent="center"
         >
           <Flex
-            backgroundColor="rgba(0, 0, 0, 0.3)"
+            backgroundColor="rgba(0, 0, 0, 0.2)"
             padding={2}
-            // paddingLeft={5}
             width="100%"
             justifyContent="center"
           >
@@ -88,7 +93,7 @@ export const Login: React.FC<LoginProps> = ({ ...props }) => {
               bgGradient="linear(to-b, #ffffff, #ffffff)"
               backgroundClip="text"
             >
-              PILIPINO
+              {SITE_TITLE}
             </Heading>
           </Flex>
         </ModalHeader>
@@ -105,14 +110,9 @@ export const Login: React.FC<LoginProps> = ({ ...props }) => {
               login: "",
               password: "",
             }}
-            onSubmit={async (
-              values: LoginValues,
-              { setStatus }: FormikHelpers<LoginValues>
-            ) => {
+            onSubmit={async (values: LoginValues) => {
               setIsSubmitting(true);
               const { data, errors } = await login({ variables: values });
-
-              // We are no longer submitting, we should have something from backend.
               setIsSubmitting(false);
 
               // This means we have GraphQL errors.
@@ -132,9 +132,7 @@ export const Login: React.FC<LoginProps> = ({ ...props }) => {
 
               // If the first element in the array is a user, we have a user.
               if (data.login[0].__typename === "User") {
-                // And if we have a user, we should just do something else with the
-                // component. IMO, since I want to use this as a modal, I think the
-                // best bet is to close the component.
+                // do something with the user
               }
             }}
           >
@@ -180,6 +178,17 @@ export const Login: React.FC<LoginProps> = ({ ...props }) => {
             </Form>
           </Formik>
         </ModalBody>
+        <ModalFooter
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          flexDirection="column"
+          mt={0}
+          pt={0}
+        >
+          <Text fontSize="xs">Don't have an account? Register now</Text>
+          <Text fontSize="xs">Forgot your password? Click here</Text>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );
