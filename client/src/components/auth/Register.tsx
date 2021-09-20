@@ -14,6 +14,7 @@ import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import { Flex, Button } from "@chakra-ui/react";
 import { ChakraInput } from "../ChakraInput";
+import * as Yup from "yup";
 import { useRegisterMutation } from "../../generated/graphql";
 import { toErrorMap } from "../../utils";
 
@@ -21,29 +22,23 @@ interface RegisterProps {
   closeModalCallback: () => void;
 }
 
-function validate(values: RegisterValues) {
-  const errors: RegisterValues = { email: "", username: "", password: "" };
-
-  console.log("validation run");
-
-  if (!values.username) {
-    errors.username = "A username is required";
-  }
-  if (!values.email) {
-    errors.email = "An email is required";
-  }
-  if (!values.password) {
-    errors.password = "A password is required";
-  }
-
-  return errors;
-}
-
 interface RegisterValues {
   username: string;
   email: string;
   password: string;
 }
+
+const RegisterErrorSchema = Yup.object().shape({
+  username: Yup.string()
+    .min(2, "Too short")
+    .max(50, "Too long")
+    .required("Requierd"),
+  email: Yup.string().email("Invalid email").required("Required"),
+  password: Yup.string()
+    .min(2, "Too short")
+    .max(50, "Too long")
+    .required("Required"),
+});
 
 export const Register: React.FC<RegisterProps> = ({ ...props }) => {
   const { closeModalCallback } = props;
@@ -59,11 +54,11 @@ export const Register: React.FC<RegisterProps> = ({ ...props }) => {
         email: "",
         password: "",
       }}
-      onSubmit={async (values: RegisterValues, { setErrors } ) => {
+      onSubmit={async (values: RegisterValues, { setErrors }) => {
         setIsSubmitting(true);
         const { data, errors } = await register({ variables: values });
         setIsSubmitting(false);
-        
+
         // This means we have GraphQL errors.
         if (errors) {
           // Just tell the user there was an internal error.
@@ -83,7 +78,7 @@ export const Register: React.FC<RegisterProps> = ({ ...props }) => {
           closeModalCallback();
         }
       }}
-      validate={validate}
+      validationSchema={RegisterErrorSchema}
     >
       <Form>
         <Flex

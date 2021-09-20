@@ -15,6 +15,7 @@
 import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import { Flex, Button } from "@chakra-ui/react";
+import * as Yup from "yup";
 import { ChakraInput } from "../ChakraInput";
 import { useLoginMutation } from "../../generated/graphql";
 
@@ -22,18 +23,16 @@ interface LoginProps {
   closeModalCallback: () => void;
 }
 
-function validate(values: LoginValues) {
-  let errors: LoginValues = { login: "", password: "" };
-  
-  if (!values.login) {
-    errors.login = "Required";
-  }
-  if (!values.password) {
-    errors.password = "Required";
-  }
-
-  return errors;
-}
+const LoginErrorSchema = Yup.object().shape({
+  login: Yup.string()
+    .min(2, "Too short")
+    .max(50, "Too long")
+    .required("Required"),
+  password: Yup.string()
+    .min(2, "Too short")
+    .max(50, "Too long")
+    .required("Required"),
+});
 
 interface LoginValues {
   login: string;
@@ -83,7 +82,7 @@ export const Login: React.FC<LoginProps> = ({ ...props }) => {
           }, 100);
         }
       }}
-      validate={validate}
+      validationSchema={LoginErrorSchema}
     >
       <Form>
         <Flex
