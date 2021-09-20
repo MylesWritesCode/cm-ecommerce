@@ -1,0 +1,15 @@
+###
+# File: /src/graphql/mutations/logout.graphql
+# Project: cm-ecommerce/cm-ecommerce-client
+# Created Date: Monday September 20th 2021
+# Author: Myles Berueda
+# -----
+# Last Modified: Monday September 20th 2021 3:26:25 am
+# -----
+# Copyright (c) 2021 MylesWritesCode
+# -----
+# HISTORY
+###
+mutation Logout {
+  logout
+}

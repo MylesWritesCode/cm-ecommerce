@@ -11,8 +11,16 @@
  * HISTORY
  */
 import React, { useState } from "react";
-import { Flex, Heading, Button, useDisclosure } from "@chakra-ui/react";
-import { useMeQuery } from "../generated/graphql";
+import {
+  Flex,
+  Heading,
+  Button,
+  Icon,
+  useDisclosure,
+  Link,
+} from "@chakra-ui/react";
+import { IoMdLogOut } from "react-icons/io";
+import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 import { AuthModal } from "./auth";
 
 import { SITE_TITLE } from "../constants";
@@ -24,6 +32,7 @@ interface NavbarProps {}
 const Navbar: React.FC<NavbarProps> = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [variant, setVariant] = useState("login");
+  const [logout, { loading: logoutLoading }] = useLogoutMutation();
   const { data, loading } = useMeQuery({
     skip: isServer(),
   });
@@ -35,7 +44,28 @@ const Navbar: React.FC<NavbarProps> = () => {
   } else if (data?.me.__typename === "User") {
     // Me query returned a user
     const user = data.me;
-    infoBox = <Flex>{user.username}</Flex>;
+    infoBox = (
+      <>
+        <Flex justifyContent="center" alignItems="center">
+          <Heading size="sm" color="white">
+            {user.username}
+          </Heading>
+        </Flex>
+        <Button
+          marginLeft={4}
+          p={2}
+          size="sm"
+          backgroundColor="red.500"
+          color="white"
+          borderRadius={0}
+          onClick={() => logout()}
+          isLoading={logoutLoading}
+        >
+          Logout
+        </Button>
+      </>
+    );
+    // FaShoppingCart
   } else {
     // User is not logged in.
     infoBox = (

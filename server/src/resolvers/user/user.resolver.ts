@@ -145,7 +145,7 @@ export class UserResolver {
   /** logout()==================================================================
    * Logs a user out based on session user id.
    */
-  @Query(() => Boolean)
+  @Mutation(() => Boolean)
   async logout(@Ctx() { req, res }: Context): Promise<Boolean> {
     return new Promise((resolve) => {
       // Attempts to destroy the cookie. This will also remove the data from
