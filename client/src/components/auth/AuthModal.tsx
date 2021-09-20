@@ -22,9 +22,9 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import { Login } from "./Login";
+import { Register } from "./Register";
 import { AuthFooter } from "./AuthFooter";
 import { SITE_TITLE } from "../../constants";
-import Register from "./Register";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -34,17 +34,34 @@ interface AuthModalProps {
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({ ...props }) => {
-  
   const { isOpen, onClose, headerImageUrl } = props;
+  
+  // Hooks
   const [variant, setVariant] = useState(props.variant);
 
   const changeVariant = (value: "login" | "forgot-password" | "register") => {
     setVariant(value);
   };
 
-  let component = <Login />;
-  if (variant === "register") component = <Register />;
-  const footer = <AuthFooter onLinkClick={changeVariant} variant={variant}/>;
+  // Set component and footer that will change the contents of the modal.
+  let component: React.ReactElement; 
+  let footer: React.ReactElement;
+
+  switch(variant) {
+    case "register":
+      component = <Register closeModalCallback={onClose} />;
+      break;
+    case "forgot-password":
+      component = <Register closeModalCallback={onClose} />
+      break;
+    default:
+      // component = <Register closeModalCallback={onClose} />
+      component = <Login closeModalCallback={onClose} />
+      break;
+  }
+
+  // The footer will always be the same - the only thing that changes is variant
+  footer = <AuthFooter onLinkClick={changeVariant} variant={variant} />;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -83,7 +100,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ ...props }) => {
           </Flex>
         </ModalHeader>
         <ModalBody
-          // my={5}
           px={20}
           paddingBottom={10}
           display="flex"

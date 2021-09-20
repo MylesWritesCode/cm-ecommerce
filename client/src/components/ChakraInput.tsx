@@ -28,6 +28,7 @@ interface ChakraInputProps {
   placeholder?: string;
   helperText?: string;
   width?: string | Array<number>;
+  autoComplete?: string;
   validateCallback?: (value: string) => string;
 }
 

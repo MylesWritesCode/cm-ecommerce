@@ -5,10 +5,6 @@
  * Author: Myles Berueda
  * Note: The current use for this is to be able to load the login component as
  *       a modal on other pages for the user to log in.
- *
- *       While I'd like to stick the modal in it's own component, there's too
- *       many things that I need to control within the modal. For this reason,
- *       I'm going to leave all the code within this component.
  * -----
  * Last Modified: Friday September 17th 2021 4:29:18 pm
  * -----
@@ -22,15 +18,21 @@ import { Flex, Button } from "@chakra-ui/react";
 import { ChakraInput } from "../ChakraInput";
 import { useLoginMutation } from "../../generated/graphql";
 
-interface LoginProps {}
+interface LoginProps {
+  closeModalCallback: () => void;
+}
 
-function validate(value: string): string {
-  // todo: write out some better validations
-  let error: string;
-  if (!value) {
-    error = "This field is required.";
+function validate(values: LoginValues) {
+  let errors: LoginValues = { login: "", password: "" };
+  
+  if (!values.login) {
+    errors.login = "Required";
   }
-  return error;
+  if (!values.password) {
+    errors.password = "Required";
+  }
+
+  return errors;
 }
 
 interface LoginValues {
@@ -38,7 +40,11 @@ interface LoginValues {
   password: string;
 }
 
-export const Login: React.FC<LoginProps> = ({}) => {
+export const Login: React.FC<LoginProps> = ({ ...props }) => {
+  // Need this to be able to close the modal on success.
+  const { closeModalCallback } = props;
+
+  // Hooks
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [login] = useLoginMutation();
@@ -71,9 +77,13 @@ export const Login: React.FC<LoginProps> = ({}) => {
 
         // If the first element in the array is a user, we have a user.
         if (data.login[0].__typename === "User") {
-          // do something with the user
+          // Close the modal
+          setTimeout(() => {
+            closeModalCallback();
+          }, 100);
         }
       }}
+      validate={validate}
     >
       <Form>
         <Flex
@@ -93,14 +103,14 @@ export const Login: React.FC<LoginProps> = ({}) => {
           label="Login"
           placeholder="Enter your username or email"
           helperText="We'll never share your email with anyone."
-          validateCallback={validate}
+          autoComplete="username"
         />
         <ChakraInput
           name="password"
           label="Password"
           placeholder="Enter your password"
           type="password"
-          validateCallback={validate}
+          autoComplete="current-password"
         />
         <Flex>
           <Button

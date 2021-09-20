@@ -15,16 +15,28 @@ import { Formik, Form } from "formik";
 import { Flex, Button } from "@chakra-ui/react";
 import { ChakraInput } from "../ChakraInput";
 import { useRegisterMutation } from "../../generated/graphql";
+import { toErrorMap } from "../../utils";
 
-interface RegisterProps {}
+interface RegisterProps {
+  closeModalCallback: () => void;
+}
 
-function validate(value: string): string {
-  // todo: write out some better validations
-  let error: string;
-  if (!value) {
-    error = "This field is required.";
+function validate(values: RegisterValues) {
+  const errors: RegisterValues = { email: "", username: "", password: "" };
+
+  console.log("validation run");
+
+  if (!values.username) {
+    errors.username = "A username is required";
   }
-  return error;
+  if (!values.email) {
+    errors.email = "An email is required";
+  }
+  if (!values.password) {
+    errors.password = "A password is required";
+  }
+
+  return errors;
 }
 
 interface RegisterValues {
@@ -33,7 +45,9 @@ interface RegisterValues {
   password: string;
 }
 
-export const Register: React.FC<RegisterProps> = ({}) => {
+export const Register: React.FC<RegisterProps> = ({ ...props }) => {
+  const { closeModalCallback } = props;
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [register] = useRegisterMutation();
@@ -45,11 +59,11 @@ export const Register: React.FC<RegisterProps> = ({}) => {
         email: "",
         password: "",
       }}
-      onSubmit={async (values: RegisterValues) => {
+      onSubmit={async (values: RegisterValues, { setErrors } ) => {
         setIsSubmitting(true);
         const { data, errors } = await register({ variables: values });
         setIsSubmitting(false);
-
+        
         // This means we have GraphQL errors.
         if (errors) {
           // Just tell the user there was an internal error.
@@ -58,18 +72,18 @@ export const Register: React.FC<RegisterProps> = ({}) => {
 
         // We have a general error here. Let's parse it.
         if (data.register[0].__typename === "GeneralError") {
-          const error = data.register[0];
-          if (error.code === "NO_MATCH") {
-            // We want to set the field's error message here.
-            setError(error.message);
-          }
+          const errors = data.register;
+
+          // Map the error responses to their respective fields in the form.
+          setErrors(toErrorMap(errors));
         }
 
         // If the first element in the array is a user, we have a user.
         if (data.register[0].__typename === "User") {
-          // do something with the user
+          closeModalCallback();
         }
       }}
+      validate={validate}
     >
       <Form>
         <Flex
@@ -88,21 +102,21 @@ export const Register: React.FC<RegisterProps> = ({}) => {
           name="username"
           label="Username"
           placeholder="Enter your username"
-          validateCallback={validate}
+          autoComplete="username"
         />
         <ChakraInput
           name="email"
           label="Email"
           placeholder="Enter your email"
+          autoComplete="email"
           helperText="We'll never share your email with anyone."
-          validateCallback={validate}
         />
         <ChakraInput
           name="password"
           label="Password"
           placeholder="Enter your password"
           type="password"
-          validateCallback={validate}
+          autoComplete="new-password"
         />
         <Flex>
           <Button
