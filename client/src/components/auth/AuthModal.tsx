@@ -10,7 +10,7 @@
  * -----
  * HISTORY
  */
-import React, { useState } from "react";
+import React from "react";
 import {
   Flex,
   Modal,
@@ -51,7 +51,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ ...props }) => {
     component = <Login closeModalCallback={onClose} />;
   }
 
-  // The footer will always be the same - the only thing that changes is variant
+  // The footer will always be the same - the only change is the variant
   footer = (
     <AuthFooter
       changeVariantCallback={(variant: typeof props.variant) => {
