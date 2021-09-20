@@ -14,7 +14,6 @@ import React from "react";
 import { Button, Flex, useColorMode, useDisclosure } from "@chakra-ui/react";
 
 // Components
-import { AuthModal } from "../components/auth";
 import { withApollo } from "../lib/withApollo";
 
 const Index: React.FC<{}> = ({}) => {
@@ -27,19 +26,23 @@ const Index: React.FC<{}> = ({}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Flex
-      height="100vh"
-      background={bgColor[colorMode]}
-      direction="column"
-      alignItems="center"
-      justifyContent="flex-start"
-    >
-      <Button my={10} colorScheme="messenger" onClick={onOpen}>
+    <>
+      <Flex
+        height="100vh"
+        background={bgColor[colorMode]}
+        direction="column"
+        alignItems="center"
+        justifyContent="flex-start"
+      >
+        // Navbar
+
+
+      </Flex>
+      {/* <Button my={10} colorScheme="messenger" onClick={onOpen}>
         Login
       </Button>
-      {/* <Login isOpen={isOpen} onClose={onClose} /> */}
-      <AuthModal isOpen={isOpen} onClose={onClose} variant="login"/>
-    </Flex>
+      <AuthModal isOpen={isOpen} onClose={onClose} variant="login"/> */}
+    </>
   );
 };
 
