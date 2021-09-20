@@ -29,39 +29,37 @@ import { SITE_TITLE } from "../../constants";
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  variant: "login" | "forgot-password" | "register";
+  variant: "register" | "login" | "forgot-password";
   headerImageUrl?: string;
+  changeVariantCallback: (
+    variant: "register" | "login" | "forgot-password"
+  ) => void;
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({ ...props }) => {
-  const { isOpen, onClose, headerImageUrl } = props;
-  
-  // Hooks
-  const [variant, setVariant] = useState(props.variant);
-
-  const changeVariant = (value: "login" | "forgot-password" | "register") => {
-    setVariant(value);
-  };
+  const { isOpen, onClose, headerImageUrl, changeVariantCallback } = props;
 
   // Set component and footer that will change the contents of the modal.
-  let component: React.ReactElement; 
+  let component: React.ReactElement;
   let footer: React.ReactElement;
 
-  switch(variant) {
-    case "register":
-      component = <Register closeModalCallback={onClose} />;
-      break;
-    case "forgot-password":
-      component = <Register closeModalCallback={onClose} />
-      break;
-    default:
-      // component = <Register closeModalCallback={onClose} />
-      component = <Login closeModalCallback={onClose} />
-      break;
+  if (props.variant === "register") {
+    component = <Register closeModalCallback={onClose} />;
+  } else if (props.variant === "forgot-password") {
+    component = <Register closeModalCallback={onClose} />;
+  } else {
+    component = <Login closeModalCallback={onClose} />;
   }
 
   // The footer will always be the same - the only thing that changes is variant
-  footer = <AuthFooter onLinkClick={changeVariant} variant={variant} />;
+  footer = (
+    <AuthFooter
+      changeVariantCallback={(variant: typeof props.variant) => {
+        changeVariantCallback(variant);
+      }}
+      variant={props.variant}
+    />
+  );
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
