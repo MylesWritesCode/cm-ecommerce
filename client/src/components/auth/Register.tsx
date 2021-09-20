@@ -13,10 +13,10 @@
 import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import { Flex, Button } from "@chakra-ui/react";
-import { ChakraInput } from "../ChakraInput";
 import * as Yup from "yup";
-import { useRegisterMutation } from "../../generated/graphql";
+import { ChakraInput } from "../ChakraInput";
 import { toErrorMap } from "../../utils";
+import { useRegisterMutation } from "../../generated/graphql";
 
 interface RegisterProps {
   closeModalCallback: () => void;

@@ -19,6 +19,7 @@ import { Context } from "../../context";
 
 // Entity
 import { User } from "../../entity/user.entity";
+import { GeneralError } from "../../entity/general.error";
 import { UserResponse } from "../../entity/user.response";
 
 // Inputs
@@ -75,14 +76,20 @@ export class UserResolver {
     } catch (e) {
       // Code 23505 means that a unique field input already exists
       if (e.code === "23505") {
+        let errors: GeneralError[] = [];
         if (e.detail.includes("email")) {
-          return [{ error: "email", message: "That email already exists." }];
+          errors.push({
+            error: "email",
+            message: "That email already exists.",
+          });
         }
         if (e.detail.includes("username")) {
-          return [
-            { error: "username", message: "That username already exists." },
-          ];
+          errors.push({
+            error: "username",
+            message: "That username already exists.",
+          });
         }
+        return errors;
       }
     }
 
@@ -127,7 +134,7 @@ export class UserResolver {
     );
 
     if (!user) return loginError;
-    
+
     const validPassword = await argon2.verify(user.password, password);
     if (!validPassword) return loginError;
 
