@@ -14,7 +14,8 @@ import React from "react";
 import { Button, Flex, useColorMode, useDisclosure } from "@chakra-ui/react";
 
 // Components
-import { AuthModal, Login } from "../components/auth";
+import { AuthModal } from "../components/auth";
+import { withApollo } from "../lib/withApollo";
 
 const Index: React.FC<{}> = ({}) => {
   // Color mode for bg
@@ -42,4 +43,5 @@ const Index: React.FC<{}> = ({}) => {
   );
 };
 
-export default Index;
+// This is how you can get server-side rendering in Next via Apollo.
+export default withApollo({ ssr: true })(Index);
