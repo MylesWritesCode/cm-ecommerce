@@ -14,7 +14,7 @@ import React from "react";
 import { Button, Flex, useColorMode, useDisclosure } from "@chakra-ui/react";
 
 // Components
-import { Login } from "../components/Login";
+import { AuthModal, Login } from "../components/auth";
 
 const Index: React.FC<{}> = ({}) => {
   // Color mode for bg
@@ -36,7 +36,8 @@ const Index: React.FC<{}> = ({}) => {
       <Button my={10} colorScheme="messenger" onClick={onOpen}>
         Login
       </Button>
-      <Login isOpen={isOpen} onClose={onClose} />
+      {/* <Login isOpen={isOpen} onClose={onClose} /> */}
+      <AuthModal isOpen={isOpen} onClose={onClose} variant="login"/>
     </Flex>
   );
 };

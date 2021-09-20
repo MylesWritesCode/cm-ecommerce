@@ -1,0 +1,35 @@
+###
+# File: /src/graphql/mutations/register.graphql
+# Project: cm-ecommerce/cm-ecommerce-client
+# Created Date: Sunday September 19th 2021
+# Author: Myles Berueda
+# -----
+# Last Modified: Sunday September 19th 2021 1:06:10 pm
+# -----
+# Copyright (c) 2021 MylesWritesCode
+# -----
+# HISTORY
+###
+mutation Register(
+  $username: String!
+  $email: String!
+  $password: String!
+  $firstName: String
+  $lastName: String
+  $age: Int
+) {
+  register(
+    data: {
+      username: $username
+      password: $password
+      email: $email
+      firstName: $firstName
+      lastName: $lastName
+      age: $age
+    }
+  ) {
+    __typename
+    ...FullUser
+    ...GeneralError
+  }
+}
