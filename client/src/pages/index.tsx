@@ -10,19 +10,15 @@
  * -----
  * HISTORY
  */
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
-  Button,
   Flex,
-  Heading,
   useColorMode,
-  useDisclosure,
 } from "@chakra-ui/react";
 
 // Components
 import { withApollo } from "../lib/withApollo";
-import { AuthModal } from "../components/auth";
-import { SITE_TITLE } from "../constants";
+import Navbar from "../components/Navbar";
 
 const Index: React.FC<{}> = ({}) => {
   // Color mode for bg
@@ -30,9 +26,6 @@ const Index: React.FC<{}> = ({}) => {
   const bgColor = { light: "gray.50", dark: "gray.900" };
   const color = { light: "black", dark: "white" };
 
-  // Modal stuff for Login
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [variant, setVariant] = useState("login");
 
   return (
     <>
@@ -43,58 +36,7 @@ const Index: React.FC<{}> = ({}) => {
         alignItems="center"
         justifyContent="flex-start"
       >
-        <Flex
-          backgroundColor="#2a2c37"
-          width="100%"
-          height="60px"
-          px={3}
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Flex id="brand">
-            <Heading
-              as="em"
-              size="xl"
-              bgGradient="linear(to-b, #ffffff, #ffffff)"
-              backgroundClip="text"
-            >
-              {SITE_TITLE}
-            </Heading>
-          </Flex>
-          <Flex id="buttons">
-            <Button
-              mr={2}
-              colorScheme="messenger"
-              size="sm"
-              borderRadius={0}
-              onClick={() => {
-                console.log("setting variant register");
-                setVariant("register");
-                onOpen();
-              }}
-            >
-              Register
-            </Button>
-            <Button
-              colorScheme="messenger"
-              size="sm"
-              borderRadius={0}
-              onClick={() => {
-                console.log("setting variant login");
-                setVariant("login");
-                onOpen();
-              }}
-            >
-              Login
-            </Button>
-            <AuthModal
-              isOpen={isOpen}
-              onClose={onClose}
-              variant={variant as "login" | "register" | "forgot-password"}
-              changeVariantCallback={setVariant}
-            />
-          </Flex>
-        </Flex>
+        <Navbar />
       </Flex>
     </>
   );

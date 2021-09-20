@@ -10,16 +10,97 @@
  * -----
  * HISTORY
  */
-import React from 'react';
+import React, { useState } from "react";
+import { Flex, Heading, Button, useDisclosure } from "@chakra-ui/react";
+import { useMeQuery } from "../generated/graphql";
+import { AuthModal } from "./auth";
 
-interface NavbarProps {
+import { SITE_TITLE } from "../constants";
+import { isServer } from "../utils/isServer";
+import ClientOnly from "./ClientOnly";
 
-}
+interface NavbarProps {}
 
 const Navbar: React.FC<NavbarProps> = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [variant, setVariant] = useState("login");
+  const { data, loading } = useMeQuery({
+    skip: isServer(),
+  });
+
+  let infoBox;
+
+  if (loading) {
+    infoBox = null;
+  } else if (data?.me.__typename === "User") {
+    // Me query returned a user
+    const user = data.me;
+    infoBox = <Flex>{user.username}</Flex>;
+  } else {
+    // User is not logged in.
+    infoBox = (
+      <>
+        <Button
+          mr={2}
+          colorScheme="messenger"
+          size="sm"
+          borderRadius={0}
+          onClick={() => {
+            console.log("setting variant register");
+            setVariant("register");
+            onOpen();
+          }}
+        >
+          Register
+        </Button>
+        <Button
+          colorScheme="messenger"
+          size="sm"
+          borderRadius={0}
+          onClick={() => {
+            console.log("setting variant login");
+            setVariant("login");
+            onOpen();
+          }}
+        >
+          Login
+        </Button>
+        <AuthModal
+          isOpen={isOpen}
+          onClose={onClose}
+          variant={variant as "login" | "register" | "forgot-password"}
+          changeVariantCallback={setVariant}
+        />
+      </>
+    );
+  }
+
   return (
-    <div>Testing this out</div>
+    <Flex
+      backgroundColor="#2a2c37"
+      width="100%"
+      height="60px"
+      px={3}
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      <Flex id="brand">
+        <Heading
+          as="em"
+          size="xl"
+          bgGradient="linear(to-b, #ffffff, #ffffff)"
+          backgroundClip="text"
+        >
+          {SITE_TITLE}
+        </Heading>
+      </Flex>
+      <ClientOnly>
+        <Flex id="info-box">
+          <Flex>{infoBox}</Flex>
+        </Flex>
+      </ClientOnly>
+    </Flex>
   );
-}
+};
 
 export default Navbar;

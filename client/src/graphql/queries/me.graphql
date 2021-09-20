@@ -1,0 +1,19 @@
+###
+# File: /src/graphql/queries/me.graphql
+# Project: cm-ecommerce/cm-ecommerce-client
+# Created Date: Monday September 20th 2021
+# Author: Myles Berueda
+# -----
+# Last Modified: Monday September 20th 2021 2:10:57 am
+# -----
+# Copyright (c) 2021 MylesWritesCode
+# -----
+# HISTORY
+###
+query Me {
+  me {
+    __typename
+    ...FullUser
+    ...GeneralError
+  }
+}
