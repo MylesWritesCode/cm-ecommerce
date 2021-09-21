@@ -43,4 +43,5 @@ const Index: React.FC<{}> = ({}) => {
 };
 
 // This is how you can get server-side rendering in Next via Apollo.
-export default withApollo({ ssr: true })(Index);
+// export default withApollo({ ssr: true })(Index);
+export default Index;

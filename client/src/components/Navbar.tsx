@@ -76,7 +76,6 @@ const Navbar: React.FC<NavbarProps> = () => {
           size="sm"
           borderRadius={0}
           onClick={() => {
-            console.log("setting variant register");
             setVariant("register");
             onOpen();
           }}
@@ -88,7 +87,6 @@ const Navbar: React.FC<NavbarProps> = () => {
           size="sm"
           borderRadius={0}
           onClick={() => {
-            console.log("setting variant login");
             setVariant("login");
             onOpen();
           }}
@@ -124,11 +122,11 @@ const Navbar: React.FC<NavbarProps> = () => {
           {SITE_TITLE}
         </Heading>
       </Flex>
-      <ClientOnly>
+      {/* <ClientOnly> */}
         <Flex id="info-box">
           <Flex>{infoBox}</Flex>
         </Flex>
-      </ClientOnly>
+      {/* </ClientOnly> */}
     </Flex>
   );
 };
