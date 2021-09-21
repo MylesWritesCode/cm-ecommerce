@@ -49,16 +49,21 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
     ssrMode: typeof window === "undefined",
     link: ApolloLink.from([
       onError(({ graphQLErrors, networkError }) => {
-        if (graphQLErrors)
-          graphQLErrors.forEach(({ message, locations, path }) =>
+        // TODO: This currently logs to the browser. I should probably set up
+        //       some sort of error handler that writes this to a file instead.
+        if (graphQLErrors) {
+          graphQLErrors.forEach(({ message, locations, path }) => {
             console.log(
               `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-            )
-          );
-        if (networkError)
+            );
+          });
+        }
+
+        if (networkError) {
           console.log(
             `[Network error]: ${networkError}. Backend is unreachable. Is it running?`
           );
+        }
       }),
       // Uses apollo-link-http under the hood
       createUploadLink({
@@ -78,10 +83,10 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
           fields: {
             me: {
               merge: true,
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
     }),
   });
 };

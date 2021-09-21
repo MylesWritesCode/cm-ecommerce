@@ -60,39 +60,41 @@ export const Register: React.FC<RegisterProps> = ({ ...props }) => {
       }}
       onSubmit={async (values: RegisterValues, { setErrors }) => {
         setIsSubmitting(true);
-        const { data, errors } = await register({
-          variables: values,
-          update: (cache, { data }) => {
-            setIsSubmitting(false);
+        debugger;
+        try {
+          // We can also destructure this, but there's no need since we're
+          // handling everything in the update callback.
+          await register({
+            variables: values,
+            update: (cache, { data }) => {
+              setIsSubmitting(false);
 
-            // We have a general error here. Let's parse it.
-            if (data.register[0].__typename === "GeneralError") {
-              const errors = data.register;
+              // We have a general error here. Let's parse it.
+              if (data.register[0].__typename === "GeneralError") {
+                const errors = data.register;
 
-              // Map the error responses to their respective fields in the form.
-              setErrors(toErrorMap(errors));
-            }
+                // Map the error responses to their respective fields in the form.
+                setErrors(toErrorMap(errors));
+              }
 
-            if (data.register[0].__typename === "User") {
-              // This means we have a user. Write to the cache.
-              cache.writeQuery<MeQuery>({
-                query: MeDocument,
-                data: {
-                  __typename: "Query",
-                  me: data?.register[0],
-                },
-              });
+              if (data.register[0].__typename === "User") {
+                // This means we have a user. Write to the cache.
+                cache.writeQuery<MeQuery>({
+                  query: MeDocument,
+                  data: {
+                    __typename: "Query",
+                    me: data?.register[0],
+                  },
+                });
 
-              // Need to close the modal so its not there when we logout.
-              closeModal();
-            }
-          },
-        });
-
-        // This means we have GraphQL errors.
-        if (errors) {
-          // Just tell the user there was an internal error.
-          setError("Internal server error");
+                // Need to close the modal so its not there when we logout.
+                closeModal();
+              }
+            },
+          });
+        } catch (e) {
+          setIsSubmitting(false);
+          setError("Auth server is unreachable. Try again later.");
         }
       }}
       validationSchema={RegisterErrorSchema}

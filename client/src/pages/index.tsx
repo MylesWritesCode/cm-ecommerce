@@ -23,8 +23,6 @@ const Index: React.FC<{}> = ({}) => {
   // Color mode for bg
   const { colorMode } = useColorMode();
   const bgColor = { light: "gray.50", dark: "gray.900" };
-  const color = { light: "black", dark: "white" };
-
 
   return (
     <>

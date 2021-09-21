@@ -52,41 +52,46 @@ export const Login: React.FC<LoginProps> = ({ ...props }) => {
       }}
       onSubmit={async (values: LoginValues) => {
         setIsSubmitting(true);
-        const { data, errors } = await login({
-          variables: values,
-          update: (cache, { data }) => {
-            setIsSubmitting(false);
+        try {
+          await login({
+            variables: values,
+            update: (cache, { data, errors }) => {
+              setIsSubmitting(false);
 
-            // We have a general error here. Let's parse it.
-            if (data.login[0].__typename === "GeneralError") {
-              const error = data.login[0];
-              if (error.code === "NO_MATCH") {
-                // We want to set the field's error message here.
+              // This means we have general server errors from the backend.
+              if (errors) {
+                console.log(errors);
+                setError("Internal server error");
+              } 
+
+              // We have a general error here. Let's parse it.
+              if (data.login[0].__typename === "GeneralError") {
+                const error = data.login[0];
                 setError(error.message);
               }
-            }
 
-            if (data.login[0].__typename === "User") {
-              // This means we have a user. Write to the cache.
-              cache.writeQuery<MeQuery>({
-                query: MeDocument,
-                data: {
-                  __typename: "Query",
-                  me: data?.login[0],
-                },
-              });
+              if (data.login[0].__typename === "User") {
+                // This means we have a user. Write to the cache.
+                cache.writeQuery<MeQuery>({
+                  query: MeDocument,
+                  data: {
+                    __typename: "Query",
+                    me: data?.login[0],
+                  },
+                });
 
-              // Need to close the modal so its not there when we logout.
-              closeModal();
-            }
-          },
-        });
-
-        // This means we have GraphQL errors.
-        if (errors) {
-          // Just tell the user there was an internal error.
-          setError("Internal server error");
+                // Need to close the modal so its not there when we logout.
+                closeModal();
+              }
+            },
+          });
+        } catch (e) {
+          // For some reason, we our backend call completely failed. A common
+          // reason for this is the backend is unreachable.
+          setIsSubmitting(false);
+          setError("Auth server is unreachable. Try again later.");
         }
+
       }}
       validationSchema={LoginErrorSchema}
     >
