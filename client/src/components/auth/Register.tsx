@@ -94,7 +94,7 @@ export const Register: React.FC<RegisterProps> = ({ ...props }) => {
           });
         } catch (e) {
           setIsSubmitting(false);
-          setError("Auth server is unreachable. Try again later.");
+          setError("Auth service unreachable. Try again later.");
         }
       }}
       validationSchema={RegisterErrorSchema}

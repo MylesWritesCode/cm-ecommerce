@@ -89,7 +89,7 @@ export const Login: React.FC<LoginProps> = ({ ...props }) => {
           // For some reason, we our backend call completely failed. A common
           // reason for this is the backend is unreachable.
           setIsSubmitting(false);
-          setError("Auth server is unreachable. Try again later.");
+          setError("Auth service unreachable. Try again later.");
         }
 
       }}
