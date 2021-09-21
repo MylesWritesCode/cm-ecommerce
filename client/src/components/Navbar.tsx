@@ -125,11 +125,11 @@ const Navbar: React.FC<NavbarProps> = () => {
           {SITE_TITLE}
         </Heading>
       </Flex>
-      {/* <ClientOnly> */}
+      <ClientOnly>
       <Flex id="info-box">
         <Flex>{infoBox}</Flex>
       </Flex>
-      {/* </ClientOnly> */}
+      </ClientOnly>
     </Flex>
   );
 };

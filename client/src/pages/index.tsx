@@ -17,7 +17,6 @@ import {
 } from "@chakra-ui/react";
 
 // Components
-import { withApollo } from "../lib/withApollo";
 import Navbar from "../components/Navbar";
 
 const Index: React.FC<{}> = ({}) => {
@@ -42,6 +41,4 @@ const Index: React.FC<{}> = ({}) => {
   );
 };
 
-// This is how you can get server-side rendering in Next via Apollo.
-// export default withApollo({ ssr: true })(Index);
 export default Index;

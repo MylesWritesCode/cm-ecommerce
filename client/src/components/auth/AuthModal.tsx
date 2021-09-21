@@ -62,7 +62,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ ...props }) => {
   );
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      isCentered
+      returnFocusOnClose={false}
+    >
       <ModalOverlay />
       <ModalContent borderRadius={0} boxShadow="md">
         <ModalHeader
