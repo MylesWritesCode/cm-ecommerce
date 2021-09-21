@@ -15,7 +15,7 @@ import { Formik, Form } from "formik";
 import { Flex, Button } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { ChakraInput } from "../ChakraInput";
-import { useLoginMutation } from "../../generated/graphql";
+import { MeDocument, MeQuery, useLoginMutation } from "../../generated/graphql";
 
 interface LoginProps {
   closeModalCallback: () => void;
@@ -54,7 +54,18 @@ export const Login: React.FC<LoginProps> = ({ ...props }) => {
       }}
       onSubmit={async (values: LoginValues) => {
         setIsSubmitting(true);
-        const { data, errors } = await login({ variables: values });
+        const { data, errors } = await login({
+          variables: values,
+          update: (cache, { data }) => {
+            cache.writeQuery<MeQuery>({
+              query: MeDocument,
+              data: {
+                __typename: "Query",
+                me: data?.login[0]
+              },
+            });
+          },
+        });
         setIsSubmitting(false);
 
         // This means we have GraphQL errors.

@@ -15,27 +15,27 @@ import {
   Flex,
   Heading,
   Button,
-  Icon,
   useDisclosure,
-  Link,
 } from "@chakra-ui/react";
-import { IoMdLogOut } from "react-icons/io";
-import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 import { AuthModal } from "./auth";
+import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 
 import { SITE_TITLE } from "../constants";
 import { isServer } from "../utils/isServer";
 import ClientOnly from "./ClientOnly";
+import { useApolloClient } from "@apollo/client";
 
 interface NavbarProps {}
 
 const Navbar: React.FC<NavbarProps> = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const apolloClient = useApolloClient();
   const [variant, setVariant] = useState("login");
   const [logout, { loading: logoutLoading }] = useLogoutMutation();
   const { data, loading } = useMeQuery({
     skip: isServer(),
   });
+  
 
   let infoBox;
 
@@ -58,7 +58,10 @@ const Navbar: React.FC<NavbarProps> = () => {
           backgroundColor="red.500"
           color="white"
           borderRadius={0}
-          onClick={() => logout()}
+          onClick={async () => {
+            await logout();
+            await apolloClient.resetStore();
+          }}
           isLoading={logoutLoading}
         >
           Logout
@@ -123,9 +126,9 @@ const Navbar: React.FC<NavbarProps> = () => {
         </Heading>
       </Flex>
       {/* <ClientOnly> */}
-        <Flex id="info-box">
-          <Flex>{infoBox}</Flex>
-        </Flex>
+      <Flex id="info-box">
+        <Flex>{infoBox}</Flex>
+      </Flex>
       {/* </ClientOnly> */}
     </Flex>
   );
