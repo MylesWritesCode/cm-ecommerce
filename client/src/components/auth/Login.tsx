@@ -18,7 +18,7 @@ import { ChakraInput } from "../ChakraInput";
 import { MeDocument, MeQuery, useLoginMutation } from "../../generated/graphql";
 
 interface LoginProps {
-  closeModalCallback: () => void;
+  closeModal: () => void;
 }
 
 const LoginErrorSchema = Yup.object().shape({
@@ -38,9 +38,7 @@ interface LoginValues {
 }
 
 export const Login: React.FC<LoginProps> = ({ ...props }) => {
-  // Need this to be able to close the modal on success.
-  const { closeModalCallback } = props;
-
+  const { closeModal } = props;
   // Hooks
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -57,38 +55,37 @@ export const Login: React.FC<LoginProps> = ({ ...props }) => {
         const { data, errors } = await login({
           variables: values,
           update: (cache, { data }) => {
-            cache.writeQuery<MeQuery>({
-              query: MeDocument,
-              data: {
-                __typename: "Query",
-                me: data?.login[0]
-              },
-            });
+            setIsSubmitting(false);
+
+            // We have a general error here. Let's parse it.
+            if (data.login[0].__typename === "GeneralError") {
+              const error = data.login[0];
+              if (error.code === "NO_MATCH") {
+                // We want to set the field's error message here.
+                setError(error.message);
+              }
+            }
+
+            if (data.login[0].__typename === "User") {
+              // This means we have a user. Write to the cache.
+              cache.writeQuery<MeQuery>({
+                query: MeDocument,
+                data: {
+                  __typename: "Query",
+                  me: data?.login[0],
+                },
+              });
+
+              // Need to close the modal so its not there when we logout.
+              closeModal();
+            }
           },
         });
-        setIsSubmitting(false);
 
         // This means we have GraphQL errors.
         if (errors) {
           // Just tell the user there was an internal error.
           setError("Internal server error");
-        }
-
-        // We have a general error here. Let's parse it.
-        if (data.login[0].__typename === "GeneralError") {
-          const error = data.login[0];
-          if (error.code === "NO_MATCH") {
-            // We want to set the field's error message here.
-            setError(error.message);
-          }
-        }
-
-        // If the first element in the array is a user, we have a user.
-        if (data.login[0].__typename === "User") {
-          // Close the modal
-          setTimeout(() => {
-            closeModalCallback();
-          }, 100);
         }
       }}
       validationSchema={LoginErrorSchema}

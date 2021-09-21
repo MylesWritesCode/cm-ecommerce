@@ -11,12 +11,7 @@
  * HISTORY
  */
 import React, { useState } from "react";
-import {
-  Flex,
-  Heading,
-  Button,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Flex, Heading, Button, useDisclosure } from "@chakra-ui/react";
 import { AuthModal } from "./auth";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 
@@ -35,7 +30,6 @@ const Navbar: React.FC<NavbarProps> = () => {
   const { data, loading } = useMeQuery({
     skip: isServer(),
   });
-  
 
   let infoBox;
 
@@ -68,7 +62,6 @@ const Navbar: React.FC<NavbarProps> = () => {
         </Button>
       </>
     );
-    // FaShoppingCart
   } else {
     // User is not logged in.
     infoBox = (
@@ -126,9 +119,9 @@ const Navbar: React.FC<NavbarProps> = () => {
         </Heading>
       </Flex>
       <ClientOnly>
-      <Flex id="info-box">
-        <Flex>{infoBox}</Flex>
-      </Flex>
+        <Flex id="info-box">
+          <Flex>{infoBox}</Flex>
+        </Flex>
       </ClientOnly>
     </Flex>
   );

@@ -14,12 +14,16 @@ import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import { Flex, Button } from "@chakra-ui/react";
 import * as Yup from "yup";
+import {
+  MeDocument,
+  MeQuery,
+  useRegisterMutation,
+} from "../../generated/graphql";
 import { ChakraInput } from "../ChakraInput";
 import { toErrorMap } from "../../utils";
-import { useRegisterMutation } from "../../generated/graphql";
 
 interface RegisterProps {
-  closeModalCallback: () => void;
+  closeModal: () => void;
 }
 
 interface RegisterValues {
@@ -41,7 +45,7 @@ const RegisterErrorSchema = Yup.object().shape({
 });
 
 export const Register: React.FC<RegisterProps> = ({ ...props }) => {
-  const { closeModalCallback } = props;
+  const { closeModal } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -56,26 +60,39 @@ export const Register: React.FC<RegisterProps> = ({ ...props }) => {
       }}
       onSubmit={async (values: RegisterValues, { setErrors }) => {
         setIsSubmitting(true);
-        const { data, errors } = await register({ variables: values });
-        setIsSubmitting(false);
+        const { data, errors } = await register({
+          variables: values,
+          update: (cache, { data }) => {
+            setIsSubmitting(false);
+
+            // We have a general error here. Let's parse it.
+            if (data.register[0].__typename === "GeneralError") {
+              const errors = data.register;
+
+              // Map the error responses to their respective fields in the form.
+              setErrors(toErrorMap(errors));
+            }
+
+            if (data.register[0].__typename === "User") {
+              // This means we have a user. Write to the cache.
+              cache.writeQuery<MeQuery>({
+                query: MeDocument,
+                data: {
+                  __typename: "Query",
+                  me: data?.register[0],
+                },
+              });
+
+              // Need to close the modal so its not there when we logout.
+              closeModal();
+            }
+          },
+        });
 
         // This means we have GraphQL errors.
         if (errors) {
           // Just tell the user there was an internal error.
           setError("Internal server error");
-        }
-
-        // We have a general error here. Let's parse it.
-        if (data.register[0].__typename === "GeneralError") {
-          const errors = data.register;
-
-          // Map the error responses to their respective fields in the form.
-          setErrors(toErrorMap(errors));
-        }
-
-        // If the first element in the array is a user, we have a user.
-        if (data.register[0].__typename === "User") {
-          closeModalCallback();
         }
       }}
       validationSchema={RegisterErrorSchema}

@@ -44,11 +44,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ ...props }) => {
   let footer: React.ReactElement;
 
   if (props.variant === "register") {
-    component = <Register closeModalCallback={onClose} />;
+    component = <Register closeModal={onClose} />;
   } else if (props.variant === "forgot-password") {
-    component = <Register closeModalCallback={onClose} />;
+    component = <Register closeModal={onClose} />;
   } else {
-    component = <Login closeModalCallback={onClose} />;
+    component = <Login closeModal={onClose} />;
   }
 
   // The footer will always be the same - the only change is the variant
