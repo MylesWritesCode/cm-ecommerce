@@ -76,8 +76,8 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
       typePolicies: {
         Query: {
           fields: {
-            posts: {
-              keyArgs: [],
+            me: {
+              merge: true,
             }
           }
         }
