@@ -11,18 +11,17 @@
  * HISTORY
  */
 import React from "react";
-import { Flex } from "@chakra-ui/react";
+import { Flex, FlexProps } from "@chakra-ui/react";
 import { NAVBAR_HEIGHT } from "../../constants";
 
 interface MenuDrawerProps {}
 
 export const MenuDrawer: React.FC<MenuDrawerProps> = ({ ...props }) => {
-
   return (
     <Flex
       display="flex"
       width="300px"
-      height={`calc(100vh - ${ NAVBAR_HEIGHT })`}
+      height={`calc(100vh - ${NAVBAR_HEIGHT})`}
       position="absolute"
       left="0"
       top="60px"

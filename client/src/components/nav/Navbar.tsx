@@ -13,6 +13,7 @@
 import React, { useState } from "react";
 import { Flex, Heading, Button, useDisclosure, Icon } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { motion } from 'framer-motion';
 import { useApolloClient } from "@apollo/client";
 import { AuthModal } from "../auth";
 import { MenuDrawer } from "./MenuDrawer";
@@ -100,6 +101,11 @@ export const Navbar: React.FC<NavbarProps> = () => {
         />
       </>
     );
+  }
+
+  const variants = {
+    open: { opacity: 1, x: 0 },
+    closed: { opacity: 0, x: "-100%" }
   }
 
   return (
