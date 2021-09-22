@@ -11,21 +11,24 @@
  * HISTORY
  */
 import React, { useState } from "react";
-import { Flex, Heading, Button, useDisclosure } from "@chakra-ui/react";
+import { Flex, Heading, Button, useDisclosure, Icon } from "@chakra-ui/react";
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { useApolloClient } from "@apollo/client";
 import { AuthModal } from "./auth";
+import { MenuDrawer } from "./MenuDrawer";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 
 import { SITE_TITLE } from "../constants";
 import { isServer } from "../utils/isServer";
 import ClientOnly from "./ClientOnly";
-import { useApolloClient } from "@apollo/client";
 
 interface NavbarProps {}
 
 const Navbar: React.FC<NavbarProps> = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const apolloClient = useApolloClient();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [variant, setVariant] = useState("login");
+  const [isMenuVisible, setIsMenuVisible] = useState(true);
   const [logout, { loading: logoutLoading }] = useLogoutMutation();
   const { data, loading } = useMeQuery({
     skip: isServer(),
@@ -108,7 +111,31 @@ const Navbar: React.FC<NavbarProps> = () => {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Flex id="brand">
+      <Flex
+        id="brand-and-menu"
+        justifyContent="center"
+        alignItems="center"
+        userSelect="none"
+      >
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          mr={3}
+          width="30px"
+          minWidth="30px"
+          maxWidth="30px"
+        >
+          <Icon
+            as={isMenuVisible ? CloseIcon : HamburgerIcon}
+            width={isMenuVisible ? 4 : 6}
+            height={isMenuVisible ? 4 : 6}
+            color="white"
+            onClick={() => {
+              setIsMenuVisible(!isMenuVisible);
+            }}
+          />
+        </Flex>
+        {isMenuVisible ? <MenuDrawer /> : null}
         <Heading
           as="em"
           size="xl"

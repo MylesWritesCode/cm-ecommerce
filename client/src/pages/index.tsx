@@ -11,10 +11,7 @@
  * HISTORY
  */
 import React from "react";
-import {
-  Flex,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Box, Flex, useColorMode } from "@chakra-ui/react";
 
 // Components
 import Navbar from "../components/Navbar";
