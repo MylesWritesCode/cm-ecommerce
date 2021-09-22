@@ -11,10 +11,10 @@
  * HISTORY
  */
 import React from "react";
-import { Box, Flex, useColorMode } from "@chakra-ui/react";
+import { Flex, useColorMode } from "@chakra-ui/react";
 
 // Components
-import Navbar from "../components/Navbar";
+import { Navbar } from "../components/nav";
 
 const Index: React.FC<{}> = ({}) => {
   // Color mode for bg

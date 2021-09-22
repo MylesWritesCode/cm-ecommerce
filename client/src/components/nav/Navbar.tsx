@@ -14,17 +14,17 @@ import React, { useState } from "react";
 import { Flex, Heading, Button, useDisclosure, Icon } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { useApolloClient } from "@apollo/client";
-import { AuthModal } from "./auth";
+import { AuthModal } from "../auth";
 import { MenuDrawer } from "./MenuDrawer";
-import { useLogoutMutation, useMeQuery } from "../generated/graphql";
+import { useLogoutMutation, useMeQuery } from "../../generated/graphql";
 
-import { NAVBAR_HEIGHT, SITE_TITLE } from "../constants";
-import { isServer } from "../utils/isServer";
-import ClientOnly from "./ClientOnly";
+import { NAVBAR_HEIGHT, SITE_TITLE } from "../../constants";
+import { isServer } from "../../utils/isServer";
+import ClientOnly from "../ClientOnly";
 
 interface NavbarProps {}
 
-const Navbar: React.FC<NavbarProps> = () => {
+export const Navbar: React.FC<NavbarProps> = () => {
   const apolloClient = useApolloClient();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [variant, setVariant] = useState("login");

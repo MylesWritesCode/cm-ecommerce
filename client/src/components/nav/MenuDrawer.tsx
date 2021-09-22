@@ -10,25 +10,13 @@
  * -----
  * HISTORY
  */
-import React, { useState } from "react";
-import { Flex, keyframes } from "@chakra-ui/react";
-import { NAVBAR_HEIGHT } from "../constants";
+import React from "react";
+import { Flex } from "@chakra-ui/react";
+import { NAVBAR_HEIGHT } from "../../constants";
 
 interface MenuDrawerProps {}
 
 export const MenuDrawer: React.FC<MenuDrawerProps> = ({ ...props }) => {
-  const animationKeyframes = keyframes`
-    0% {
-      transform: translateX(-1000px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  `;
-
-  const animation = `${animationKeyframes} cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards`;
 
   return (
     <Flex
@@ -41,7 +29,6 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({ ...props }) => {
       backgroundColor="black"
       color="white"
       borderRight="1px solid grey"
-      animation={animation}
     >
       Something
       {/* LinkGroup - may change the name */}
