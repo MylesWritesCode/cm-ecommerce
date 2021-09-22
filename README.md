@@ -8,4 +8,4 @@ and probably forever), I'm going to keep a dev diary [here](https://www.notion.s
 # Screenshots
 ### Menu animation
 
-![menu animation](https://i.imgur.com/bDl1Rk9.mp4)
+![menu animation](https://i.imgur.com/bDl1Rk9.mp4.mov)
