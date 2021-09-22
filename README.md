@@ -6,4 +6,6 @@ card. While I'm not going to be documenting everything in this README (for now,
 and probably forever), I'm going to keep a dev diary [here](https://www.notion.so/cm-ecommerce/CM-Ecommerce-578e3cc83a9b409f8a57694effb5ff7f).
 
 # Screenshots
+### Menu animation
+
 ![menu animation](https://i.imgur.com/bDl1Rk9.mp4)
