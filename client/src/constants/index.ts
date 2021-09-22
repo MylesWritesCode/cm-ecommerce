@@ -11,4 +11,4 @@
  * HISTORY
  */
 export const SITE_TITLE = "PILIPINO";
-export * from './Keyframes';
+export const NAVBAR_HEIGHT = "60px";

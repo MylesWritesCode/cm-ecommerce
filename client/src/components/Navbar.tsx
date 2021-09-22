@@ -18,7 +18,7 @@ import { AuthModal } from "./auth";
 import { MenuDrawer } from "./MenuDrawer";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 
-import { SITE_TITLE } from "../constants";
+import { NAVBAR_HEIGHT, SITE_TITLE } from "../constants";
 import { isServer } from "../utils/isServer";
 import ClientOnly from "./ClientOnly";
 
@@ -106,7 +106,7 @@ const Navbar: React.FC<NavbarProps> = () => {
     <Flex
       backgroundColor="#2a2c37"
       width="100%"
-      height="60px"
+      height={NAVBAR_HEIGHT}
       px={3}
       justifyContent="space-between"
       alignItems="center"
