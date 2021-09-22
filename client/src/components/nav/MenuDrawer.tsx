@@ -14,22 +14,24 @@ import React from "react";
 import { Flex, FlexProps } from "@chakra-ui/react";
 import { NAVBAR_HEIGHT } from "../../constants";
 
-interface MenuDrawerProps {}
+interface MenuDrawerProps {
 
-export const MenuDrawer: React.FC<MenuDrawerProps> = ({ ...props }) => {
+}
+
+export const MenuDrawer: React.FC<FlexProps> = ({ ...props }) => {
+  
   return (
     <Flex
       display="flex"
       width="300px"
-      height={`calc(100vh - ${NAVBAR_HEIGHT})`}
       position="absolute"
+      top={`${ NAVBAR_HEIGHT }`}
       left="0"
-      top="60px"
-      backgroundColor="black"
+      bottom="0"
       color="white"
-      borderRight="1px solid grey"
+      {...props}
     >
-      Something
+      {/* Something */}
       {/* LinkGroup - may change the name */}
     </Flex>
   );
