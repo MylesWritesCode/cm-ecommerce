@@ -3,6 +3,8 @@
  * Project: cm-ecommerce/cm-ecommerce-client
  * Created Date: Wednesday September 22nd 2021
  * Author: Myles Berueda
+ * Note: I'm only going to use this for the nav animation, so I'm just going to
+ *       leave this in here.
  * -----
  * Last Modified: Wednesday September 22nd 2021 12:52:18 am
  * -----

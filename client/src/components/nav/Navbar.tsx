@@ -26,7 +26,7 @@ interface NavbarProps {}
 export const MotionFlex = motion<FlexProps>(Flex);
 
 export const Navbar: React.FC<NavbarProps> = () => {
-  const [isMenuOpen, toggleMenu] = useCycle(true, false);
+  const [isMenuOpen, toggleMenu] = useCycle(false, true);
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
 
@@ -62,7 +62,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
       <Flex id="brand-and-menu" justifyContent="center" alignItems="center">
         <Flex justifyContent="center" alignItems="center" userSelect="none">
           <MotionFlex
-            initial={true}
+            initial={false}
             animate={isMenuOpen ? "open" : "closed"}
             custom={height}
             ref={containerRef}
