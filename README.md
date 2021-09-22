@@ -10,3 +10,8 @@ and probably forever), I'm going to keep a dev diary [here](https://www.notion.s
 
 https://user-images.githubusercontent.com/24381348/134433641-0e2445da-6e93-411b-8b23-80bee8e3e5fe.mp4
 
+### Login
+![login](https://user-images.githubusercontent.com/24381348/134434625-dfe6a05e-b0d5-4872-83cf-67113cf555d7.png)
+
+### Register
+![register](https://user-images.githubusercontent.com/24381348/134434681-d79a7426-8d71-4027-9e0b-e6e7388d43d1.png)
