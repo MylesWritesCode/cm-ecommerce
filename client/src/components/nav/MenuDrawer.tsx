@@ -17,6 +17,7 @@ import { motion } from "framer-motion";
 import { MenuItem } from "./MenuItem";
 
 interface MenuDrawerProps {
+  status: boolean;
   toggle: () => void;
 }
 
@@ -38,25 +39,37 @@ const variants = {
 export const MenuDrawer: React.FC<MenuDrawerProps & FlexProps> = ({
   ...props
 }) => {
-  const { toggle } = props;
+  const { status, toggle } = props;
+  console.log(toggle.name);
   return (
-    <MotionFlex
-      display="flex"
-      width={NavbarConfig.drawer.width}
-      position="absolute"
-      pt={5}
-      top={NavbarConfig.height}
-      left="0"
-      bottom="0"
-      color="white"
-      flexDirection="column"
-      variants={variants}
-    >
-      {MenuConfig.map(({ ...menuItemProps }, index) => {
-        return (
-          <MenuItem key={index} toggle={() => toggle()} {...menuItemProps} />
-        );
-      })}
+    <MotionFlex variants={variants}>
+      <MotionFlex
+        display="flex"
+        width={NavbarConfig.drawer.width}
+        position="absolute"
+        pt={5}
+        top={NavbarConfig.height}
+        bottom="0"
+        left="0"
+        color="white"
+        flexDirection="column"
+      >
+        {MenuConfig.map(({ ...menuItemProps }, index) => {
+          return (
+            <MenuItem key={index} toggle={() => toggle()} {...menuItemProps} />
+          );
+        })}
+      </MotionFlex>
+      <MotionFlex
+        display={status ? "flex" : "none"}
+        position="absolute"
+        backgroundColor="rgba(0, 0, 0, 0.05)"
+        top={NavbarConfig.height}
+        right="0"
+        bottom="0"
+        left={NavbarConfig.drawer.width}
+        onClick={toggle}
+      ></MotionFlex>
     </MotionFlex>
   );
 };
