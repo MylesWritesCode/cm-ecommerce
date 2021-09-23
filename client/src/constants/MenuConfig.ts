@@ -24,7 +24,7 @@ export interface MenuConfigItem {
   name: string;
   link?: string;
   icon?: IconType | ComponentWithAs<"svg", IconProps>;
-  type?: "header" | null;
+  type?: "header" | "item" | null;
   children?: MenuConfigItem[];
 }
 

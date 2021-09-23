@@ -14,7 +14,11 @@
 import React from "react";
 import { Flex, FlexProps, Icon } from "@chakra-ui/react";
 import { MenuConfigItem } from "../../constants";
-import { ChevronRightIcon } from "@chakra-ui/icons";
+import {
+  ArrowForwardIcon,
+  CheckIcon,
+  ChevronRightIcon,
+} from "@chakra-ui/icons";
 import { motion } from "framer-motion";
 
 interface MenuItemProps {}
@@ -40,21 +44,40 @@ export const MotionFlex = motion<FlexProps>(Flex);
 
 type ShortProps = MenuItemProps & MenuConfigItem;
 export const MenuItem: React.FC<ShortProps> = ({ ...props }) => {
-  const { name, link, icon } = props;
+  const { name, type, link, icon, children } = props;
+  const isHeader = type === "header" ? true : false;
   const blankIcon = (
-    <Icon as={ChevronRightIcon} width={7} height={7} color="transparent" />
+    <Icon
+      as={ArrowForwardIcon}
+      width={5}
+      height={5}
+      // color="transparent"
+    />
   );
   return (
     <MotionFlex
-      alignItems="center"
       px={5}
-      py={1}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-      variants={variants}
+      // py={1}
+      flexDirection="column"
     >
-      <Flex mr={6}>{icon ? <Icon as={icon} /> : blankIcon}</Flex>
-      <Flex>{name}</Flex>
+      <MotionFlex
+        py={2}
+        // px={5}
+        flexDirection="row"
+        // I don't want the group (i.e. the surrounding div) to animate a click,
+        // but I want each individual item to perform the animation.
+        whileHover={{ scale: 1.025 }}
+        whileTap={{ scale: 0.995 }}
+        variants={variants}
+      >
+        <Flex mr={4}>{icon ? <Icon as={icon} /> : blankIcon}</Flex>
+        <Flex>{name}</Flex>
+      </MotionFlex>
+      {children
+        ? children.map((child, index) => {
+            return <MenuItem key={index} {...child} />;
+          })
+        : null}
     </MotionFlex>
   );
 };
