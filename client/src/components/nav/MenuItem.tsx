@@ -12,14 +12,10 @@
  */
 
 import React from "react";
-import { Flex, FlexProps, Icon } from "@chakra-ui/react";
+import { Flex, FlexProps, Heading, Text, Icon } from "@chakra-ui/react";
+import { motion, TargetAndTransition, VariantLabels } from "framer-motion";
+import { ConditionalNextLink } from "../ConditionalNextLink";
 import { MenuConfigItem } from "../../constants";
-import {
-  ArrowForwardIcon,
-  CheckIcon,
-  ChevronRightIcon,
-} from "@chakra-ui/icons";
-import { motion } from "framer-motion";
 
 interface MenuItemProps {}
 
@@ -32,7 +28,7 @@ const variants = {
     },
   },
   closed: {
-    y: 50,
+    y: 25,
     opacity: 0,
     transition: {
       y: { stiffness: 1000 },
@@ -40,45 +36,50 @@ const variants = {
   },
 };
 
-export const MotionFlex = motion<FlexProps>(Flex);
-
+const MotionFlex = motion<FlexProps>(Flex);
 type ShortProps = MenuItemProps & MenuConfigItem;
+
 export const MenuItem: React.FC<ShortProps> = ({ ...props }) => {
   const { name, type, link, icon, children } = props;
   const isHeader = type === "header" ? true : false;
-  const blankIcon = (
-    <Icon
-      as={ArrowForwardIcon}
-      width={5}
-      height={5}
-      // color="transparent"
-    />
-  );
   return (
-    <MotionFlex
-      px={5}
-      // py={1}
-      flexDirection="column"
-    >
-      <MotionFlex
-        py={2}
-        // px={5}
-        flexDirection="row"
-        // I don't want the group (i.e. the surrounding div) to animate a click,
-        // but I want each individual item to perform the animation.
-        whileHover={{ scale: 1.025 }}
-        whileTap={{ scale: 0.995 }}
-        variants={variants}
-      >
-        <Flex mr={4}>{icon ? <Icon as={icon} /> : blankIcon}</Flex>
-        <Flex>{name}</Flex>
-      </MotionFlex>
+    <Flex flexDirection="column" py={isHeader ? 2 : null}>
+      <ConditionalNextLink to={link}>
+        <MotionFlex
+          // borderBottom="1px solid black"
+          // borderTop={isHeader ? "1px solid black" : null}
+          variants={variants}
+        >
+          <MotionFlex
+            py={3}
+            px={5}
+            flexDirection="row"
+            flex="0 0 100%"
+            alignItems="center"
+            whileHover={
+              !isHeader
+                ? { color: "rgb(167, 85, 194)", transition: { velocity: 1000 } }
+                : null
+            }
+            whileTap={!isHeader ? { scale: 0.995 } : null}
+          >
+            {icon ? <Icon as={icon} mr={4} /> : null}
+            {isHeader ? (
+              <Heading size="xs" color="rgb(167, 85, 194)">
+                {name.toUpperCase()}
+              </Heading>
+            ) : (
+              <Heading size="xs">{name.toUpperCase()}</Heading>
+            )}
+          </MotionFlex>
+        </MotionFlex>
+      </ConditionalNextLink>
       {children
         ? children.map((child, index) => {
             return <MenuItem key={index} {...child} />;
           })
         : null}
-    </MotionFlex>
+    </Flex>
   );
 };
 

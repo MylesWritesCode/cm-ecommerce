@@ -25,7 +25,11 @@ const variants = {
     transition: { staggerChildren: 0.07, delayChildren: 0.2 },
   },
   closed: {
-    transition: { staggerChildren: 0.05, staggerDirection: -1 },
+    transition: {
+      staggerChildren: 0.05,
+      staggerDirection: -1,
+      when: `afterChildren`,
+    },
   },
 };
 
@@ -43,8 +47,8 @@ export const MenuDrawer: React.FC<FlexProps> = ({ ...props }) => {
       flexDirection="column"
       variants={variants}
     >
-      {MENU_CONFIG.map(({ name, children, link }) => {
-        return <MenuItem key={name} name={name} children={children} />;
+      {MENU_CONFIG.map(({ ...menuItemProps }, index) => {
+        return <MenuItem key={index} {...menuItemProps} />;
       })}
     </MotionFlex>
   );

@@ -16,7 +16,14 @@
 // from either ChakraUI or react-icons, but we'll use Chakra's Icon class to
 // render them.
 import { ComponentWithAs } from "@chakra-ui/react";
-import { AddIcon, IconProps } from "@chakra-ui/icons";
+import {
+  AddIcon,
+  AtSignIcon,
+  CopyIcon,
+  EditIcon,
+  IconProps,
+  RepeatClockIcon,
+} from "@chakra-ui/icons";
 import { IconType } from "react-icons/lib";
 import { MdSettings } from "react-icons/md";
 
@@ -30,38 +37,44 @@ export interface MenuConfigItem {
 
 export const MENU_CONFIG: MenuConfigItem[] = [
   {
-    name: "The header",
+    name: "Products",
     type: "header",
     children: [
       {
-        name: "the first child item",
+        name: "Add a product",
         link: "first-child-href",
+        icon: AddIcon,
       },
       {
         name: "the second child item",
         link: "second-child-href",
+        icon: MdSettings,
       },
       {
         name: "the third child item",
         link: "third-child-href",
+        icon: AtSignIcon,
       },
     ],
   },
   {
-    name: "The header, part 2",
+    name: "Orders",
     type: "header",
     children: [
       {
         name: "the first child item",
         link: "first-child-href",
+        icon: CopyIcon,
       },
       {
         name: "the second child item",
         link: "second-child-href",
+        icon: EditIcon,
       },
       {
-        name: "the third child item",
+        name: "Review all orders",
         link: "third-child-href",
+        icon: RepeatClockIcon,
       },
     ],
   },

@@ -26,9 +26,9 @@ interface NavbarProps {}
 export const MotionFlex = motion<FlexProps>(Flex);
 
 export const Navbar: React.FC<NavbarProps> = () => {
-  const [isMenuOpen, toggleMenu] = useCycle(false, true);
+  // const [isMenuOpen, toggleMenu] = useCycle(false, true);
   // Setting this backwards until done with development of dynamic menu items
-  // const [isMenuOpen, toggleMenu] = useCycle(true, false);
+  const [isMenuOpen, toggleMenu] = useCycle(true, false);
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
 
