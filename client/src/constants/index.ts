@@ -12,3 +12,6 @@
  */
 export const SITE_TITLE = "PILIPINO";
 export const NAVBAR_HEIGHT = "60px";
+
+// Constants from other files in `./` folder.
+export * from "./MenuConfig";

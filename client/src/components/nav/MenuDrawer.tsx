@@ -12,28 +12,41 @@
  */
 import React from "react";
 import { Flex, FlexProps } from "@chakra-ui/react";
-import { NAVBAR_HEIGHT } from "../../constants";
+import { NAVBAR_HEIGHT, MENU_CONFIG } from "../../constants";
+import MenuGroup from "./MenuGroup";
+import { motion } from "framer-motion";
 
-interface MenuDrawerProps {
+interface MenuDrawerProps {}
 
-}
+const MotionFlex = motion<FlexProps>(Flex);
+
+const variants = {
+  open: {
+    transition: { staggerChildren: 0.07, delayChildren: 0.2 }
+  },
+  closed: {
+    transition: { staggerChildren: 0.05, staggerDirection: -1 }
+  }
+};
 
 export const MenuDrawer: React.FC<FlexProps> = ({ ...props }) => {
-  
   return (
-    <Flex
+    <MotionFlex
       display="flex"
       width="300px"
       position="absolute"
-      top={`${ NAVBAR_HEIGHT }`}
+      pt={5}
+      top={`${NAVBAR_HEIGHT}`}
       left="0"
       bottom="0"
       color="white"
-      {...props}
+      flexDirection="column"
+      variants={variants}
     >
-      {/* Something */}
-      {/* LinkGroup - may change the name */}
-    </Flex>
+      {MENU_CONFIG.map(({ name, children, link }) => {
+        return <MenuGroup key={name} name={name} children={children}/>;
+      })}
+    </MotionFlex>
   );
 };
 
