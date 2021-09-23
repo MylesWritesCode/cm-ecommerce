@@ -12,11 +12,13 @@
  */
 import React from "react";
 import { Flex, FlexProps } from "@chakra-ui/react";
-import { NAVBAR_HEIGHT, MENU_CONFIG } from "../../constants";
+import { NavbarConfig, MenuConfig } from "../../constants";
 import { motion } from "framer-motion";
 import { MenuItem } from "./MenuItem";
 
-interface MenuDrawerProps {}
+interface MenuDrawerProps {
+  toggle: () => void;
+}
 
 const MotionFlex = motion<FlexProps>(Flex);
 
@@ -33,22 +35,27 @@ const variants = {
   },
 };
 
-export const MenuDrawer: React.FC<FlexProps> = ({ ...props }) => {
+export const MenuDrawer: React.FC<MenuDrawerProps & FlexProps> = ({
+  ...props
+}) => {
+  const { toggle } = props;
   return (
     <MotionFlex
       display="flex"
-      width="300px"
+      width={NavbarConfig.drawer.width}
       position="absolute"
       pt={5}
-      top={`${NAVBAR_HEIGHT}`}
+      top={NavbarConfig.height}
       left="0"
       bottom="0"
       color="white"
       flexDirection="column"
       variants={variants}
     >
-      {MENU_CONFIG.map(({ ...menuItemProps }, index) => {
-        return <MenuItem key={index} {...menuItemProps} />;
+      {MenuConfig.map(({ ...menuItemProps }, index) => {
+        return (
+          <MenuItem key={index} toggle={() => toggle()} {...menuItemProps} />
+        );
       })}
     </MotionFlex>
   );

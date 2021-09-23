@@ -13,9 +13,6 @@
 import React from "react";
 import { Flex, useColorMode } from "@chakra-ui/react";
 
-// Components
-import { Navbar } from "../components/nav";
-
 const Index: React.FC<{}> = ({}) => {
   // Color mode for bg
   const { colorMode } = useColorMode();
@@ -24,14 +21,14 @@ const Index: React.FC<{}> = ({}) => {
   return (
     <>
       <Flex
-        height="100vh"
+        minHeight="100vh"
         background={bgColor[colorMode]}
         // background="linear-gradient(180deg, #0055ff 0%, rgb(0, 153, 255) 100%)"
         direction="column"
         alignItems="center"
         justifyContent="flex-start"
       >
-        <Navbar />
+        {/* <Navbar /> */}
       </Flex>
     </>
   );

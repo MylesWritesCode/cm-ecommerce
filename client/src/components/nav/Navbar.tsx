@@ -10,16 +10,18 @@
  * -----
  * HISTORY
  */
-import React, { useRef, } from "react";
-import { Flex, FlexProps, Heading, } from "@chakra-ui/react";
-import { MenuDrawer } from "./MenuDrawer";
+import React, { useRef } from "react";
+import { Flex, FlexProps, Heading, Link } from "@chakra-ui/react";
+import NextLink from "next/link";
+import { motion, useCycle } from "framer-motion";
 
-import { NAVBAR_HEIGHT, SITE_TITLE } from "../../constants";
+import { MenuDrawer } from "./MenuDrawer";
+import { MenuToggle } from "./MenuToggle";
+import { NavbarAuthInfo } from "./NavbarAuthInfo";
+
+import { NavbarConfig } from "../../constants";
 import ClientOnly from "../ClientOnly";
 import { useDimensions } from "./useDimensions";
-import { NavbarAuthInfo } from "./NavbarAuthInfo";
-import { motion, useCycle } from "framer-motion";
-import { MenuToggle } from "./MenuToggle";
 
 interface NavbarProps {}
 
@@ -27,10 +29,16 @@ export const MotionFlex = motion<FlexProps>(Flex);
 
 export const Navbar: React.FC<NavbarProps> = () => {
   // const [isMenuOpen, toggleMenu] = useCycle(false, true);
-  // Setting this backwards until done with development of dynamic menu items
-  const [isMenuOpen, toggleMenu] = useCycle(true, false);
+  const [isMenuOpen, toggleMenu_] = useCycle(false, true);
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
+  
+  const toggleMenu = () => {
+    console.log("i am toggled");
+    toggleMenu_()
+  }
+  
+  console.log(isMenuOpen);
 
   const sidebarAnimation = {
     open: (height = 1000) => ({
@@ -56,7 +64,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
     <Flex
       backgroundColor="#2a2c37"
       width="100%"
-      height={NAVBAR_HEIGHT}
+      height={NavbarConfig.height}
       px={3}
       justifyContent="space-between"
       alignItems="center"
@@ -75,21 +83,24 @@ export const Navbar: React.FC<NavbarProps> = () => {
               top="60px"
               left="0"
               bottom="0"
-              width="300px"
+              width={NavbarConfig.drawer.width}
               backgroundColor="#323338"
               variants={sidebarAnimation}
             />
-            <MenuDrawer />
+            <MenuDrawer toggle={() => toggleMenu()}/>
             <MenuToggle mr={3} toggle={() => toggleMenu()} />
           </MotionFlex>
-          <Heading
-            as="em"
-            size="xl"
-            bgGradient="linear(to-b, #ffffff, #ffffff)"
-            backgroundClip="text"
-          >
-            {SITE_TITLE}
-          </Heading>
+          <Link as={NextLink} href="/">
+            <Heading
+              as="em"
+              size="xl"
+              bgGradient="linear(to-b, #ffffff, #ffffff)"
+              backgroundClip="text"
+              cursor="pointer"
+            >
+              {NavbarConfig.brand}
+            </Heading>
+          </Link>
         </Flex>
       </Flex>
       <ClientOnly>

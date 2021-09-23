@@ -4,7 +4,7 @@
  * Created Date: Thursday September 23rd 2021
  * Author: Myles Berueda
  * Note: I need a helper class that conditionally surrounds a block of code in
- *       a link, because NextLink *requires* an href and can't be null or 
+ *       a link, because NextLink *requires* an href and can't be null or
  *       undefined.
  * -----
  * Last Modified: Thursday September 23rd 2021 7:05:04 am
@@ -14,7 +14,7 @@
  * HISTORY
  */
 import React from "react";
-import { Link } from "@chakra-ui/react"
+import { Link, LinkProps } from "@chakra-ui/react";
 import NextLink from "next/link";
 
 interface ConditionalNextLink {
@@ -22,7 +22,7 @@ interface ConditionalNextLink {
   condition?: string | boolean;
 }
 
-export const ConditionalNextLink: React.FC<ConditionalNextLink> = ({
+export const ConditionalNextLink: React.FC<ConditionalNextLink & LinkProps> = ({
   children,
   to,
   condition,
@@ -32,7 +32,11 @@ export const ConditionalNextLink: React.FC<ConditionalNextLink> = ({
   if (!condition) condition = to;
 
   if (!!condition && to) {
-    return <Link as={NextLink} href={to}>{children}</Link>;
+    return (
+      <Link as={NextLink} href={to}>
+        {children}
+      </Link>
+    );
   } else {
     return <>{children}</>;
   }

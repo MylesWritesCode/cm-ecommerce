@@ -35,14 +35,14 @@ export interface MenuConfigItem {
   children?: MenuConfigItem[];
 }
 
-export const MENU_CONFIG: MenuConfigItem[] = [
+export const MenuConfig: MenuConfigItem[] = [
   {
     name: "Products",
     type: "header",
     children: [
       {
         name: "Add a product",
-        link: "first-child-href",
+        link: "/products/edit/new",
         icon: AddIcon,
       },
       {

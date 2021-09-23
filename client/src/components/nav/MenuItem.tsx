@@ -10,14 +10,15 @@
  * -----
  * HISTORY
  */
-
 import React from "react";
 import { Flex, FlexProps, Heading, Icon } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { ConditionalNextLink } from "../ConditionalNextLink";
 import { MenuConfigItem } from "../../constants";
 
-interface MenuItemProps {}
+interface MenuItemProps {
+  toggle: () => void;
+}
 
 const variants = {
   open: {
@@ -40,10 +41,14 @@ const MotionFlex = motion<FlexProps>(Flex);
 type ShortProps = MenuItemProps & MenuConfigItem;
 
 export const MenuItem: React.FC<ShortProps> = ({ ...props }) => {
-  const { name, type, link, icon, children } = props;
+  const { name, type, link, icon, children, toggle } = props;
   const isHeader = type === "header" ? true : false;
   return (
-    <Flex flexDirection="column" py={isHeader ? 2 : null}>
+    <Flex
+      flexDirection="column"
+      py={isHeader ? 2 : null}
+      onClick={toggle}
+    >
       <ConditionalNextLink to={link}>
         <Flex>
           <MotionFlex
@@ -73,7 +78,7 @@ export const MenuItem: React.FC<ShortProps> = ({ ...props }) => {
       </ConditionalNextLink>
       {children
         ? children.map((child, index) => {
-            return <MenuItem key={index} {...child} />;
+            return <MenuItem key={index} toggle={() => toggle} {...child} />;
           })
         : null}
     </Flex>

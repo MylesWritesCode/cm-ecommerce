@@ -12,6 +12,7 @@
  */
 import { ApolloProvider } from "@apollo/client";
 import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
+import { Navbar } from "../components/nav";
 
 import { useApollo } from "../lib/apolloClient";
 import theme from "../theme";
@@ -26,6 +27,7 @@ function MyApp({ Component, pageProps }) {
             useSystemColorMode: true,
           }}
         >
+          <Navbar />
           <Component {...pageProps} />
         </ColorModeProvider>
       </ChakraProvider>
