@@ -12,8 +12,8 @@
  */
 
 import React from "react";
-import { Flex, FlexProps, Heading, Text, Icon } from "@chakra-ui/react";
-import { motion, TargetAndTransition, VariantLabels } from "framer-motion";
+import { Flex, FlexProps, Heading, Icon } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { ConditionalNextLink } from "../ConditionalNextLink";
 import { MenuConfigItem } from "../../constants";
 
@@ -45,11 +45,7 @@ export const MenuItem: React.FC<ShortProps> = ({ ...props }) => {
   return (
     <Flex flexDirection="column" py={isHeader ? 2 : null}>
       <ConditionalNextLink to={link}>
-        <MotionFlex
-          // borderBottom="1px solid black"
-          // borderTop={isHeader ? "1px solid black" : null}
-          variants={variants}
-        >
+        <Flex>
           <MotionFlex
             py={3}
             px={5}
@@ -62,6 +58,7 @@ export const MenuItem: React.FC<ShortProps> = ({ ...props }) => {
                 : null
             }
             whileTap={!isHeader ? { scale: 0.995 } : null}
+            variants={variants}
           >
             {icon ? <Icon as={icon} mr={4} /> : null}
             {isHeader ? (
@@ -72,7 +69,7 @@ export const MenuItem: React.FC<ShortProps> = ({ ...props }) => {
               <Heading size="xs">{name.toUpperCase()}</Heading>
             )}
           </MotionFlex>
-        </MotionFlex>
+        </Flex>
       </ConditionalNextLink>
       {children
         ? children.map((child, index) => {
