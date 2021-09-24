@@ -35,8 +35,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
   const [createProduct] = useCreateProductMutation();
   return (
     <>
-      <GridItem
-        display="flex"
+      <Flex
         height="270px"
         minHeight="270px"
         maxHeight="270px"
@@ -59,8 +58,8 @@ export const Edit: React.FC<EditProps> = ({}) => {
         >
           Add a product to the line
         </Heading>
-      </GridItem>
-      <Flex minHeight={VH} size="md" justifyContent="center">
+      </Flex>
+      <Flex minHeight={VH} size="md" justifyContent="center" padding={[8, 4]}>
         <Formik
           initialValues={{
             name: "",
@@ -95,41 +94,40 @@ export const Edit: React.FC<EditProps> = ({}) => {
                 name="name"
                 label="Product name"
                 placeholder="Enter the product's name"
-                colSpan={5}
+                colSpan={[12, 5]}
               />
               <ChakraGridInput
                 name="brand"
                 label="Brand"
                 placeholder="Brand"
-                colSpan={4}
+                colSpan={[6, 4]}
               />
               <ChakraGridInput
                 name="sku"
                 label="SKU"
                 placeholder="SKU"
-                colSpan={3}
+                colSpan={[6, 3]}
               />
               <ChakraGridInput
                 name="description"
                 label="Description"
                 placeholder="Enter the product's description"
-                colSpan={8}
+                colSpan={[12, 8]}
               />
               <ChakraGridInput
                 name="retailPrice"
                 label="Retail Price"
                 placeholder="$0.00"
                 type="money"
-                colSpan={2}
+                colSpan={[6, 2]}
               />
               <ChakraGridInput
                 name="wholesalePrice"
                 label="Wholesale Price"
                 placeholder="$0.00"
                 type="money"
-                colSpan={2}
+                colSpan={[6, 2]}
               />
-              <GridItem colSpan={5}>
                 <Button
                   size="sm"
                   colorScheme="green"
@@ -140,7 +138,6 @@ export const Edit: React.FC<EditProps> = ({}) => {
                 >
                   Create product
                 </Button>
-              </GridItem>
             </Grid>
           </Form>
         </Formik>
