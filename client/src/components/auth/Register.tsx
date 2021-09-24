@@ -44,6 +44,8 @@ const RegisterErrorSchema = Yup.object().shape({
     .required("Required"),
 });
 
+const style = { width: "100%", }
+
 export const Register: React.FC<RegisterProps> = ({ ...props }) => {
   const { closeModal } = props;
 
@@ -99,52 +101,54 @@ export const Register: React.FC<RegisterProps> = ({ ...props }) => {
       }}
       validationSchema={RegisterErrorSchema}
     >
-      <Form>
-        <Flex
-          px={0}
-          margin="auto"
-          alignItems="center"
-          justifyContent="center"
-          textAlign="center"
-          fontSize="xs"
-          color={error ? "red" : "black"}
-          maxWidth="fit-content"
-        >
-          {error ? error : "Please enter your login information"}
-        </Flex>
-        <ChakraInput
-          name="username"
-          label="Username"
-          placeholder="Enter your username"
-          autoComplete="username"
-        />
-        <ChakraInput
-          name="email"
-          label="Email"
-          placeholder="Enter your email"
-          autoComplete="email"
-          helperText="We'll never share your email with anyone."
-        />
-        <ChakraInput
-          name="password"
-          label="Password"
-          placeholder="Enter your password"
-          type="password"
-          autoComplete="new-password"
-        />
-        <Flex>
-          <Button
-            size="sm"
-            colorScheme="blue"
-            type="submit"
-            ml="auto"
-            borderRadius={0}
-            isLoading={isSubmitting}
+      <Flex width="100%">
+        <Form style={style}>
+          <Flex
+            px={0}
+            margin="auto"
+            alignItems="center"
+            justifyContent="center"
+            textAlign="center"
+            fontSize="xs"
+            color={error ? "red" : "black"}
+            maxWidth="fit-content"
           >
-            Register
-          </Button>
-        </Flex>
-      </Form>
+            {error ? error : "Please enter your login information"}
+          </Flex>
+          <ChakraInput
+            name="username"
+            label="Username"
+            placeholder="Enter your username"
+            autoComplete="username"
+          />
+          <ChakraInput
+            name="email"
+            label="Email"
+            placeholder="Enter your email"
+            autoComplete="email"
+            helperText="We'll never share your email with anyone."
+          />
+          <ChakraInput
+            name="password"
+            label="Password"
+            placeholder="Enter your password"
+            type="password"
+            autoComplete="new-password"
+          />
+          <Flex>
+            <Button
+              size="sm"
+              colorScheme="blue"
+              type="submit"
+              ml="auto"
+              borderRadius={0}
+              isLoading={isSubmitting}
+            >
+              Register
+            </Button>
+          </Flex>
+        </Form>
+      </Flex>
     </Formik>
   );
 };

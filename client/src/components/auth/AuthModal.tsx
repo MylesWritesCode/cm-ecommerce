@@ -24,7 +24,7 @@ import {
 import { Login } from "./Login";
 import { Register } from "./Register";
 import { AuthFooter } from "./AuthFooter";
-import { SITE_TITLE } from "../../constants";
+import { NavbarConfig } from "../../constants";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -98,7 +98,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ ...props }) => {
               bgGradient="linear(to-b, #ffffff, #ffffff)"
               backgroundClip="text"
             >
-              {SITE_TITLE}
+              {NavbarConfig.brand}
             </Heading>
           </Flex>
         </ModalHeader>

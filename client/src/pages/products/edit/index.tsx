@@ -44,46 +44,52 @@ export const Edit: React.FC<EditProps> = ({}) => {
       >
         <Form>
           <Grid
-            templateColumns="repeat(3, 1fr)"
+            templateColumns="repeat(12, 1fr)"
             gridAutoRows="minmax(100px, auto)"
             gap={6}
+            padding={10}
           >
-            <GridItem>
-              <ChakraInput
-                name="name"
-                label="Product name"
-                placeholder="Enter the product's name"
-              />
-              <ChakraInput name="brand" label="Brand" placeholder="Brand" />
-              <ChakraInput name="sku" label="SKU" placeholder="Physical SKU" />
-            </GridItem>
             <ChakraGridInput
               name="name"
-              label="product name"
+              label="Product name"
               placeholder="Enter the product's name"
+              width="max-content"
+              colSpan={6}
+            />
+            <ChakraGridInput
+              name="brand"
+              label="Brand"
+              placeholder="Brand"
+              colSpan={4}
+            />
+            <ChakraGridInput
+              name="sku"
+              label="SKU"
+              placeholder="SKU"
+              colSpan={6}
+            />
+            <ChakraGridInput
+              name="description"
+              label="Description"
+              placeholder="Enter the product's description"
               rowSpan={1}
               colSpan={3}
             />
-            <GridItem>
-              <ChakraInput
-                name="description"
-                label="Description"
-                placeholder="Enter a description of the product"
-              />
-            </GridItem>
-            <GridItem>
-              <ChakraInput
-                name="retailPrice"
-                label="Retail Price"
-                placeholder="$0.00"
-              />
-              <ChakraInput
-                name="wholesalePrice"
-                label="Wholesale Price"
-                placeholder="$0.00"
-              />
-            </GridItem>
-            <GridItem>
+            <ChakraGridInput
+              name="retailPrice"
+              label="Retail Price"
+              placeholder="$0.00"
+              rowSpan={1}
+              colSpan={3}
+            />
+            <ChakraGridInput
+              name="wholesalePrice"
+              label="Wholesale Price"
+              placeholder="$0.00"
+              rowSpan={1}
+              colSpan={3}
+            />
+            <GridItem colSpan={5}>
               <Button
                 size="sm"
                 colorScheme="green"

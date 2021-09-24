@@ -41,7 +41,7 @@ export const ChakraInput: React.FC<ChakraInputProps> = ({ ...props }) => {
         <FormControl
           id={name}
           py={3}
-          width={width ? width : [270]}
+          // width={width ? width : [270]}
           isInvalid={form.errors[name] && form.touched[name]}
         >
           <Flex justifyContent="space-between" alignItems="center">

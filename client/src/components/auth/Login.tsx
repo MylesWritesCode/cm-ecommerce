@@ -37,6 +37,8 @@ interface LoginValues {
   password: string;
 }
 
+const style = { width: "100%", }
+
 export const Login: React.FC<LoginProps> = ({ ...props }) => {
   const { closeModal } = props;
   // Hooks
@@ -95,7 +97,7 @@ export const Login: React.FC<LoginProps> = ({ ...props }) => {
       }}
       validationSchema={LoginErrorSchema}
     >
-      <Form>
+      <Form style={style}>
         <Flex
           px={0}
           margin="auto"
