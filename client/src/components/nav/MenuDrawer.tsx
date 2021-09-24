@@ -25,9 +25,11 @@ const MotionFlex = motion<FlexProps>(Flex);
 
 const variants = {
   open: {
+    display: "flex",
     transition: { staggerChildren: 0.07, delayChildren: 0.2 },
   },
   closed: {
+    display: "none",
     transition: {
       staggerChildren: 0.05,
       staggerDirection: -1,
@@ -44,7 +46,7 @@ export const MenuDrawer: React.FC<MenuDrawerProps & FlexProps> = ({
   return (
     <MotionFlex initial={false} variants={variants}>
       <MotionFlex
-        display={status ? "flex" : "none"}
+        // display={status ? "flex" : "none"}
         width={NavbarConfig.drawer.width}
         position="absolute"
         pt={5}
