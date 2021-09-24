@@ -53,14 +53,13 @@ export const Edit: React.FC<EditProps> = ({}) => {
               name="name"
               label="Product name"
               placeholder="Enter the product's name"
-              width="max-content"
               colSpan={6}
             />
             <ChakraGridInput
               name="brand"
               label="Brand"
               placeholder="Brand"
-              colSpan={4}
+              colSpan={6}
             />
             <ChakraGridInput
               name="sku"
