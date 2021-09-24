@@ -61,6 +61,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
       px={3}
       justifyContent="space-between"
       alignItems="center"
+      zIndex={10000}
     >
       <Flex id="brand-and-menu" justifyContent="center" alignItems="center">
         <Flex justifyContent="center" alignItems="center" userSelect="none">
@@ -77,6 +78,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
               left="0"
               bottom="0"
               width={NavbarConfig.drawer.width}
+              zIndex="overlay"
               backgroundColor="#323338"
               variants={sidebarAnimation}
             />
