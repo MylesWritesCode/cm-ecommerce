@@ -19,43 +19,37 @@ import {
   Input,
   FormErrorMessage,
   Flex,
+  InputProps,
 } from "@chakra-ui/react";
 
 export interface ChakraInputProps {
   label: string;
-  name: string;
-  type?: string;
-  placeholder?: string;
   helperText?: string;
-  width?: string | Array<number>;
-  autoComplete?: string;
   validateCallback?: (value: string) => string;
 }
+type Props = ChakraInputProps & InputProps;
 
-export const ChakraInput: React.FC<ChakraInputProps> = ({ ...props }) => {
-  const { label, name, helperText, width, validateCallback, ...rest } = props;
+export const ChakraInput: React.FC<Props> = ({ ...props }) => {
+  const { label, helperText, validateCallback, ...input } = props;
+  console.log(input);
 
   return (
-    <Field name={name} validate={validateCallback}>
+    <Field name={input.name} validate={validateCallback}>
       {({ field, form }) => (
         <FormControl
-          id={name}
+          id={input.name}
           py={3}
-          isInvalid={form.errors[name] && form.touched[name]}
+          isInvalid={form.errors[input.name] && form.touched[input.name]}
         >
           <Flex justifyContent="space-between" alignItems="center">
-            <FormLabel
-              htmlFor={name}
-              fontSize="xs"
-              mb={1}
-            >
+            <FormLabel htmlFor={input.name} fontSize="xs" mb={1}>
               {label}
             </FormLabel>
             <FormErrorMessage fontSize="xx-small" my={0}>
-              {form.errors[name]}
+              {form.errors[input.name]}
             </FormErrorMessage>
           </Flex>
-          <Input id={name} size="sm" {...field} {...rest} />
+          <Input id={input.name} size="sm" {...field} {...input} width="100%" />
           <FormHelperText fontSize="xx-small">{helperText}</FormHelperText>
         </FormControl>
       )}
