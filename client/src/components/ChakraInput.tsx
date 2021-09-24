@@ -21,7 +21,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
-interface ChakraInputProps {
+export interface ChakraInputProps {
   label: string;
   name: string;
   type?: string;

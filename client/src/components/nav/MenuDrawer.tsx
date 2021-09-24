@@ -42,7 +42,6 @@ export const MenuDrawer: React.FC<MenuDrawerProps & FlexProps> = ({
   ...props
 }) => {
   const { status, toggle } = props;
-  console.log(status);
   return (
     <MotionFlex initial={false} variants={variants}>
       <MotionFlex

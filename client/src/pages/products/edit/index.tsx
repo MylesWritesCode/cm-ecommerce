@@ -3,7 +3,9 @@
  * Project: cm-ecommerce/cm-ecommerce-client
  * Created Date: Thursday September 23rd 2021
  * Author: Myles Berueda
- * Note: If no 
+ * Note: If no id is passed through the link, then this route should fire. I've
+ *       gotta figure out how to share components through nextjs, because the
+ *       edit and
  * -----
  * Last Modified: Thursday September 23rd 2021 9:38:58 am
  * -----
@@ -11,16 +13,93 @@
  * -----
  * HISTORY
  */
-import React from "react";
-import { Flex } from "@chakra-ui/react";
-import { VH } from '../../../constants';
+import React, { useState } from "react";
+import { Button, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Form, Formik } from "formik";
+import ChakraInput from "../../../components/ChakraInput";
+
+import { VH } from "../../../constants";
+import ChakraGridInput from "../../../components/ChakraGridInput";
 
 interface EditProps {}
 
-export const Edit: React.FC<EditProps> = ({}) => {
-  return (
-    <Flex minHeight={VH}>edit new product works</Flex>
-  );
+interface ProductValues {
+  name: string;
 }
+
+export const Edit: React.FC<EditProps> = ({}) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  return (
+    <Flex minHeight={VH} justifyContent="center">
+      <Formik
+        initialValues={{
+          name: "",
+          brand: "",
+          sku: "",
+          description: "",
+          retailPrice: undefined,
+          wholesalePrice: undefined,
+        }}
+        onSubmit={async (values: ProductValues, { setErrors }) => {}}
+      >
+        <Form>
+          <Grid
+            templateColumns="repeat(3, 1fr)"
+            gridAutoRows="minmax(100px, auto)"
+            gap={6}
+          >
+            <GridItem>
+              <ChakraInput
+                name="name"
+                label="Product name"
+                placeholder="Enter the product's name"
+              />
+              <ChakraInput name="brand" label="Brand" placeholder="Brand" />
+              <ChakraInput name="sku" label="SKU" placeholder="Physical SKU" />
+            </GridItem>
+            <ChakraGridInput
+              name="name"
+              label="product name"
+              placeholder="Enter the product's name"
+              rowSpan={1}
+              colSpan={3}
+            />
+            <GridItem>
+              <ChakraInput
+                name="description"
+                label="Description"
+                placeholder="Enter a description of the product"
+              />
+            </GridItem>
+            <GridItem>
+              <ChakraInput
+                name="retailPrice"
+                label="Retail Price"
+                placeholder="$0.00"
+              />
+              <ChakraInput
+                name="wholesalePrice"
+                label="Wholesale Price"
+                placeholder="$0.00"
+              />
+            </GridItem>
+            <GridItem>
+              <Button
+                size="sm"
+                colorScheme="green"
+                type="submit"
+                ml="auto"
+                borderRadius={0}
+                // isLoading={isSubmitting}
+              >
+                Create product
+              </Button>
+            </GridItem>
+          </Grid>
+        </Form>
+      </Formik>
+    </Flex>
+  );
+};
 
 export default Edit;
