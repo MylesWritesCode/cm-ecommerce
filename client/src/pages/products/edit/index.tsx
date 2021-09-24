@@ -17,7 +17,7 @@ import React, { useState } from "react";
 import { Button, Flex, Grid, GridItem } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
-import { VH } from "../../../constants";
+import { VH, NavbarConfig } from "../../../constants";
 import ChakraGridInput from "../../../components/ChakraGridInput";
 import {
   useCreateProductMutation,
@@ -37,8 +37,8 @@ export const Edit: React.FC<EditProps> = ({}) => {
           brand: "",
           sku: "",
           description: "",
-          retailPrice: 0.00,
-          wholesalePrice: 0.00,
+          retailPrice: 0.0,
+          wholesalePrice: 0.0,
         }}
         onSubmit={async (values: CreateProductValues, { setErrors }) => {
           setIsSubmitting(true);
@@ -54,13 +54,26 @@ export const Edit: React.FC<EditProps> = ({}) => {
       >
         <Form>
           <Grid
-            px={14} // 3.5rem
-            py={12} // 3rem
+            // mx={14} // 3.5rem
+            // my={12} // 3rem
             templateColumns="repeat(12, 1fr)"
             gridAutoRows="minmax(100px, auto)"
             rowGap="0"
             columnGap={8} // 2rem
+            gridTemplateAreas={{
+              
+            }}
           >
+            <GridItem
+              display="flex"
+              backgroundColor="black"
+              backgroundImage={NavbarConfig.defaultHeaderImage}
+              backgroundPosition="center"
+              backgroundSize="cover"
+              alignItems="center"
+              justifyContent="center"
+              
+            ></GridItem>
             <ChakraGridInput
               name="name"
               label="Product name"
@@ -90,7 +103,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
               name="retailPrice"
               label="Retail Price"
               placeholder="$0.00"
-              type="number"
+              type="money"
               rowSpan={1}
               colSpan={3}
             />
@@ -98,7 +111,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
               name="wholesalePrice"
               label="Wholesale Price"
               placeholder="$0.00"
-              type="number"
+              type="money"
               rowSpan={1}
               colSpan={3}
             />

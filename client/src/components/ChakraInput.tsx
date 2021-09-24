@@ -10,7 +10,7 @@
  * -----
  * HISTORY
  */
-import React from "react";
+import React, { useState } from "react";
 import { Field } from "formik";
 import {
   FormControl,
@@ -20,6 +20,8 @@ import {
   FormErrorMessage,
   Flex,
   InputProps,
+  InputLeftElement,
+  InputGroup,
 } from "@chakra-ui/react";
 
 export interface ChakraInputProps {
@@ -31,6 +33,13 @@ type Props = ChakraInputProps & InputProps;
 
 export const ChakraInput: React.FC<Props> = ({ ...props }) => {
   const { label, helperText, validateCallback, ...input } = props;
+
+  let isMoney: boolean;
+
+  if (props.type && props.type === "money") {
+    props.type = "number";  // Set it to number, money is not an input type
+    isMoney = true;
+  }
 
   return (
     <Field name={input.name} validate={validateCallback}>
@@ -48,7 +57,24 @@ export const ChakraInput: React.FC<Props> = ({ ...props }) => {
               {form.errors[input.name]}
             </FormErrorMessage>
           </Flex>
-          <Input id={input.name} size="sm" {...field} {...input} width="100%" />
+          <InputGroup display="flex" justifyContent="center" alignItems="center">
+            {isMoney && (
+              <InputLeftElement
+                pointerEvents="none"
+                color="gray.300"
+                fontSize="1.2em"
+                children="$"
+                height="fit-content"
+              />
+            )}
+            <Input
+              id={input.name}
+              size="sm"
+              {...field}
+              {...input}
+              width="100%"
+            />
+          </InputGroup>
           <FormHelperText fontSize="xx-small">{helperText}</FormHelperText>
         </FormControl>
       )}

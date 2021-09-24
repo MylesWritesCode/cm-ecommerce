@@ -13,6 +13,7 @@
 export const NavbarConfig = {
   height: "60px",
   brand: "PILIPINO",
+  defaultHeaderImage: "/default-login-header.png",
   drawer: {
     width: "270px"
   },

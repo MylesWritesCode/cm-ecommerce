@@ -14,6 +14,7 @@ import { NavbarConfig } from "./NavbarConfig";
 
 export * from "./MenuConfig";
 export * from "./NavbarConfig";
+export * from "./ProductsConfig";
 
 // Viewheight - navbar height
 export const VH = `calc(100vh - ${NavbarConfig.height})`;
