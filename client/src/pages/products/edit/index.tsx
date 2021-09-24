@@ -13,12 +13,13 @@
  */
 import React from "react";
 import { Flex } from "@chakra-ui/react";
+import { VH } from '../../../constants';
 
 interface EditProps {}
 
 export const Edit: React.FC<EditProps> = ({}) => {
   return (
-    <Flex minHeight="calc(100vh - 60px)">edit new product works</Flex>
+    <Flex minHeight={VH}>edit new product works</Flex>
   );
 }
 
