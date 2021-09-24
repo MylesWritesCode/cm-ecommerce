@@ -12,6 +12,7 @@
  */
 import React from "react";
 import { Flex, useColorMode } from "@chakra-ui/react";
+import { VH } from "../constants";
 
 const Index: React.FC<{}> = ({}) => {
   // Color mode for bg
@@ -21,7 +22,7 @@ const Index: React.FC<{}> = ({}) => {
   return (
     <>
       <Flex
-        minHeight="100vh"
+        minHeight={VH}
         background={bgColor[colorMode]}
         // background="linear-gradient(180deg, #0055ff 0%, rgb(0, 153, 255) 100%)"
         direction="column"

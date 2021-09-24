@@ -42,7 +42,7 @@ export const MenuConfig: MenuConfigItem[] = [
     children: [
       {
         name: "Add a product",
-        link: "/products/edit/new",
+        link: "/products/edit",
         icon: AddIcon,
       },
       {

@@ -28,12 +28,10 @@ interface NavbarProps {}
 export const MotionFlex = motion<FlexProps>(Flex);
 
 export const Navbar: React.FC<NavbarProps> = () => {
-  // const [isMenuOpen, toggleMenu] = useCycle(false, true);
+  // const [isMenuOpen, toggleMenu] = useCycle(true, false);
   const [isMenuOpen, toggleMenu] = useCycle(false, true);
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
-  
-  console.log(isMenuOpen);
 
   const sidebarAnimation = {
     open: (height = 1000) => ({
@@ -82,7 +80,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
               backgroundColor="#323338"
               variants={sidebarAnimation}
             />
-            <MenuDrawer toggle={() => toggleMenu()} status={isMenuOpen}/>
+            <MenuDrawer toggle={() => toggleMenu()} status={isMenuOpen} />
             <MenuToggle mr={3} toggle={() => toggleMenu()} />
           </MotionFlex>
           <Link as={NextLink} href="/">

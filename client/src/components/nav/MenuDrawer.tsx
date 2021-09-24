@@ -40,11 +40,11 @@ export const MenuDrawer: React.FC<MenuDrawerProps & FlexProps> = ({
   ...props
 }) => {
   const { status, toggle } = props;
-  console.log(toggle.name);
+  console.log(status);
   return (
-    <MotionFlex variants={variants}>
+    <MotionFlex initial={false} variants={variants}>
       <MotionFlex
-        display="flex"
+        display={status ? "flex" : "none"}
         width={NavbarConfig.drawer.width}
         position="absolute"
         pt={5}
