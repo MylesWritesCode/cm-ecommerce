@@ -3,9 +3,9 @@
  * Project: cm-ecommerce/cm-ecommerce-client
  * Created Date: Thursday September 23rd 2021
  * Author: Myles Berueda
- * Note: If no id is passed through the link, then this route should fire. I've
- *       gotta figure out how to share components through nextjs, because the
- *       edit and
+ * Note: I've opted to use a grid-column/grid-row system, but it feels really
+ *       clunkly. I may have to build this out with flex instead, and worry
+ *       about responsiveness later.
  * -----
  * Last Modified: Thursday September 23rd 2021 9:38:58 am
  * -----
@@ -60,9 +60,6 @@ export const Edit: React.FC<EditProps> = ({}) => {
             gridAutoRows="minmax(100px, auto)"
             rowGap="0"
             columnGap={8} // 2rem
-            gridTemplateAreas={{
-              
-            }}
           >
             <GridItem
               display="flex"
@@ -72,48 +69,52 @@ export const Edit: React.FC<EditProps> = ({}) => {
               backgroundSize="cover"
               alignItems="center"
               justifyContent="center"
-              
+              gridColumn="1/13"
+              gridRow="1/3"
             ></GridItem>
             <ChakraGridInput
               name="name"
               label="Product name"
               placeholder="Enter the product's name"
-              colSpan={6}
+              gridColumn="2/6"
+              gridRow="4/5"
             />
             <ChakraGridInput
               name="brand"
               label="Brand"
               placeholder="Brand"
-              colSpan={4}
+              gridColumn="6/10"
+              gridRow="4/5"
             />
             <ChakraGridInput
               name="sku"
               label="SKU"
               placeholder="SKU"
-              colSpan={2}
+              gridColumn="10/12"
+              gridRow="4/5"
             />
             <ChakraGridInput
               name="description"
               label="Description"
               placeholder="Enter the product's description"
-              rowSpan={1}
-              colSpan={3}
+              gridColumn="2/8"
+              gridRow="5/6"
             />
             <ChakraGridInput
               name="retailPrice"
               label="Retail Price"
               placeholder="$0.00"
               type="money"
-              rowSpan={1}
-              colSpan={3}
+              gridColumn="8/10"
+              gridRow="5/6"
             />
             <ChakraGridInput
               name="wholesalePrice"
               label="Wholesale Price"
               placeholder="$0.00"
               type="money"
-              rowSpan={1}
-              colSpan={3}
+              gridColumn="10/12"
+              gridRow="5/6"
             />
             <GridItem colSpan={5}>
               <Button
