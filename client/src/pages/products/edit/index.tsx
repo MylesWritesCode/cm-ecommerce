@@ -14,7 +14,7 @@
  * HISTORY
  */
 import React, { useState } from "react";
-import { Button, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
 import { VH, NavbarConfig } from "../../../constants";
@@ -26,112 +26,126 @@ import {
 
 interface EditProps {}
 
+const style = {
+  width: "768px"
+}
+
 export const Edit: React.FC<EditProps> = ({}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [createProduct] = useCreateProductMutation();
   return (
-    <Flex minHeight={VH} justifyContent="center">
-      <Formik
-        initialValues={{
-          name: "",
-          brand: "",
-          sku: "",
-          description: "",
-          retailPrice: 0.0,
-          wholesalePrice: 0.0,
-        }}
-        onSubmit={async (values: CreateProductValues, { setErrors }) => {
-          setIsSubmitting(true);
-          console.log(values);
-
-          await createProduct({
-            variables: values,
-            update: (cache, { data }) => {
-              setIsSubmitting(false);
-            },
-          });
-        }}
+    <>
+      <GridItem
+        display="flex"
+        height="270px"
+        minHeight="270px"
+        maxHeight="270px"
+        backgroundColor="black"
+        backgroundImage={NavbarConfig.defaultHeaderImage}
+        backgroundPosition="center"
+        backgroundSize="cover"
+        alignItems="center"
+        justifyContent="center"
       >
-        <Form>
-          <Grid
-            // mx={14} // 3.5rem
-            // my={12} // 3rem
-            templateColumns="repeat(12, 1fr)"
-            gridAutoRows="minmax(100px, auto)"
-            rowGap="0"
-            columnGap={8} // 2rem
-          >
-            <GridItem
-              display="flex"
-              backgroundColor="black"
-              backgroundImage={NavbarConfig.defaultHeaderImage}
-              backgroundPosition="center"
-              backgroundSize="cover"
-              alignItems="center"
-              justifyContent="center"
-              gridColumn="1/13"
-              gridRow="1/3"
-            ></GridItem>
-            <ChakraGridInput
-              name="name"
-              label="Product name"
-              placeholder="Enter the product's name"
-              gridColumn="2/6"
-              gridRow="4/5"
-            />
-            <ChakraGridInput
-              name="brand"
-              label="Brand"
-              placeholder="Brand"
-              gridColumn="6/10"
-              gridRow="4/5"
-            />
-            <ChakraGridInput
-              name="sku"
-              label="SKU"
-              placeholder="SKU"
-              gridColumn="10/12"
-              gridRow="4/5"
-            />
-            <ChakraGridInput
-              name="description"
-              label="Description"
-              placeholder="Enter the product's description"
-              gridColumn="2/8"
-              gridRow="5/6"
-            />
-            <ChakraGridInput
-              name="retailPrice"
-              label="Retail Price"
-              placeholder="$0.00"
-              type="money"
-              gridColumn="8/10"
-              gridRow="5/6"
-            />
-            <ChakraGridInput
-              name="wholesalePrice"
-              label="Wholesale Price"
-              placeholder="$0.00"
-              type="money"
-              gridColumn="10/12"
-              gridRow="5/6"
-            />
-            <GridItem colSpan={5}>
-              <Button
-                size="sm"
-                colorScheme="green"
-                type="submit"
-                ml="auto"
-                borderRadius={0}
-                // isLoading={isSubmitting}
-              >
-                Create product
-              </Button>
-            </GridItem>
-          </Grid>
-        </Form>
-      </Formik>
-    </Flex>
+        <Heading
+          display="flex"
+          color="white"
+          backgroundColor="blackAlpha.300"
+          min-width="100%"
+          width="100%"
+          height="100px"
+          justifyContent="center"
+          alignItems="center"
+        >
+          Add a product to the line
+        </Heading>
+      </GridItem>
+      <Flex minHeight={VH} size="md" justifyContent="center">
+        <Formik
+          initialValues={{
+            name: "",
+            brand: "",
+            sku: "",
+            description: "",
+            retailPrice: 0.0,
+            wholesalePrice: 0.0,
+          }}
+          onSubmit={async (values: CreateProductValues, { setErrors }) => {
+            setIsSubmitting(true);
+            console.log(values);
+
+            await createProduct({
+              variables: values,
+              update: (cache, { data }) => {
+                setIsSubmitting(false);
+              },
+            });
+          }}
+        >
+          <Form style={style}>
+            <Grid
+              // mx={14} // 3.5rem
+              // my={12} // 3rem
+              templateColumns="repeat(12, 1fr)"
+              gridAutoRows="minmax(100px, auto)"
+              rowGap="0"
+              columnGap={8} // 2rem
+            >
+              <ChakraGridInput
+                name="name"
+                label="Product name"
+                placeholder="Enter the product's name"
+                colSpan={5}
+              />
+              <ChakraGridInput
+                name="brand"
+                label="Brand"
+                placeholder="Brand"
+                colSpan={4}
+              />
+              <ChakraGridInput
+                name="sku"
+                label="SKU"
+                placeholder="SKU"
+                colSpan={3}
+              />
+              <ChakraGridInput
+                name="description"
+                label="Description"
+                placeholder="Enter the product's description"
+                colSpan={8}
+              />
+              <ChakraGridInput
+                name="retailPrice"
+                label="Retail Price"
+                placeholder="$0.00"
+                type="money"
+                colSpan={2}
+              />
+              <ChakraGridInput
+                name="wholesalePrice"
+                label="Wholesale Price"
+                placeholder="$0.00"
+                type="money"
+                colSpan={2}
+              />
+              <GridItem colSpan={5}>
+                <Button
+                  size="sm"
+                  colorScheme="green"
+                  type="submit"
+                  ml="auto"
+                  borderRadius={0}
+                  // isLoading={isSubmitting}
+                >
+                  Create product
+                </Button>
+              </GridItem>
+            </Grid>
+          </Form>
+        </Formik>
+      </Flex>
+    </>
   );
 };
 
