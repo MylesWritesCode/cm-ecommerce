@@ -11,20 +11,24 @@
  * HISTORY
  */
 import React from "react";
-import { Grid, GridItem, GridItemProps } from "@chakra-ui/layout";
+import { GridItem, GridItemProps } from "@chakra-ui/layout";
 import { ChakraInput, ChakraInputProps } from "./ChakraInput";
 
-interface ChakraGridInputProps {}
-type ShortProps = ChakraGridInputProps & ChakraInputProps & GridItemProps;
+interface ChakraGridInputProps {
+  // I only need the name, not gonna mess with InputProps from @chakra-ui
+  name: string; 
+  type?: string;
+}
+type Props = ChakraGridInputProps & ChakraInputProps & GridItemProps;
 
-export const ChakraGridInput: React.FC<ShortProps> = ({ ...props }) => {
-  const { label, name, placeholder } = props;
-  console.log(props);
+export const ChakraGridInput: React.FC<Props> = ({ ...props }) => {
+  const { label, name, type, placeholder } = props;
   return (
     <GridItem {...props}>
       <ChakraInput
         label={label}
         name={name}
+        type={type}
         width="max-width"
         placeholder={placeholder}
       />

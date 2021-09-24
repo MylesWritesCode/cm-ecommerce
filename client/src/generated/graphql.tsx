@@ -71,6 +71,7 @@ export type Product = {
   __typename?: 'Product';
   brand: Scalars['String'];
   categories?: Maybe<Array<Scalars['String']>>;
+  creator: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   images?: Maybe<Array<Scalars['String']>>;
@@ -130,9 +131,25 @@ export type User = {
 
 export type UserResponse = GeneralError | User;
 
+export type FullProductFragment = { __typename?: 'Product', id: string, name: string, brand: string, sku: string, description?: Maybe<string>, categories?: Maybe<Array<string>>, retailPrice?: Maybe<number>, wholesalePrice?: Maybe<number>, images?: Maybe<Array<string>>, creator: string, sellerCompany?: Maybe<string> };
+
 export type FullUserFragment = { __typename?: 'User', id: string, username: string, email: string, firstName?: Maybe<string>, lastName?: Maybe<string>, age?: Maybe<number>, products?: Maybe<Array<string>>, createdAt: string, updatedAt: string };
 
 export type GeneralErrorFragment = { __typename?: 'GeneralError', error: string, message: string, code?: Maybe<string> };
+
+export type CreateProductMutationVariables = Exact<{
+  name: Scalars['String'];
+  brand: Scalars['String'];
+  sku?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  categories?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  retailPrice?: Maybe<Scalars['Float']>;
+  wholesalePrice?: Maybe<Scalars['Float']>;
+  images?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+}>;
+
+
+export type CreateProductMutation = { __typename?: 'Mutation', createProduct: Array<{ __typename: 'GeneralError', error: string, message: string, code?: Maybe<string> } | { __typename: 'Product', id: string, name: string, brand: string, sku: string, description?: Maybe<string>, categories?: Maybe<Array<string>>, retailPrice?: Maybe<number>, wholesalePrice?: Maybe<number>, images?: Maybe<Array<string>>, creator: string, sellerCompany?: Maybe<string> }> };
 
 export type LoginMutationVariables = Exact<{
   login: Scalars['String'];
@@ -164,6 +181,21 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = { __typename?: 'Query', me: { __typename: 'GeneralError', error: string, message: string, code?: Maybe<string> } | { __typename: 'User', id: string, username: string, email: string, firstName?: Maybe<string>, lastName?: Maybe<string>, age?: Maybe<number>, products?: Maybe<Array<string>>, createdAt: string, updatedAt: string } };
 
+export const FullProductFragmentDoc = gql`
+    fragment FullProduct on Product {
+  id
+  name
+  brand
+  sku
+  description
+  categories
+  retailPrice
+  wholesalePrice
+  images
+  creator
+  sellerCompany
+}
+    `;
 export const FullUserFragmentDoc = gql`
     fragment FullUser on User {
   id
@@ -184,6 +216,51 @@ export const GeneralErrorFragmentDoc = gql`
   code
 }
     `;
+export const CreateProductDocument = gql`
+    mutation CreateProduct($name: String!, $brand: String!, $sku: String, $description: String, $categories: [String!], $retailPrice: Float, $wholesalePrice: Float, $images: [String!]) {
+  createProduct(
+    data: {name: $name, brand: $brand, sku: $sku, description: $description, categories: $categories, retailPrice: $retailPrice, wholesalePrice: $wholesalePrice, images: $images}
+  ) {
+    __typename
+    ...FullProduct
+    ...GeneralError
+  }
+}
+    ${FullProductFragmentDoc}
+${GeneralErrorFragmentDoc}`;
+export type CreateProductMutationFn = Apollo.MutationFunction<CreateProductMutation, CreateProductMutationVariables>;
+
+/**
+ * __useCreateProductMutation__
+ *
+ * To run a mutation, you first call `useCreateProductMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProductMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProductMutation, { data, loading, error }] = useCreateProductMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      brand: // value for 'brand'
+ *      sku: // value for 'sku'
+ *      description: // value for 'description'
+ *      categories: // value for 'categories'
+ *      retailPrice: // value for 'retailPrice'
+ *      wholesalePrice: // value for 'wholesalePrice'
+ *      images: // value for 'images'
+ *   },
+ * });
+ */
+export function useCreateProductMutation(baseOptions?: Apollo.MutationHookOptions<CreateProductMutation, CreateProductMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateProductMutation, CreateProductMutationVariables>(CreateProductDocument, options);
+      }
+export type CreateProductMutationHookResult = ReturnType<typeof useCreateProductMutation>;
+export type CreateProductMutationResult = Apollo.MutationResult<CreateProductMutation>;
+export type CreateProductMutationOptions = Apollo.BaseMutationOptions<CreateProductMutation, CreateProductMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($login: String!, $password: String!) {
   login(login: $login, password: $password) {

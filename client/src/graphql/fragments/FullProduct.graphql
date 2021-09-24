@@ -1,0 +1,25 @@
+###
+# File: \src\graphql\fragments\FullProduct.graphql
+# Project: cm-ecommerce/cm-ecommerce-client
+# Created Date: Thursday September 23rd 2021
+# Author: Myles Berueda
+# -----
+# Last Modified: Thursday September 23rd 2021 11:53:40 pm
+# -----
+# Copyright (c) 2021 MylesWritesCode
+# -----
+# HISTORY
+###
+fragment FullProduct on Product {
+  id
+  name
+  brand
+  sku
+  description
+  categories
+  retailPrice
+  wholesalePrice
+  images
+  creator
+  sellerCompany
+}

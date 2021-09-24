@@ -31,7 +31,6 @@ type Props = ChakraInputProps & InputProps;
 
 export const ChakraInput: React.FC<Props> = ({ ...props }) => {
   const { label, helperText, validateCallback, ...input } = props;
-  console.log(input);
 
   return (
     <Field name={input.name} validate={validateCallback}>

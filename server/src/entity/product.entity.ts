@@ -30,16 +30,16 @@ export class Product extends BaseEntity {
   id!: string;
 
   @Field(() => String)
-  @Column({ type: "varchar", length: 30, nullable: true })
-  sku: string;
-
-  @Field(() => String)
   @Column({ type: "varchar", length: 50, nullable: false })
   name!: string;
 
   @Field(() => String)
   @Column({ type: "varchar", length: 30, nullable: false })
   brand!: string;
+
+  @Field(() => String)
+  @Column({ type: "varchar", length: 30, nullable: true })
+  sku: string;
 
   @Field(() => String, { nullable: true })
   @Column({ type: "text", nullable: true })
@@ -61,6 +61,7 @@ export class Product extends BaseEntity {
   @Column({ type: "text", array: true, nullable: true })
   images: string[];
 
+  @Field(() => String, { nullable: false })
   @ManyToOne(() => User, (user) => user.products)
   creator: User;
 

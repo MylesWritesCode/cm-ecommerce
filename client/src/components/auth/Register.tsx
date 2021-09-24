@@ -62,7 +62,6 @@ export const Register: React.FC<RegisterProps> = ({ ...props }) => {
       }}
       onSubmit={async (values: RegisterValues, { setErrors }) => {
         setIsSubmitting(true);
-        debugger;
         try {
           // We can also destructure this, but there's no need since we're
           // handling everything in the update callback.

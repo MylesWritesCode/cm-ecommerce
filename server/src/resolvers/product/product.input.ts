@@ -12,7 +12,7 @@
  */
 import { Field, InputType, Float } from "type-graphql";
 
-/** ProductInput================================================================
+/** ProductInput................................................................
  * General purpose input, for use when looking up different fields. 
  */
 @InputType()
@@ -30,20 +30,20 @@ export class ProductInput {
   categories: string[];
 }
 
-/** CreateProductInput==========================================================
+/** CreateProductInput..........................................................
  * For use with creating products within the resolver, specifically 
  * createProduct(). 
  */
 @InputType()
 export class CreateProductInput {
-  @Field(() => String, { nullable: true })
-  sku: string;
-  
   @Field(() => String)
   name!: string;
 
   @Field(() => String)
   brand!: string;
+
+  @Field(() => String, { nullable: true })
+  sku: string;
 
   @Field(() => String, { nullable: true })
   description: string;
