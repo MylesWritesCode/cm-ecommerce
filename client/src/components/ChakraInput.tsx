@@ -37,7 +37,7 @@ export const ChakraInput: React.FC<Props> = ({ ...props }) => {
   let isMoney: boolean;
 
   if (props.type && props.type === "money") {
-    props.type = "number";  // Set it to number, money is not an input type
+    input.type = "number"; // Set it to number, money is not an input type
     isMoney = true;
   }
 
@@ -57,17 +57,25 @@ export const ChakraInput: React.FC<Props> = ({ ...props }) => {
               {form.errors[input.name]}
             </FormErrorMessage>
           </Flex>
-          <InputGroup display="flex" justifyContent="center" alignItems="center">
+          <InputGroup
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
             {isMoney && (
-              <InputLeftElement
-                pointerEvents="none"
-                color="gray.300"
-                fontSize="1.2em"
-                children="$"
-                height="fit-content"
-              />
+              <Flex>
+                <InputLeftElement
+                  pointerEvents="none"
+                  color="gray.300"
+                  fontSize="1.2em"
+                  children="$"
+                  height="fit-content"
+                  width={8}
+                />
+              </Flex>
             )}
             <Input
+              pl={isMoney ? 6 : null}
               id={input.name}
               size="sm"
               {...field}

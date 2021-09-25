@@ -34,7 +34,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [createProduct] = useCreateProductMutation();
   return (
-    <>
+    <Flex flexDirection="column" minHeight={VH}>
       <Flex
         height="270px"
         minHeight="270px"
@@ -59,28 +59,28 @@ export const Edit: React.FC<EditProps> = ({}) => {
           Add a product to the line
         </Heading>
       </Flex>
-      <Flex minHeight={VH} size="md" justifyContent="center" padding={[8, 4]}>
+      <Flex size="md" justifyContent="center" padding={[8, 4]}>
         <Formik
           initialValues={{
             name: "",
             brand: "",
             sku: "",
             description: "",
-            retailPrice: 0.0,
-            wholesalePrice: 0.0,
+            retailPrice: 0,
+            wholesalePrice: 0,
           }}
-          onSubmit={async (values: CreateProductValues, { setErrors }) => {
+          onSubmit={async (values, { setErrors }) => {
             setIsSubmitting(true);
-
+            
             await createProduct({
-              variables: values,
+              variables: {
+                ...values,
+              },
               update: (cache, { data }) => {
                 setIsSubmitting(false);
-                console.log("shouldn't we have data here")
                 console.log(data);
               },
             });
-
           }}
         >
           <Form style={style}>
@@ -117,14 +117,14 @@ export const Edit: React.FC<EditProps> = ({}) => {
               <ChakraGridInput
                 name="retailPrice"
                 label="Retail Price"
-                placeholder="$0.00"
+                placeholder="0.00"
                 type="money"
                 colSpan={[6, 2]}
               />
               <ChakraGridInput
                 name="wholesalePrice"
                 label="Wholesale Price"
-                placeholder="$0.00"
+                placeholder="0.00"
                 type="money"
                 colSpan={[6, 2]}
               />
@@ -142,7 +142,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
           </Form>
         </Formik>
       </Flex>
-    </>
+    </Flex>
   );
 };
 

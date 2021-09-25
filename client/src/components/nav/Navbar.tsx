@@ -19,7 +19,7 @@ import { MenuDrawer } from "./MenuDrawer";
 import { MenuToggle } from "./MenuToggle";
 import { NavbarAuthInfo } from "./NavbarAuthInfo";
 
-import { NavbarConfig } from "../../constants";
+import { NavbarConfig, VH } from "../../constants";
 import ClientOnly from "../ClientOnly";
 import { useDimensions } from "./useDimensions";
 
@@ -54,56 +54,58 @@ export const Navbar: React.FC<NavbarProps> = () => {
   };
 
   return (
-    <Flex
-      backgroundColor="#2a2c37"
-      width="100%"
-      height={NavbarConfig.height}
-      px={3}
-      justifyContent="space-between"
-      alignItems="center"
-      zIndex={10000}
-    >
-      <Flex id="brand-and-menu" justifyContent="center" alignItems="center">
-        <Flex justifyContent="center" alignItems="center" userSelect="none">
-          <MotionFlex
-            initial={false}
-            animate={isMenuOpen ? "open" : "closed"}
-            custom={height}
-            ref={containerRef}
-          >
-            {/* This is the background */}
+    <>
+      <Flex
+        backgroundColor="#2a2c37"
+        width="100%"
+        height={NavbarConfig.height}
+        px={3}
+        justifyContent="space-between"
+        alignItems="center"
+        zIndex={10000}
+      >
+        <Flex id="brand-and-menu" justifyContent="center" alignItems="center">
+          <Flex justifyContent="center" alignItems="center" userSelect="none">
             <MotionFlex
-              position="absolute"
-              top="60px"
-              left="0"
-              bottom="0"
-              width={NavbarConfig.drawer.width}
-              zIndex="overlay"
-              backgroundColor="#323338"
-              variants={sidebarAnimation}
-            />
-            <MenuDrawer toggle={() => toggleMenu()} status={isMenuOpen} />
-            <MenuToggle mr={3} toggle={() => toggleMenu()} />
-          </MotionFlex>
-          <Link as={NextLink} href="/">
-            <Heading
-              as="em"
-              size="xl"
-              bgGradient="linear(to-b, #ffffff, #ffffff)"
-              backgroundClip="text"
-              cursor="pointer"
+              initial={false}
+              animate={isMenuOpen ? "open" : "closed"}
+              custom={height}
+              ref={containerRef}
             >
-              {NavbarConfig.brand}
-            </Heading>
-          </Link>
+              {/* This is the background */}
+              <MotionFlex
+                position="absolute"
+                top="60px"
+                left="0"
+                bottom="0"
+                width={NavbarConfig.drawer.width}
+                zIndex="overlay"
+                backgroundColor="#323338"
+                variants={sidebarAnimation}
+              />
+              <MenuDrawer toggle={() => toggleMenu()} status={isMenuOpen} />
+              <MenuToggle mr={3} toggle={() => toggleMenu()} />
+            </MotionFlex>
+            <Link as={NextLink} href="/">
+              <Heading
+                as="em"
+                size="xl"
+                bgGradient="linear(to-b, #ffffff, #ffffff)"
+                backgroundClip="text"
+                cursor="pointer"
+              >
+                {NavbarConfig.brand}
+              </Heading>
+            </Link>
+          </Flex>
         </Flex>
+        <ClientOnly>
+          <Flex id="info-box">
+            <NavbarAuthInfo />
+          </Flex>
+        </ClientOnly>
       </Flex>
-      <ClientOnly>
-        <Flex id="info-box">
-          <NavbarAuthInfo />
-        </Flex>
-      </ClientOnly>
-    </Flex>
+    </>
   );
 };
 
