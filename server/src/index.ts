@@ -88,9 +88,7 @@ const main = async () => {
       resolvers: [UserResolver, ProductResolver],
       validate: false,
     }),
-    context: ({ req, res }): Context => ({
-      req, res, redis, 
-    }),
+    context: ({ req, res }): Context => ({ req, res, redis, }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground],
   });
   await apolloServer.start();

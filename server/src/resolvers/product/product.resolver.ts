@@ -48,6 +48,7 @@ export class ProductResolver {
     if (!user) return [{ error: "user", message: "User not found." }];
 
     try {
+      console.log('attempting to insert into db');
       const result = await getConnection()
         .createQueryBuilder()
         .insert()

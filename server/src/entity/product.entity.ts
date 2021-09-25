@@ -62,7 +62,7 @@ export class Product extends BaseEntity {
   images: string[];
   
   @Field(() => String, { nullable: false })
-  @Column()
+  @Column({ type: "text", nullable: false })
   creatorId!: string;
 
   @Field()
