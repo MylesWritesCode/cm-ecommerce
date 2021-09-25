@@ -55,7 +55,7 @@ export class User extends BaseEntity {
   @Column({ type: "text", nullable: false })
   password!: string;
   
-  @Field(() => [String], { nullable: true })
+  // @Field(() => Product, { nullable: true })
   @OneToMany(() => Product, product => product.creator)
   products: Product[];
 

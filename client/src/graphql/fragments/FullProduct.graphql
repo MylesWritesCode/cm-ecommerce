@@ -20,6 +20,6 @@ fragment FullProduct on Product {
   retailPrice
   wholesalePrice
   images
-  creator
+  creatorId
   sellerCompany
 }

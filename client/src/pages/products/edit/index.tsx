@@ -27,8 +27,8 @@ import {
 interface EditProps {}
 
 const style = {
-  width: "768px"
-}
+  width: "768px",
+};
 
 export const Edit: React.FC<EditProps> = ({}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -71,20 +71,20 @@ export const Edit: React.FC<EditProps> = ({}) => {
           }}
           onSubmit={async (values: CreateProductValues, { setErrors }) => {
             setIsSubmitting(true);
-            console.log(values);
 
             await createProduct({
               variables: values,
               update: (cache, { data }) => {
                 setIsSubmitting(false);
+                console.log("shouldn't we have data here")
+                console.log(data);
               },
             });
+
           }}
         >
           <Form style={style}>
             <Grid
-              // mx={14} // 3.5rem
-              // my={12} // 3rem
               templateColumns="repeat(12, 1fr)"
               gridAutoRows="minmax(100px, auto)"
               rowGap="0"
@@ -128,16 +128,16 @@ export const Edit: React.FC<EditProps> = ({}) => {
                 type="money"
                 colSpan={[6, 2]}
               />
-                <Button
-                  size="sm"
-                  colorScheme="green"
-                  type="submit"
-                  ml="auto"
-                  borderRadius={0}
-                  // isLoading={isSubmitting}
-                >
-                  Create product
-                </Button>
+              <Button
+                size="sm"
+                colorScheme="green"
+                type="submit"
+                ml="auto"
+                borderRadius={0}
+                // isLoading={isSubmitting}
+              >
+                Create product
+              </Button>
             </Grid>
           </Form>
         </Formik>

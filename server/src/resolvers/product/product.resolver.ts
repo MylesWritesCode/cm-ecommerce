@@ -10,7 +10,14 @@
  * -----
  * HISTORY
  */
-import { Arg, Ctx, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
 import { getConnection } from "typeorm";
 
 import { Context } from "../../context";
@@ -29,14 +36,16 @@ export class ProductResolver {
   /** createProduct(CreateProductInput)=========================================
    * Creates a product in the db
    */
-  @Mutation(() => [ProductResponse])
   @UseMiddleware(isAuth)
+  @Mutation(() => [ProductResponse])
   async createProduct(
     @Arg("data") data: CreateProductInput,
     @Ctx() { req }: Context
   ): Promise<typeof ProductResponse[]> {
     let product: Product;
+
     const user = await User.findOne(req.session.userId);
+    if (!user) return [{ error: "user", message: "User not found." }];
 
     try {
       const result = await getConnection()
@@ -51,7 +60,7 @@ export class ProductResolver {
           wholesalePrice: data.wholesalePrice,
           description: data.description,
           images: data.images,
-          creator: user,
+          creatorId: user.id
         })
         .returning("*")
         .execute();
@@ -68,7 +77,6 @@ export class ProductResolver {
         }
       }
     }
-
     return [product];
   }
 
@@ -123,7 +131,7 @@ export class ProductResolver {
           },
         ];
       }
-      
+
       product = result;
     } catch (e) {
       console.log(e);

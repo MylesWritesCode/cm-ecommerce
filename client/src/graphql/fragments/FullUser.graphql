@@ -17,7 +17,6 @@ fragment FullUser on User {
   firstName
   lastName
   age
-  products
   createdAt
   updatedAt
 }

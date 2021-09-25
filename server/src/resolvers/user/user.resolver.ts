@@ -109,6 +109,7 @@ export class UserResolver {
   async login(
     @Arg("login", () => String) loginCredentialName: string,
     @Arg("password", () => String) password: string,
+    // @Ctx() { req }: Context
     @Ctx() { req }: Context
   ): Promise<typeof UserResponse[]> {
     // General login error
@@ -137,8 +138,9 @@ export class UserResolver {
 
     const validPassword = await argon2.verify(user.password, password);
     if (!validPassword) return loginError;
-
+    
     req.session.userId = user.id;
+
     return [user];
   }
 
@@ -155,7 +157,6 @@ export class UserResolver {
           // If we have an error, console.log it and return false. I'll leave
           // it like this for now, but I want to set up some logger that will
           // catch all of these.
-          console.log(error);
           resolve(false);
           return;
         }

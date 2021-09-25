@@ -72,11 +72,14 @@ const main = async () => {
         httpOnly: true,
         sameSite: "lax",
         secure: env.NODE_ENV === "production",
+        // setting this just for apollo explorer my god this sucks
+        // sameSite: "none",
+        // secure: true,
       },
       saveUninitialized: false,
       secret: env.REDIS_SECRET,
       resave: false,
-    })
+    }),
   );
 
   // Setup GraphQL with Apollo
@@ -85,7 +88,9 @@ const main = async () => {
       resolvers: [UserResolver, ProductResolver],
       validate: false,
     }),
-    context: ({ req, res }): Context => ({ req, res, redis }),
+    context: ({ req, res }): Context => ({
+      req, res, redis, 
+    }),
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground],
   });
   await apolloServer.start();

@@ -71,14 +71,15 @@ export type Product = {
   __typename?: 'Product';
   brand: Scalars['String'];
   categories?: Maybe<Array<Scalars['String']>>;
-  creator: Scalars['String'];
+  creator: User;
+  creatorId: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   images?: Maybe<Array<Scalars['String']>>;
   name: Scalars['String'];
   retailPrice?: Maybe<Scalars['Float']>;
   sellerCompany?: Maybe<Scalars['String']>;
-  sku: Scalars['String'];
+  sku?: Maybe<Scalars['String']>;
   wholesalePrice?: Maybe<Scalars['Float']>;
 };
 
@@ -124,16 +125,15 @@ export type User = {
   firstName?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   lastName?: Maybe<Scalars['String']>;
-  products?: Maybe<Array<Scalars['String']>>;
   updatedAt: Scalars['String'];
   username: Scalars['String'];
 };
 
 export type UserResponse = GeneralError | User;
 
-export type FullProductFragment = { __typename?: 'Product', id: string, name: string, brand: string, sku: string, description?: Maybe<string>, categories?: Maybe<Array<string>>, retailPrice?: Maybe<number>, wholesalePrice?: Maybe<number>, images?: Maybe<Array<string>>, creator: string, sellerCompany?: Maybe<string> };
+export type FullProductFragment = { __typename?: 'Product', id: string, name: string, brand: string, sku?: Maybe<string>, description?: Maybe<string>, categories?: Maybe<Array<string>>, retailPrice?: Maybe<number>, wholesalePrice?: Maybe<number>, images?: Maybe<Array<string>>, creatorId: string, sellerCompany?: Maybe<string> };
 
-export type FullUserFragment = { __typename?: 'User', id: string, username: string, email: string, firstName?: Maybe<string>, lastName?: Maybe<string>, age?: Maybe<number>, products?: Maybe<Array<string>>, createdAt: string, updatedAt: string };
+export type FullUserFragment = { __typename?: 'User', id: string, username: string, email: string, firstName?: Maybe<string>, lastName?: Maybe<string>, age?: Maybe<number>, createdAt: string, updatedAt: string };
 
 export type GeneralErrorFragment = { __typename?: 'GeneralError', error: string, message: string, code?: Maybe<string> };
 
@@ -149,7 +149,7 @@ export type CreateProductMutationVariables = Exact<{
 }>;
 
 
-export type CreateProductMutation = { __typename?: 'Mutation', createProduct: Array<{ __typename: 'GeneralError', error: string, message: string, code?: Maybe<string> } | { __typename: 'Product', id: string, name: string, brand: string, sku: string, description?: Maybe<string>, categories?: Maybe<Array<string>>, retailPrice?: Maybe<number>, wholesalePrice?: Maybe<number>, images?: Maybe<Array<string>>, creator: string, sellerCompany?: Maybe<string> }> };
+export type CreateProductMutation = { __typename?: 'Mutation', createProduct: Array<{ __typename: 'GeneralError', error: string, message: string, code?: Maybe<string> } | { __typename: 'Product', id: string, name: string, brand: string, sku?: Maybe<string>, description?: Maybe<string>, categories?: Maybe<Array<string>>, retailPrice?: Maybe<number>, wholesalePrice?: Maybe<number>, images?: Maybe<Array<string>>, creatorId: string, sellerCompany?: Maybe<string> }> };
 
 export type LoginMutationVariables = Exact<{
   login: Scalars['String'];
@@ -157,7 +157,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: Array<{ __typename: 'GeneralError', error: string, message: string, code?: Maybe<string> } | { __typename: 'User', id: string, username: string, email: string, firstName?: Maybe<string>, lastName?: Maybe<string>, age?: Maybe<number>, products?: Maybe<Array<string>>, createdAt: string, updatedAt: string }> };
+export type LoginMutation = { __typename?: 'Mutation', login: Array<{ __typename: 'GeneralError', error: string, message: string, code?: Maybe<string> } | { __typename: 'User', id: string, username: string, email: string, firstName?: Maybe<string>, lastName?: Maybe<string>, age?: Maybe<number>, createdAt: string, updatedAt: string }> };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -174,12 +174,12 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register?: Maybe<Array<{ __typename: 'GeneralError', error: string, message: string, code?: Maybe<string> } | { __typename: 'User', id: string, username: string, email: string, firstName?: Maybe<string>, lastName?: Maybe<string>, age?: Maybe<number>, products?: Maybe<Array<string>>, createdAt: string, updatedAt: string }>> };
+export type RegisterMutation = { __typename?: 'Mutation', register?: Maybe<Array<{ __typename: 'GeneralError', error: string, message: string, code?: Maybe<string> } | { __typename: 'User', id: string, username: string, email: string, firstName?: Maybe<string>, lastName?: Maybe<string>, age?: Maybe<number>, createdAt: string, updatedAt: string }>> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename: 'GeneralError', error: string, message: string, code?: Maybe<string> } | { __typename: 'User', id: string, username: string, email: string, firstName?: Maybe<string>, lastName?: Maybe<string>, age?: Maybe<number>, products?: Maybe<Array<string>>, createdAt: string, updatedAt: string } };
+export type MeQuery = { __typename?: 'Query', me: { __typename: 'GeneralError', error: string, message: string, code?: Maybe<string> } | { __typename: 'User', id: string, username: string, email: string, firstName?: Maybe<string>, lastName?: Maybe<string>, age?: Maybe<number>, createdAt: string, updatedAt: string } };
 
 export const FullProductFragmentDoc = gql`
     fragment FullProduct on Product {
@@ -192,7 +192,7 @@ export const FullProductFragmentDoc = gql`
   retailPrice
   wholesalePrice
   images
-  creator
+  creatorId
   sellerCompany
 }
     `;
@@ -204,7 +204,6 @@ export const FullUserFragmentDoc = gql`
   firstName
   lastName
   age
-  products
   createdAt
   updatedAt
 }

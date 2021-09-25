@@ -15,17 +15,14 @@ import { Context } from "../context";
 
 export const isAuth: MiddlewareFn<Context> = ({ context, info }, next) => {
  
-  // If I need to find out what the return type is, check this object.
-  // console.log("==========info==========");
-  // console.log(info);
-  // console.log(info.returnType);
-  
   const returnTypeStr = info.returnType.toString();
-  let notAuthenticatedMessage = {
+  const noAuthError = {
     error: "auth",
     message: "User not authenticated.",
     code: "NO_AUTH"
   };
+  
+  console.log(context.req.session.userId);
   
   return new Promise((resolve) => {
     if (!context.req.session.userId) {
@@ -37,13 +34,15 @@ export const isAuth: MiddlewareFn<Context> = ({ context, info }, next) => {
         // be able to assume that the resolver needs to return an array of some
         // sort. Knowing this, we can resolve isAuth to send back the response 
         // in the form of an array.
-        resolve([notAuthenticatedMessage]);
+        resolve([noAuthError]);               // Gets sent back to user
+        throw new Error(noAuthError.message); // Stops the op
       } else {
         // And if the return type doesn't have brackets, that means that the
         // response from isAuth shouldn't be in an array - e.g. the resolver is
         // expecting to return UserResponse instead of UserResponse[]. Because
         // of this we'll just send the not-authenticated-message.
-        resolve(notAuthenticatedMessage);
+        resolve(noAuthError);
+        throw new Error(noAuthError.message);
       }
     }
     
