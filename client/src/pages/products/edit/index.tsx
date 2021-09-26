@@ -13,7 +13,7 @@
  * -----
  * HISTORY
  */
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
@@ -32,6 +32,14 @@ const style = {
 
 export const Edit: React.FC<EditProps> = ({}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const imageInputRef = useRef(null);
+  
+  // Idk if there's a cleaner way to do this. This is kinda gross. I wanted just
+  // an inline function on the button's `onClick` cb, but...ya'know.
+  const onImageUploadClick = () => {
+    imageInputRef.current.click();
+  };
+  
   const [createProduct] = useCreateProductMutation();
   return (
     <Flex flexDirection="column" minHeight={VH}>
@@ -69,9 +77,9 @@ export const Edit: React.FC<EditProps> = ({}) => {
             retailPrice: 0,
             wholesalePrice: 0,
           }}
-          onSubmit={async (values, { setErrors }) => {
+          onSubmit={async (values: CreateProductValues, { setErrors }) => {
             setIsSubmitting(true);
-            
+
             await createProduct({
               variables: {
                 ...values,
@@ -128,16 +136,38 @@ export const Edit: React.FC<EditProps> = ({}) => {
                 type="money"
                 colSpan={[6, 2]}
               />
-              <Button
-                size="sm"
-                colorScheme="green"
-                type="submit"
-                ml="auto"
-                borderRadius={0}
-                // isLoading={isSubmitting}
-              >
-                Create product
-              </Button>
+              <GridItem colSpan={[6, 4]}>
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="imageInput"
+                  style={{ display: "none" }}
+                  ref={imageInputRef}
+                />
+                <label htmlFor="imageInput">
+                  <Button
+                    size="sm"
+                    colorScheme="linkedin"
+                    ml="auto"
+                    borderRadius={0}
+                    onClick={() => onImageUploadClick()}
+                  >
+                    Upload Images
+                  </Button>
+                </label>
+              </GridItem>
+              <GridItem colSpan={[6, 4]}>
+                <Button
+                  size="sm"
+                  colorScheme="green"
+                  type="submit"
+                  ml="auto"
+                  borderRadius={0}
+                  // isLoading={isSubmitting}
+                >
+                  Create product
+                </Button>
+              </GridItem>
             </Grid>
           </Form>
         </Formik>
