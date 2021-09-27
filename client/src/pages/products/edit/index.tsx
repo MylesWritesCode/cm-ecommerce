@@ -13,7 +13,7 @@
  * -----
  * HISTORY
  */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
@@ -33,16 +33,29 @@ const style = {
 export const Edit: React.FC<EditProps> = ({}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const imageInputRef = useRef(null);
+  
+  let imagePreviews: string[];
 
   // Idk if there's a cleaner way to do this. This is kinda gross. I wanted just
   // an inline function on the button's `onClick` cb, but...ya'know.
   const onImageUploadClick = () => {
     imageInputRef.current.click();
+    console.log(imageInputRef);
   };
+  
+  let handleChange = (event) => {
+    const images = event.target.files;
+    
+    for (let i = 0; i < images.length; ++i) {
+      console.log(images[i]);
+      imagePreviews.push(URL.createObjectURL(images[i]));
+    }
+  }
 
   const [createProduct] = useCreateProductMutation();
   return (
     <Flex flexDirection="column" minHeight={VH}>
+      <img src={imagePreviews ? imagePreviews[0] : null}/>
       <Flex
         height="270px"
         minHeight="270px"
@@ -144,6 +157,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
                   style={{ display: "none" }}
                   multiple={true}
                   ref={imageInputRef}
+                  onChange={(event) => handleChange(event)}
                 />
                 <Button
                   size="sm"
@@ -155,7 +169,8 @@ export const Edit: React.FC<EditProps> = ({}) => {
                   Upload Images
                 </Button>
               </GridItem>
-              <GridItem colSpan={[6, 2]}>
+              {/* Submit button always be the last element in the grid */}
+              <GridItem colStart={[-2]}>
                 <Button
                   size="sm"
                   colorScheme="green"
