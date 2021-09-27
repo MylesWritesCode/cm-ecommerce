@@ -13,8 +13,8 @@
 import React from "react";
 import { Flex, FlexProps, Heading, Icon } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { ConditionalNextLink } from "../ConditionalNextLink";
-import { MenuConfigItem } from "../../constants";
+import { ConditionalNextLink } from "@components/ConditionalNextLink";
+import { MenuConfigItem } from "@constants";
 
 interface MenuItemProps {
   toggle: () => void;

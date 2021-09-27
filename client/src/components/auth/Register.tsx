@@ -14,13 +14,9 @@ import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import { Flex, Button } from "@chakra-ui/react";
 import * as Yup from "yup";
-import {
-  MeDocument,
-  MeQuery,
-  useRegisterMutation,
-} from "../../generated/graphql";
+import { MeDocument, MeQuery, useRegisterMutation } from "@generated/graphql";
 import { ChakraInput } from "../ChakraInput";
-import { toErrorMap } from "../../utils";
+import { toErrorMap } from "@utils/toErrorMap";
 
 interface RegisterProps {
   closeModal: () => void;
@@ -44,7 +40,7 @@ const RegisterErrorSchema = Yup.object().shape({
     .required("Required"),
 });
 
-const style = { width: "100%", }
+const style = { width: "100%" };
 
 export const Register: React.FC<RegisterProps> = ({ ...props }) => {
   const { closeModal } = props;

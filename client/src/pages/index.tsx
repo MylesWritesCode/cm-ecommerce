@@ -12,7 +12,7 @@
  */
 import React from "react";
 import { Flex, useColorMode } from "@chakra-ui/react";
-import { VH } from "../constants";
+import { VH } from "@constants";
 
 const Index: React.FC<{}> = ({}) => {
   // Color mode for bg

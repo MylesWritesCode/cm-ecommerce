@@ -12,7 +12,7 @@
  */
 import React from "react";
 import { Flex, FlexProps } from "@chakra-ui/react";
-import { NavbarConfig, MenuConfig } from "../../constants";
+import { NavbarConfig, MenuConfig } from "@constants";
 import { motion } from "framer-motion";
 import { MenuItem } from "./MenuItem";
 

@@ -14,23 +14,15 @@
  * HISTORY
  */
 import React, { ChangeEvent, useRef, useState } from "react";
-import {
-  Button,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  Image,
-  Box,
-} from "@chakra-ui/react";
+import { Button, Flex, Grid, GridItem, Heading, Image } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
-import { VH, NavbarConfig } from "../../../constants";
-import ChakraGridInput from "../../../components/ChakraGridInput";
+import { VH, NavbarConfig } from "@constants";
+import ChakraGridInput from "@components/ChakraGridInput";
 import {
   useCreateProductMutation,
   CreateProductMutationVariables as CreateProductValues,
-} from "../../../generated/graphql";
+} from "@generated/graphql";
 
 interface EditProps {}
 
@@ -163,7 +155,6 @@ export const Edit: React.FC<EditProps> = ({}) => {
               />
               <GridItem
                 colSpan={[11]}
-                flexWrap="wrap"
                 max-width="600px"
                 sx={{ columnCount: [1, 2, 3], columnGap: "8px" }}
               >

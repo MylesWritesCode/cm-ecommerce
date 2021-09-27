@@ -24,7 +24,7 @@ import {
 import { Login } from "./Login";
 import { Register } from "./Register";
 import { AuthFooter } from "./AuthFooter";
-import { NavbarConfig } from "../../constants";
+import { NavbarConfig } from "@constants";
 
 interface AuthModalProps {
   isOpen: boolean;

@@ -19,7 +19,7 @@ import { MenuDrawer } from "./MenuDrawer";
 import { MenuToggle } from "./MenuToggle";
 import { NavbarAuthInfo } from "./NavbarAuthInfo";
 
-import { NavbarConfig, VH } from "../../constants";
+import { NavbarConfig } from "@constants";
 import ClientOnly from "../ClientOnly";
 import { useDimensions } from "./useDimensions";
 

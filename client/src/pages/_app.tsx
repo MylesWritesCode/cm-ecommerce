@@ -12,7 +12,7 @@
  */
 import { ApolloProvider } from "@apollo/client";
 import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
-import { Navbar } from "../components/nav";
+import { Navbar } from "@components/nav/Navbar";
 
 import { useApollo } from "../lib/apolloClient";
 import theme from "../theme";

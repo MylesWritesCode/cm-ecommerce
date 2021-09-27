@@ -50,6 +50,7 @@ const getEnvWithPrefixes = (prefixes = ['REACT_APP_', 'NEXT_PUBLIC_']) => {
 }
 
 const nextConfig = {
+  webpack5: true,
   env: getEnvWithPrefixes()
 }
 

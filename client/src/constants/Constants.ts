@@ -1,5 +1,5 @@
 /*
- * File: \src\constants\index.ts
+ * File: \src\constants\Constants.ts
  * Project: cm-ecommerce/cm-ecommerce-client
  * Created Date: Sunday September 19th 2021
  * Author: Myles Berueda

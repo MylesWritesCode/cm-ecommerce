@@ -15,9 +15,9 @@
 import React, { useState } from "react";
 import { Flex, Heading, Button, useDisclosure } from "@chakra-ui/react";
 import { useApolloClient } from "@apollo/client";
-import { useLogoutMutation, useMeQuery } from "../../generated/graphql";
-import { isServer } from "../../utils/isServer";
-import { AuthModal } from "../auth";
+import { useLogoutMutation, useMeQuery } from "@generated/graphql";
+import { isServer } from "@utils/isServer";
+import { AuthModal } from "@components/auth/AuthModal";
 
 interface NavbarAuthInfoProps {}
 
