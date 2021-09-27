@@ -14,7 +14,7 @@
  * HISTORY
  */
 import React, { ChangeEvent, useRef, useState } from "react";
-import { Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
+import { Button, Flex, Grid, GridItem, Heading, Image } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
 import { VH, NavbarConfig } from "../../../constants";
@@ -46,8 +46,11 @@ export const Edit: React.FC<EditProps> = ({}) => {
     const images = event.target.files;
     let imgPre_: string[] = [];
 
+    console.log(event);
+
     if (images) {
       for (let i = 0; i < images.length; ++i) {
+        console.log(images[i]);
         // Create an object URL to be used in image previews div.
         imgPre_.push(URL.createObjectURL(images[i]));
       }
@@ -57,7 +60,6 @@ export const Edit: React.FC<EditProps> = ({}) => {
 
   return (
     <Flex flexDirection="column" minHeight={VH}>
-      <img src={imagePreviews ? imagePreviews[0] : null} />
       <Flex
         height="270px"
         minHeight="270px"
@@ -151,38 +153,76 @@ export const Edit: React.FC<EditProps> = ({}) => {
                 type="money"
                 colSpan={[6, 2]}
               />
-              <GridItem colSpan={[6, 2]}>
-                <input
-                  type="file"
-                  accept="image/*"
-                  id="imageInput"
-                  style={{ display: "none" }}
-                  multiple={true}
-                  ref={imageInputRef}
-                  onChange={(event) => handleImageInputChange(event)}
-                />
-                <Button
-                  size="sm"
-                  colorScheme="linkedin"
-                  ml="auto"
-                  borderRadius={0}
-                  onClick={() => onImageUploadClick()}
-                >
-                  Upload Images
-                </Button>
+              <GridItem
+                display="flex"
+                colSpan={[11]}
+                // flexDirection="column"
+                flexWrap="wrap"
+                max-width="600px"
+              >
+                {imagePreviews.map((ip, index) => {
+                  return (
+                    <Flex
+                      key={index}
+                      border="2px solid black"
+                      position="relative"
+                      width="30.33%"
+                      flexGrow={1}
+                      margin={2}
+                      before
+                      maxHeight="300px"
+                      overflow="hidden"
+                    >
+                      <Image
+                        display="block"
+                        minWidth="100%"
+                        height="190px"
+                        src={ip}
+                        width="100%"
+                        maxWidth="450px"
+                        objectFit="cover"
+                      />
+                    </Flex>
+                  );
+                })}
               </GridItem>
-              {/* Submit button always be the last element in the grid */}
               <GridItem colStart={[-2]}>
-                <Button
-                  size="sm"
-                  colorScheme="green"
-                  type="submit"
-                  ml="auto"
-                  borderRadius={0}
-                  // isLoading={isSubmitting}
+                <Flex
+                  height="100%"
+                  flexDirection="column"
+                  justifyContent="start"
                 >
-                  Create product
-                </Button>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="imageInput"
+                    style={{ display: "none" }}
+                    multiple={true}
+                    ref={imageInputRef}
+                    onChange={(event) => handleImageInputChange(event)}
+                  />
+                  <Button
+                    size="sm"
+                    colorScheme="linkedin"
+                    ml="auto"
+                    mb={5}
+                    borderRadius={0}
+                    onClick={() => onImageUploadClick()}
+                  >
+                    Upload Images
+                  </Button>
+                  <Button
+                    width="100%"
+                    size="sm"
+                    colorScheme="green"
+                    type="submit"
+                    ml="auto"
+                    borderRadius={0}
+                    // isLoading={isSubmitting}
+                  >
+                    Publish
+                  </Button>
+                </Flex>
               </GridItem>
             </Grid>
           </Form>
