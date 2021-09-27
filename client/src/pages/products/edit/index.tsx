@@ -33,13 +33,13 @@ const style = {
 export const Edit: React.FC<EditProps> = ({}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const imageInputRef = useRef(null);
-  
+
   // Idk if there's a cleaner way to do this. This is kinda gross. I wanted just
   // an inline function on the button's `onClick` cb, but...ya'know.
   const onImageUploadClick = () => {
     imageInputRef.current.click();
   };
-  
+
   const [createProduct] = useCreateProductMutation();
   return (
     <Flex flexDirection="column" minHeight={VH}>
@@ -136,27 +136,26 @@ export const Edit: React.FC<EditProps> = ({}) => {
                 type="money"
                 colSpan={[6, 2]}
               />
-              <GridItem colSpan={[6, 4]}>
+              <GridItem colSpan={[6, 2]}>
                 <input
                   type="file"
                   accept="image/*"
                   id="imageInput"
                   style={{ display: "none" }}
+                  multiple={true}
                   ref={imageInputRef}
                 />
-                <label htmlFor="imageInput">
-                  <Button
-                    size="sm"
-                    colorScheme="linkedin"
-                    ml="auto"
-                    borderRadius={0}
-                    onClick={() => onImageUploadClick()}
-                  >
-                    Upload Images
-                  </Button>
-                </label>
+                <Button
+                  size="sm"
+                  colorScheme="linkedin"
+                  ml="auto"
+                  borderRadius={0}
+                  onClick={() => onImageUploadClick()}
+                >
+                  Upload Images
+                </Button>
               </GridItem>
-              <GridItem colSpan={[6, 4]}>
+              <GridItem colSpan={[6, 2]}>
                 <Button
                   size="sm"
                   colorScheme="green"
