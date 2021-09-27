@@ -169,22 +169,16 @@ export const Edit: React.FC<EditProps> = ({}) => {
               >
                 {imagePreviews.map((ip, index) => {
                   return (
-                    <Flex
-                      display="inline-block"
+                    <Image
                       key={index}
-                      border="2px solid black"
-                      position="relative"
+                      src={ip}
                       width="100%"
-                    >
-                      <Image
-                        display="block"
-                        minWidth="100%"
-                        src={ip}
-                        width="100%"
-                        maxWidth="450px"
-                        objectFit="cover"
-                      />
-                    </Flex>
+                      minWidth="100%"
+                      maxWidth="450px"
+                      mb={2}
+                      objectFit="cover"
+                      border="2px solid black"
+                    />
                   );
                 })}
               </GridItem>
