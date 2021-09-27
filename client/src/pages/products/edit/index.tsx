@@ -14,7 +14,15 @@
  * HISTORY
  */
 import React, { ChangeEvent, useRef, useState } from "react";
-import { Button, Flex, Grid, GridItem, Heading, Image } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Image,
+  Box,
+} from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
 import { VH, NavbarConfig } from "../../../constants";
@@ -154,29 +162,23 @@ export const Edit: React.FC<EditProps> = ({}) => {
                 colSpan={[6, 2]}
               />
               <GridItem
-                display="flex"
                 colSpan={[11]}
-                // flexDirection="column"
                 flexWrap="wrap"
                 max-width="600px"
+                sx={{ columnCount: [1, 2, 3], columnGap: "8px" }}
               >
                 {imagePreviews.map((ip, index) => {
                   return (
                     <Flex
+                      display="inline-block"
                       key={index}
                       border="2px solid black"
                       position="relative"
-                      width="30.33%"
-                      flexGrow={1}
-                      margin={2}
-                      before
-                      maxHeight="300px"
-                      overflow="hidden"
+                      width="100%"
                     >
                       <Image
                         display="block"
                         minWidth="100%"
-                        height="190px"
                         src={ip}
                         width="100%"
                         maxWidth="450px"
