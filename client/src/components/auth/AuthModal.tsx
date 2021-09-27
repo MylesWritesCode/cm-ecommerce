@@ -21,9 +21,7 @@ import {
   Heading,
   ModalFooter,
 } from "@chakra-ui/react";
-import { Login } from "./Login";
-import { Register } from "./Register";
-import { AuthFooter } from "./AuthFooter";
+import { Login, Register, AuthFooter } from "./";
 import { NavbarConfig } from "@constants";
 
 interface AuthModalProps {

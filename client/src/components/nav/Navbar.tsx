@@ -15,13 +15,11 @@ import { Flex, FlexProps, Heading, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { motion, useCycle } from "framer-motion";
 
-import { MenuDrawer } from "./MenuDrawer";
-import { MenuToggle } from "./MenuToggle";
-import { NavbarAuthInfo } from "./NavbarAuthInfo";
+import { MenuDrawer, MenuToggle, NavbarAuthInfo } from './'
+import { useDimensions } from "./useDimensions";
+import ClientOnly from "../ClientOnly";
 
 import { NavbarConfig } from "@constants";
-import ClientOnly from "../ClientOnly";
-import { useDimensions } from "./useDimensions";
 
 interface NavbarProps {}
 

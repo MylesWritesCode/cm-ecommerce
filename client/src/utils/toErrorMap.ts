@@ -10,7 +10,7 @@
  * -----
  * HISTORY
  */
-import { UserResponse } from "../generated/graphql";
+import { UserResponse } from "@generated/graphql";
 
 export const toErrorMap = (responses: UserResponse[]) => {
   console.log("responses: ", responses);

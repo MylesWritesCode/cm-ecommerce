@@ -29,7 +29,6 @@ const Index: React.FC<{}> = ({}) => {
         alignItems="center"
         justifyContent="flex-start"
       >
-        {/* <Navbar /> */}
       </Flex>
     </>
   );
