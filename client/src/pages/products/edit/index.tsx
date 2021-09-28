@@ -65,7 +65,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
       return v === image.src;
     });
 
-    // The typescript way to do this. I think I might just make a swap function.
+    // This is the TS way to swap elements:
     [imgPrev[0], imgPrev[index]] = [imgPrev[index], imgPrev[0]];
 
     setImagePreviews(imgPrev);
