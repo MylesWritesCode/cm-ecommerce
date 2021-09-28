@@ -154,7 +154,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
                 colSpan={[6, 2]}
               />
               <GridItem
-                colSpan={[11]}
+                colSpan={[12, 10]}
                 max-width="600px"
                 sx={{ columnCount: [1, 2, 3], columnGap: "8px" }}
               >
@@ -173,7 +173,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
                   );
                 })}
               </GridItem>
-              <GridItem colStart={[-2]}>
+              <GridItem overflow="hidden" colSpan={[2]}>
                 <Flex
                   height="100%"
                   flexDirection="column"
@@ -193,10 +193,11 @@ export const Edit: React.FC<EditProps> = ({}) => {
                     colorScheme="linkedin"
                     ml="auto"
                     mb={5}
+                    width="100%"
                     borderRadius={0}
                     onClick={() => onImageUploadClick()}
                   >
-                    Upload Images
+                    Select Images
                   </Button>
                   <Button
                     width="100%"

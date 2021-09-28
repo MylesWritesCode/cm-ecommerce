@@ -14,7 +14,7 @@ import { ApolloProvider } from "@apollo/client";
 import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
 
 import { Navbar } from "@components/nav";
-import { useApollo } from "@lib/apolloClient";
+import { useApollo } from "@lib/apollo";
 import theme from "../theme";
 
 function MyApp({ Component, pageProps }) {
