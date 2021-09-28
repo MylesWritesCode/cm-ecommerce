@@ -13,7 +13,7 @@
  * -----
  * HISTORY
  */
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Button, Flex, Grid, GridItem, Heading, Image } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
@@ -42,20 +42,33 @@ export const Edit: React.FC<EditProps> = ({}) => {
     imageInputRef.current.click();
   };
 
-  let handleImageInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const images = event.target.files;
+  const handleImageInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const images: FileList = event.target.files;
     let imgPre_: string[] = [];
-
-    console.log(event);
 
     if (images) {
       for (let i = 0; i < images.length; ++i) {
-        console.log(images[i]);
         // Create an object URL to be used in image previews div.
         imgPre_.push(URL.createObjectURL(images[i]));
       }
       setImagePreviews(imgPre_);
     }
+  };
+
+  const handleImageClick = (
+    event: React.MouseEvent<HTMLImageElement, MouseEvent>
+  ) => {
+    const image: HTMLImageElement = event.target as HTMLImageElement;
+    const imgPrev = imagePreviews;
+
+    const index = imgPrev.findIndex((v: string) => {
+      return v === image.src;
+    });
+
+    // The typescript way to do this. I think I might just make a swap function.
+    [imgPrev[0], imgPrev[index]] = [imgPrev[index], imgPrev[0]];
+
+    setImagePreviews(imgPrev);
   };
 
   return (
@@ -167,8 +180,13 @@ export const Edit: React.FC<EditProps> = ({}) => {
                       minWidth="100%"
                       maxWidth="450px"
                       mb={2}
+                      // p={2}
+                      border={
+                        index === 0 ? "5px solid #a755c2" : "5px solid #323338"
+                      }
                       objectFit="cover"
-                      border="2px solid black"
+                      bgGradient="linear(-45deg, #A755C2, #2a2c37)"
+                      onClick={handleImageClick}
                     />
                   );
                 })}
@@ -186,7 +204,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
                     style={{ display: "none" }}
                     multiple={true}
                     ref={imageInputRef}
-                    onChange={(event) => handleImageInputChange(event)}
+                    onChange={handleImageInputChange}
                   />
                   <Button
                     size="sm"
@@ -195,7 +213,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
                     mb={5}
                     width="100%"
                     borderRadius={0}
-                    onClick={() => onImageUploadClick()}
+                    onClick={onImageUploadClick}
                   >
                     Select Images
                   </Button>
