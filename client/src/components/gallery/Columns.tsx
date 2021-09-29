@@ -11,3 +11,13 @@
  * -----
  * HISTORY
  */
+import React from "react";
+import { Box } from "@chakra-ui/react";
+
+interface ColumnProps {}
+
+export const Column: React.FC<ColumnProps> = ({ ...props }) => {
+  return <Box></Box>;
+};
+
+export default Column;

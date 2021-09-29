@@ -11,19 +11,13 @@
  * -----
  * HISTORY
  */
-import React from 'react';
-import { Image, ChakraProps } from '@chakra-ui/react';
+import React from "react";
+import { Box } from "@chakra-ui/react";
 
-interface FrameProps {
-  key: number | string; // Idk if this can be a string.
-  src: string;
-}
+interface FrameProps {}
 
-type Props = FrameProps & ChakraProps
-export const Frame: React.FC<Props> = ({...props}) => {
-  const { key, src, sx } = props;
-
-  return <Image src={src} key={key} mb={sx.columnGap as string} />;
-}
+export const Frame: React.FC<FrameProps> = ({ ...props }) => {
+  return <Box></Box>;
+};
 
 export default Frame;
