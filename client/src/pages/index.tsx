@@ -15,6 +15,8 @@ import { Flex, useColorMode } from "@chakra-ui/react";
 import { VH } from "@constants";
 import Gallery from "@/components/gallery/Gallery";
 
+import { devStockImages } from "@/components/gallery";
+
 const Index: React.FC<{}> = ({}) => {
   // Color mode for bg
   const { colorMode } = useColorMode();
@@ -30,7 +32,10 @@ const Index: React.FC<{}> = ({}) => {
         alignItems="center"
         justifyContent="flex-start"
       >
-        <Gallery sx={{ columnCount: [1, 2, 3], columnGap: "8px" }} />
+        <Gallery
+          src={devStockImages}
+          sx={{ columnCount: [1, 2, 3], columnGap: "8px" }}
+        />
       </Flex>
     </>
   );

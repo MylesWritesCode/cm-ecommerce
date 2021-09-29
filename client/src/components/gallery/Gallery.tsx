@@ -10,29 +10,52 @@
  * -----
  * HISTORY
  */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, BoxProps, Image } from "@chakra-ui/react";
-import { devStockImages } from ".";
 
 interface GalleryProps {
-
+  src: string[];
 }
 
 type Props = GalleryProps & BoxProps;
 export const Gallery: React.FC<Props> = ({ ...props }) => {
-  const { sx } = props;
-  const [images, setImages] = useState([]);
+  const { src, sx } = props;
+  const [images, setImages] = useState(src);
+  const [selected, select] = useState(null);
+  
+  // If there's no images, just return a simple box.
+  if (!src) return <Box></Box>;
 
-  // For development
-  useEffect(() => {
-    setImages(devStockImages);
-  }, [devStockImages])
+  const handleOnClick = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const target: HTMLDivElement = ev.target as HTMLDivElement;
+    
+    if (target === selected) {
+      return;
+    } else {
+      target.style.border = "5px solid black";
+      if (selected) selected!.style = null;
+      select(target);
+    }
+  };
+  
+  const handleOnDrag = (ev: React.DragEvent<HTMLDivElement>) => {
+    console.log("drag: ", ev);
+  }
 
   return (
-    <Box sx={sx}>
+    <Box
+      sx={sx}
+      onClick={(e) => handleOnClick(e)}
+      onDrag={(e) => handleOnDrag(e)}
+    >
       {images.map((image, index) => {
-        console.log(image);
-        return <Image src={image} key={index} mb={sx.columnGap as string}/>
+        return (
+        <Image 
+          src={image} 
+          key={index} 
+          mb={sx.columnGap as string}
+        />
+        );
       })}
     </Box>
   );
