@@ -1,5 +1,3 @@
-import Gallery from "./Gallery";
-
 /*
  * File: /src/components/gallery/index.ts
  * Project: cm-ecommerce/cm-ecommerce-client
@@ -13,6 +11,7 @@ import Gallery from "./Gallery";
  * HISTORY
  */
 export * from "./Gallery";
+export * from "./Frame"
 
 export const devStockImages = [
   "/stock-images/charlie-harris-z3PPXbkuocE-unsplash.jpg",

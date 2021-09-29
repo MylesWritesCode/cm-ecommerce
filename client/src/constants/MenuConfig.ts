@@ -46,8 +46,8 @@ export const MenuConfig: MenuConfigItem[] = [
         icon: AddIcon,
       },
       {
-        name: "the second child item",
-        link: "second-child-href",
+        name: "react-beautiful-dnd",
+        link: "/react-beautiful-dnd",
         icon: MdSettings,
       },
       {
