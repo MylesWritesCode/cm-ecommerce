@@ -13,7 +13,7 @@
  * -----
  * HISTORY
  */
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import { Button, Flex, Grid, GridItem, Heading, Image } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
@@ -58,8 +58,10 @@ export const Edit: React.FC<EditProps> = ({}) => {
   const handleImageClick = (
     event: React.MouseEvent<HTMLImageElement, MouseEvent>
   ) => {
+    // "5px solid #a755c2" : "5px solid #323338"
     const image: HTMLImageElement = event.target as HTMLImageElement;
     const imgPrev = imagePreviews;
+    
 
     const index = imgPrev.findIndex((v: string) => {
       return v === image.src;
