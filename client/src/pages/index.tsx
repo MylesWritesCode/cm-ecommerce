@@ -13,6 +13,7 @@
 import React from "react";
 import { Flex, useColorMode } from "@chakra-ui/react";
 import { VH } from "@constants";
+import Gallery from "@/components/gallery/Gallery";
 
 const Index: React.FC<{}> = ({}) => {
   // Color mode for bg
@@ -29,6 +30,7 @@ const Index: React.FC<{}> = ({}) => {
         alignItems="center"
         justifyContent="flex-start"
       >
+        <Gallery sx={{ columnCount: [1, 2, 3], columnGap: "8px" }} />
       </Flex>
     </>
   );
