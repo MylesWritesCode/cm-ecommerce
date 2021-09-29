@@ -34,7 +34,11 @@ const Index: React.FC<{}> = ({}) => {
       >
         <Gallery
           src={devStockImages}
-          sx={{ columnCount: [1, 2, 3], columnGap: "8px" }}
+          sx={{
+            columnCount: [1, 2, 3],
+            columnGap: "8px",
+            columnFill: "balance-all",
+          }}
         />
       </Flex>
     </>

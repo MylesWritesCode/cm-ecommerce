@@ -3,8 +3,7 @@
  * Project: cm-ecommerce/cm-ecommerce-client
  * Created Date: Tuesday September 28th 2021
  * Author: Myles Berueda
- * Note: PROBABLY NOT GOING TO USE THIS, BUT I WILL IF THE CODE IN GALLERY GETS
- *       TOO LONG.
+ * Note: This would then be responsible for each image frame.
  * -----
  * Last Modified: Tuesday September 28th 2021 11:27:07 pm
  * -----
