@@ -13,10 +13,26 @@
  */
 import React, { useEffect, useState } from "react";
 import { Box, BoxProps, Image, Heading } from "@chakra-ui/react";
+import {
+  DndContext,
+  MouseSensor,
+  TouchSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+  DragStartEvent,
+  closestCenter,
+  DragOverlay,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  rectSwappingStrategy,
+} from "@dnd-kit/sortable";
 import dynamic from "next/dynamic";
 
-// Testing react-beautiful-dnd
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { Draggable, Droppable, SortableItem } from "@components/dnd";
 
 interface GalleryProps {
   src: string[];
@@ -28,7 +44,8 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
   const [images, setImages] = useState(src);
   const [columns, setColumns] = useState(null);
   const [isWindowReady, setIsWindowReady] = useState(false);
-  const [ids, setIds] = useState([]);
+  const [activeId, setActiveId] = useState(null);
+  const sensors = useSensors(useSensor(PointerSensor));
 
   // This will run once on mount.
   useEffect(() => {
@@ -38,43 +55,73 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
   // If there's no images, just return a simple box.
   if (!src) return <Box></Box>;
 
-  const onDragEnd = (result, provided) => {
-    console.log("result: ", result);
-    console.log("provided: ", provided);
+  const onDragStart = (ev: DragStartEvent) => {
+    const { active } = ev;
+    setActiveId(active.id);
   };
 
-  const comp = (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="gallery">
-        {(provided, snapshot) => (
-          <Box ref={provided.innerRef} sx={sx} {...provided.droppableProps}>
-            {images.map((image, index) => (
-              <Draggable
-                key={`dk-${index}`}
-                draggableId={`did-${index}`}
-                index={index}
-              >
-                {(provided, snapshot) => (
-                  <Box
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    <Image src={image} mb={sx.columnGap as string} />
-                  </Box>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </Box>
-        )}
+  const onDragEnd = (ev: DragEndEvent) => {
+    const { active, over } = ev;
+    if (active.id !== over.id) {
+      setImages((images) => {
+        const oldIndex = images.indexOf(active.id);
+        const newIndex = images.indexOf(over.id);
+
+        return arrayMove(images, oldIndex, newIndex);
+      });
+    }
+
+    setActiveId(null);
+  };
+
+  const draggableComp = (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+    >
+    <Droppable id='gallery'>
+      <Box sx={sx}>
+          {images.map((image, index) => (
+            <Draggable id={index.toString()} key={index}>
+              <Image src={image} mb={sx.columnGap as string} />
+            </Draggable>
+          ))}
+      </Box>
       </Droppable>
-    </DragDropContext>
+    </DndContext>
+  );
+
+  const comp = (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+    >
+      <Box sx={sx}>
+        <SortableContext items={images} strategy={rectSwappingStrategy}>
+          {images.map((image, index) => (
+            <SortableItem id={index} key={index}>
+              <Image src={image} mb={sx.columnGap as string} />
+            </SortableItem>
+          ))}
+        </SortableContext>
+        <DragOverlay>
+          {activeId ? (
+            <SortableItem id={activeId}>
+              <Image src={images[activeId]} />
+            </SortableItem>
+          ) : null}
+        </DragOverlay>
+      </Box>
+    </DndContext>
   );
 
   // Need to wait for the window to be ready before loading everything,
   // otherwise the drag handles aren't going to load correctly.
-  return isWindowReady ? comp : null;
+  return isWindowReady ? draggableComp : null;
 };
 
 export default Gallery;
