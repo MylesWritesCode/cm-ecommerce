@@ -34,6 +34,7 @@ const Index: React.FC<{}> = ({}) => {
         <Gallery
           src={devStockImages}
           sx={{
+            width: "100%",
             columnCount: [1, 2, 3],
             columnGap: "8px",
             columnFill: "balance-all",
