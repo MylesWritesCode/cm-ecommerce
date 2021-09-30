@@ -17,7 +17,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { Item } from ".";
 
 interface SortableProps {
-  id: string | number; // setting for debugging
+  id: string | number; 
 }
 
 export const SortableItem: React.FC<SortableProps> = ({ ...props }) => {

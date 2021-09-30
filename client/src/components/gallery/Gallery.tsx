@@ -15,8 +15,6 @@ import React, { useEffect, useState } from "react";
 import { Box, BoxProps, Image, Heading } from "@chakra-ui/react";
 import {
   DndContext,
-  MouseSensor,
-  TouchSensor,
   PointerSensor,
   useSensor,
   useSensors,
