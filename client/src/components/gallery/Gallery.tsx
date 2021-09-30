@@ -11,7 +11,13 @@
  * -----
  * HISTORY
  */
-import React, { forwardRef, HTMLAttributes, useEffect, useState } from "react";
+import React, {
+  forwardRef,
+  HTMLAttributes,
+  LegacyRef,
+  useEffect,
+  useState,
+} from "react";
 import {
   Box,
   BoxProps,
@@ -25,6 +31,7 @@ import {
   ButtonProps,
   Grid,
   GridItem,
+  ChakraProps,
 } from "@chakra-ui/react";
 import {
   DndContext,
@@ -121,19 +128,19 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
               key={image}
               id={image}
               index={index + 1}
-              sx={{
-                backgroundImage: image,
-              }}
               activeIndex={activeIndex}
               onRemove={() => {
                 setImages((images) => images.filter((i) => i !== image));
               }}
+              src={image}
             />
           ))}
         </Box>
       </SortableContext>
       <DragOverlay>
-        {activeId ? <ItemOverlay id={activeId} items={images} /> : null}
+        {activeId ? (
+          <ItemOverlay id={activeId} items={images} src={images[activeId]} />
+        ) : null}
       </DragOverlay>
     </DndContext>
   );
@@ -181,10 +188,8 @@ const SortableItem: React.FC<SortableItemProps> = ({ ...props }) => {
       ref={setNodeRef}
       id={id}
       active={isDragging}
-      style={{
-        transition,
-        transform: isSorting ? undefined : CSS.Translate.toString(transform),
-      }}
+      transition={transition}
+      transform={isSorting ? undefined : CSS.Translate.toString(transform)}
       {...props}
       {...attributes}
       {...listeners}
@@ -192,41 +197,48 @@ const SortableItem: React.FC<SortableItemProps> = ({ ...props }) => {
   );
 };
 
-interface ItemProps extends ImageProps {
+interface ItemProps extends ChakraProps {
   active?: boolean;
   clone?: boolean;
   id: string;
   index?: number;
+  Container?: typeof Box | typeof Image;
+  src?: string;
   onRemove?: () => void;
 }
 
-const Item = React.forwardRef<HTMLImageElement, ItemProps>(function Item(
-  { id, index, active, clone, onRemove, ...props },
+const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
+  { ...props },
   ref
 ) {
+  const { id, index, active, clone, onRemove, Container = Image } = props;
+  console.log(props);
   return (
-    <Box position="relative" mb="8px">
-        <Image
-          width="100%"
-          height="100%"
-          backgroundSize="cover"
-          outline="none"
-          appearance="none"
-          cursor="grab"
-          borderRadius="0"
-          _hover={{ background: "" }}
-          _active={{ background: "" }}
-          ref={ref}
-          src={id}
-          {...props}
-        />
+    <Box
+      position="relative"
+      mb="8px"
+      transform={clone ? "scale(1.025)" : null}
+      animation={clone ? "pop 150ms cubic-bezier(0.18, 0.67, 0.6, 1.22)" : null}
+      cursor={clone ? "grabbing" : "pointer"}
+    >
+      <Container
+        width="100%"
+        height="100%"
+        backgroundSize="cover"
+        outline="none"
+        appearance="none"
+        cursor="grab"
+        borderRadius="0"
+        ref={ref as LegacyRef<HTMLDivElement> & LegacyRef<HTMLImageElement>}
+        {...props}
+      />
       {!active && onRemove ? (
-          <DeleteIcon 
-            position="absolute"
-            top="10px"
-            right="10px"
-            onClick={onRemove} 
-          />
+        <DeleteIcon
+          position="absolute"
+          top="10px"
+          right="10px"
+          onClick={onRemove}
+        />
       ) : null}
     </Box>
   );
