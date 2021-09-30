@@ -3,6 +3,9 @@
  * Project: cm-ecommerce/cm-ecommerce-client
  * Created Date: Wednesday September 29th 2021
  * Author: Myles Berueda
+ * Note: I'm just going to use regular divs in all of these. IDK what it does
+ *       for performance, but I'm just assuming Chakra will increase the bundle
+ *       size for these files. I'm not using ChakraProps anyway, so...
  * -----
  * Last Modified: Wednesday September 29th 2021 3:00:36 pm
  * -----
@@ -11,10 +14,8 @@
  * HISTORY
  */
 import React from "react";
-import { Box } from "@chakra-ui/react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Item } from ".";
 
 interface SortableProps {
   id: string | number; 
@@ -31,9 +32,9 @@ export const SortableItem: React.FC<SortableProps> = ({ ...props }) => {
   };
 
   return (
-  <Box ref={setNodeRef} style={style} {...attributes} {...listeners}>
+  <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
     { children }
-  </Box>
+  </div>
   );
 };
 
