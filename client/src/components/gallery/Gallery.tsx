@@ -30,7 +30,8 @@ import {
 } from "@dnd-kit/sortable";
 import dynamic from "next/dynamic";
 
-import { Draggable, Droppable, SortableItem } from "@components/dnd";
+import { Draggable, Droppable, Item, SortableItem } from "@components/dnd";
+import Sortable from "../dnd/Sortable";
 
 interface GalleryProps {
   src: string[];
@@ -40,7 +41,6 @@ type Props = GalleryProps & BoxProps;
 export const Gallery: React.FC<Props> = ({ ...props }) => {
   const { src, sx } = props;
   const [images, setImages] = useState(src);
-  const [columns, setColumns] = useState(null);
   const [isWindowReady, setIsWindowReady] = useState(false);
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(useSensor(PointerSensor));
@@ -79,47 +79,33 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
     >
-    <Droppable id='gallery'>
-      <Box sx={sx}>
+      <Droppable id="gallery">
+        <Box sx={sx}>
           {images.map((image, index) => (
             <Draggable id={index.toString()} key={index}>
               <Image src={image} mb={sx.columnGap as string} />
             </Draggable>
           ))}
-      </Box>
+        </Box>
       </Droppable>
     </DndContext>
   );
 
   const comp = (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-    >
+    <Sortable items={images} useDragOverlay={false}>
       <Box sx={sx}>
-        <SortableContext items={images} strategy={rectSwappingStrategy}>
-          {images.map((image, index) => (
-            <SortableItem id={index} key={index}>
-              <Image src={image} mb={sx.columnGap as string} />
-            </SortableItem>
-          ))}
-        </SortableContext>
-        <DragOverlay>
-          {activeId ? (
-            <SortableItem id={activeId}>
-              <Image src={images[activeId]} />
-            </SortableItem>
-          ) : null}
-        </DragOverlay>
+        {images.map((image, index) => (
+          <SortableItem key={image} id={image}>
+            <Image src={image} />
+          </SortableItem>
+        ))}
       </Box>
-    </DndContext>
+    </Sortable>
   );
 
   // Need to wait for the window to be ready before loading everything,
   // otherwise the drag handles aren't going to load correctly.
-  return isWindowReady ? draggableComp : null;
+  return isWindowReady ? comp : null;
 };
 
 export default Gallery;

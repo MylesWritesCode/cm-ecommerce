@@ -11,77 +11,109 @@
  * -----
  * HISTORY
  */
-import React, { useEffect, useRef, useState } from "react";
-import { Box, Flex, Grid } from "@chakra-ui/react";
-import { Announcements, DndContext } from "@dnd-kit/core";
+import React, { useState } from "react";
+import { createPortal } from "react-dom";
+import { Box, Flex, Image } from "@chakra-ui/react";
 import {
-  rectSortingStrategy,
+  closestCenter,
+  CollisionDetection,
+  defaultDropAnimation,
+  DndContext,
+  DragOverlay,
+  DropAnimation,
+  MouseSensor,
+  PointerActivationConstraint,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  rectSwappingStrategy,
   SortableContext,
   SortingStrategy,
 } from "@dnd-kit/sortable";
+import { Item } from ".";
+import { VH } from "@/constants/Constants";
 
 interface SortableProps {
-  Container?: typeof Box | typeof Flex;
+  items: string[];
+  activationConstraint?: PointerActivationConstraint;
+  Container?: typeof Box | typeof Flex; // Not sure if I want to add Grid here.
+  collisionDetection?: CollisionDetection;
+  dropAnimation?: DropAnimation | null;
   strategy?: SortingStrategy;
+  useDragOverlay?: boolean;
 }
 
+const defaultDropAnimationConfig: DropAnimation = {
+  ...defaultDropAnimation,
+  dragSourceOpacity: 0.5,
+};
+
 export const Sortable: React.FC<SortableProps> = ({ ...props }) => {
-  const { Container = Box, strategy = rectSortingStrategy } = props;
-  const [items, setItems] = useState<string[]>(null);
+  const {
+    activationConstraint,
+    collisionDetection = closestCenter,
+    dropAnimation = defaultDropAnimationConfig,
+    strategy = rectSwappingStrategy,
+    useDragOverlay = true,
+    children
+  } = props;
+  const [items, setItems] = useState<string[]>(props.items);
   const [activeId, setActiveId] = useState<string | null>(null);
-  const isFirstAnnouncement = useRef(true);
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint }),
+    useSensor(TouchSensor, { activationConstraint })
+  );
+
+  if (!items) {
+    return (
+      <Flex height={VH} justifyContent="center" alignItems="center">
+        Loading...
+      </Flex>
+    );
+  }
 
   const getIndex = items.indexOf.bind(items);
-  const getPosition = (id: string) => getIndex(id) + 1;
-
-  const announcements: Announcements = {
-    onDragStart(id) {
-      return `Picked up sortable item ${id}. Sortable item ${id} is in position 
-      ${getPosition(id)} of ${items.length}`;
-    },
-    onDragOver(id, overId) {
-      // In this specific use-case, the picked up item's `id` is always the same as the first `over` id.
-      // The first `onDragOver` event therefore doesn't need to be announced, because it is called
-      // immediately after the `onDragStart` announcement and is redundant.
-      if (isFirstAnnouncement.current === true) {
-        isFirstAnnouncement.current = false;
-        return;
-      }
-
-      if (overId) {
-        return `Sortable item ${id} was moved into position 
-        ${getPosition(overId)} of ${items.length}`;
-      }
-
-      return;
-    },
-    onDragEnd(id, overId) {
-      if (overId) {
-        return `Sortable item ${id} was dropped at position 
-        ${getPosition(overId)} of ${items.length}`;
-      }
-
-      return;
-    },
-    onDragCancel(id) {
-      return `Sorting was cancelled. Sortable item ${id} was dropped and 
-      returned to position ${getPosition(id)} of ${items.length}.`;
-    },
-  };
-
-  useEffect(() => {
-    if (!activeId) {
-      isFirstAnnouncement.current = true;
-    }
-  }, [activeId]);
+  const activeIndex = activeId ? getIndex(activeId) : -1;
 
   return (
-    <DndContext announcements={announcements}>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={collisionDetection}
+      onDragStart={({ active }) => {
+        if (!active) return;
+        setActiveId(active.id);
+      }}
+      onDragOver={({ over }) => {
+        setActiveId(null);
+        if (over) {
+          const overIndex = getIndex(over.id);
+          if (activeIndex !== overIndex) {
+            setItems((items) => arrayMove(items, activeIndex, overIndex));
+          }
+        }
+      }}
+      onDragCancel={() => setActiveId(null)}
+    >
       <Box>
         <SortableContext items={items} strategy={strategy}>
-          <Container></Container>
+          {children}
         </SortableContext>
       </Box>
+      {useDragOverlay
+        ? createPortal(
+            <DragOverlay dropAnimation={dropAnimation}>
+              {activeId ? (
+                <Item id={items[activeIndex]}>
+                  <Image src={items[activeIndex]} />
+                </Item>
+              ) : null}
+            </DragOverlay>,
+            document.body
+          )
+        : null}
     </DndContext>
   );
 };

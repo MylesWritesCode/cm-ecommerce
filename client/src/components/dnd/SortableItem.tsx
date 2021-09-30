@@ -1,5 +1,5 @@
 /*
- * File: /src/components/dnd/Sortable.tsx
+ * File: /src/components/dnd/SortableItem.tsx
  * Project: cm-ecommerce/cm-ecommerce-client
  * Created Date: Wednesday September 29th 2021
  * Author: Myles Berueda
@@ -13,28 +13,38 @@
  * -----
  * HISTORY
  */
-import React from "react";
+import React, { useEffect } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 interface SortableProps {
-  id: string | number; 
+  id: string | number;
+  dragOverlay?: boolean;
 }
 
 export const SortableItem: React.FC<SortableProps> = ({ ...props }) => {
-  const { id, children } = props;
+  const { id, dragOverlay = true, children } = props;
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: id.toString() });
-    
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
+  useEffect(() => {
+    if (!dragOverlay) return;
+    document.body.style.cursor = "grabbing";
+
+    return () => {
+      document.body.style.cursor = "";
+    };
+  }, [dragOverlay]);
+
   return (
-  <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-    { children }
-  </div>
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      {children}
+    </div>
   );
 };
 

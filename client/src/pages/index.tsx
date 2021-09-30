@@ -27,7 +27,6 @@ const Index: React.FC<{}> = ({}) => {
       <Flex
         minHeight={VH}
         background={bgColor[colorMode]}
-        // background="linear-gradient(180deg, #0055ff 0%, rgb(0, 153, 255) 100%)"
         direction="column"
         alignItems="center"
         justifyContent="flex-start"

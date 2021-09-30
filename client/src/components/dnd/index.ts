@@ -13,4 +13,4 @@
 export * from "./Draggable";
 export * from "./Droppable";
 export * from "./SortableItem";
-export * from "./ImageItem";
+export * from "./Item";
