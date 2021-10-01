@@ -12,16 +12,47 @@
  */
 import React from "react";
 import { Box, Image } from "@chakra-ui/react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from '@dnd-kit/utilities';
 
-interface SortableItemProps {}
+import { Item, ItemProps } from ".";
+
+interface SortableItemProps extends ItemProps {
+  activeIndex?: number;
+}
 
 export const SortableItem: React.FC<SortableItemProps> = ({ ...props }) => {
-  const { children } = props;
+  const { id, activeIndex, children } = props;
+  const {
+    attributes,
+    listeners,
+    index,
+    isDragging,
+    isSorting,
+    over,
+    overIndex,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({
+    id: id,
+    animateLayoutChanges: () => true,
+  });
 
   return (
-    <Box>
-      <Image src="" />
-    </Box>
+    <Item
+      id={id}
+      active={isDragging}
+      style={{
+        transition,
+        transform: isSorting ? undefined : CSS.Translate.toString(transform),
+      }}
+      {...props}
+      {...attributes}
+      {...listeners}
+    >
+      {children}
+    </Item>
   );
 };
 

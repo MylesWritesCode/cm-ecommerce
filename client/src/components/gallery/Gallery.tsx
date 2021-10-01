@@ -35,6 +35,7 @@ import {
 import dynamic from "next/dynamic";
 
 import { Frame, Picture, FrameOverlay } from ".";
+import { SortableItem } from "@components/dnd";
 
 interface GalleryProps {
   src: string[];
@@ -86,7 +87,21 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
     setActiveId(null);
   };
 
-  const SortableComp = (
+  const WrapperComp = (
+    <DndContext>
+      <Box sx={sx}>
+        <SortableContext items={images}>
+          {images.map((image, index) => (
+            <SortableItem key={image} id={image} index={index}>
+              <Image src={image} />
+            </SortableItem>
+          ))}
+        </SortableContext>
+      </Box>
+    </DndContext>
+  );
+
+  const ForwardComp = (
     <DndContext
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
@@ -95,8 +110,8 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
       collisionDetection={closestCenter}
       measuring={measuring}
     >
-      <SortableContext items={images} strategy={rectSwappingStrategy}>
-        <Box sx={sx}>
+      <Box sx={sx}>
+        <SortableContext items={images} strategy={rectSwappingStrategy}>
           {images.map((image, index) => (
             <Frame
               key={image}
@@ -109,11 +124,15 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
               src={image}
             />
           ))}
-        </Box>
-      </SortableContext>
+        </SortableContext>
+      </Box>
       <DragOverlay>
         {activeId ? (
-          <FrameOverlay activeIndex={activeIndex} id={activeId} src={activeId} />
+          <FrameOverlay
+            activeIndex={activeIndex}
+            id={activeId}
+            src={activeId}
+          />
         ) : null}
       </DragOverlay>
     </DndContext>
@@ -121,7 +140,7 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
 
   // Need to wait for the window to be ready before loading everything,
   // otherwise the drag handles aren't going to load correctly.
-  return isWindowReady ? SortableComp : null;
+  return isWindowReady ? ForwardComp : null;
 };
 
 export default Gallery;

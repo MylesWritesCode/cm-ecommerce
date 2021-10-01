@@ -10,17 +10,23 @@
  * -----
  * HISTORY
  */
-import React from "react";
+import React, { HTMLAttributes } from "react";
 import { Box, Image } from "@chakra-ui/react";
 
-interface ItemProps {}
+export interface ItemProps extends HTMLAttributes<HTMLDivElement> {
+  active?: boolean;
+  clone?: boolean;
+  id: string;
+  index?: number;
+  onRemove?: () => void;
+}
   
 export const Item: React.FC<ItemProps> = ({ ...props }) => {
-  const { children } = props;
+  const { active, clone, id, index, onRemove, children } = props;
 
   return (
     <Box>
-      <Image src="" />
+      {children}
     </Box>
   );
 };
