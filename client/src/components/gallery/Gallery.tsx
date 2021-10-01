@@ -12,33 +12,38 @@
  * HISTORY
  */
 import React, { useEffect, useState } from "react";
-import { Box, BoxProps, Image } from "@chakra-ui/react";
+import { createPortal } from "react-dom";
+import { Box, BoxProps } from "@chakra-ui/react";
 import {
   DndContext,
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent,
-  DragStartEvent,
   closestCenter,
   DragOverlay,
-  DragCancelEvent,
   MeasuringConfiguration,
   MeasuringStrategy,
+  UniqueIdentifier,
 } from "@dnd-kit/core";
 import {
   SortableContext,
   arrayMove,
   rectSwappingStrategy,
-  rectSortingStrategy,
 } from "@dnd-kit/sortable";
-import dynamic from "next/dynamic";
 
-import { Frame, Picture, FrameOverlay } from ".";
-import { SortableItem } from "@components/dnd";
+import { Frame, FrameOverlay, Picture } from ".";
 
 interface GalleryProps {
   src: string[];
+  getItemStyles?(args: {
+    id: UniqueIdentifier;
+    index: number;
+    isSorting: boolean;
+    isDragOverlay: boolean;
+    overIndex: number;
+    isDragging: boolean;
+  }): React.CSSProperties;
+  renderItem?: any;
 }
 
 const measuring: MeasuringConfiguration = {
@@ -48,8 +53,12 @@ const measuring: MeasuringConfiguration = {
 };
 
 type Props = GalleryProps & BoxProps;
-export const Gallery: React.FC<Props> = ({ ...props }) => {
-  const { src, sx } = props;
+export const Gallery: React.FC<Props> = ({ 
+  src,
+  getItemStyles = () => ({}),
+  renderItem,
+  sx,
+  ...props }) => {
   const [images, setImages] = useState(src);
   const [isWindowReady, setIsWindowReady] = useState(false);
   const [activeId, setActiveId] = useState(null);
@@ -65,17 +74,16 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
   // If there's no images, just return a simple box.
   if (!src) return <Box></Box>;
 
-  const onDragStart = (ev: DragStartEvent) => {
-    const { active } = ev;
+  const onDragStart = ({ active }) => {
     setActiveId(active.id);
+    console.log(active);
   };
 
-  const onDragCancel = (ev: DragCancelEvent) => {
+  const onDragCancel = () => {
     setActiveId(null);
   };
 
-  const onDragEnd = (ev: DragEndEvent) => {
-    const { active, over } = ev;
+  const onDragEnd = ({ active, over }) => {
     if (active.id !== over.id) {
       setImages((images) => {
         const oldIndex = images.indexOf(active.id);
@@ -87,19 +95,9 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
     setActiveId(null);
   };
 
-  const WrapperComp = (
-    <DndContext>
-      <Box sx={sx}>
-        <SortableContext items={images}>
-          {images.map((image, index) => (
-            <SortableItem key={image} id={image} index={index}>
-              <Image src={image} />
-            </SortableItem>
-          ))}
-        </SortableContext>
-      </Box>
-    </DndContext>
-  );
+  const onFrameDrag = (ev) => {
+    console.log(ev);
+  };
 
   const ForwardComp = (
     <DndContext
@@ -110,31 +108,55 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
       collisionDetection={closestCenter}
       measuring={measuring}
     >
-      <Box sx={sx}>
-        <SortableContext items={images} strategy={rectSwappingStrategy}>
-          {images.map((image, index) => (
-            <Frame
-              key={image}
-              id={image}
-              index={index + 1}
-              activeIndex={activeIndex}
-              onRemove={() => {
-                setImages((images) => images.filter((i) => i !== image));
-              }}
-              src={image}
-            />
-          ))}
+      <Box>
+        <SortableContext
+          id="gallery"
+          items={images}
+          strategy={rectSwappingStrategy}
+        >
+          <Box sx={sx}>
+            {images.map((image, index) => (
+              <Frame
+                src={image}
+                key={image}
+                id={image}
+                index={index}
+                renderItem={renderItem}
+                onRemove={() => {
+                  setImages((images) => images.filter((i) => i !== image));
+                }}
+                style={getItemStyles}
+              />
+            ))}
+          </Box>
         </SortableContext>
+        {isWindowReady &&
+          createPortal(
+            <DragOverlay
+              dropAnimation={{
+                duration: 500,
+                easing: "cubic-bezier(0.18, 0.67, 0.6, 1.22)",
+              }}
+            >
+              {activeId ? (
+                <Picture 
+                  id={activeId} 
+                  src={activeId} 
+                  style={getItemStyles({
+                    id: images[activeIndex],
+                    index: activeIndex,
+                    isSorting: activeId !== null,
+                    isDragging: true,
+                    overIndex: -1,
+                    isDragOverlay: true,
+                  })}
+                  dragOverlay
+                />
+              ) : null}
+            </DragOverlay>,
+            document.body
+          )}
       </Box>
-      <DragOverlay>
-        {activeId ? (
-          <FrameOverlay
-            activeIndex={activeIndex}
-            id={activeId}
-            src={activeId}
-          />
-        ) : null}
-      </DragOverlay>
     </DndContext>
   );
 

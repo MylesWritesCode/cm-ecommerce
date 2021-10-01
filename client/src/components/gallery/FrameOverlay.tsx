@@ -12,21 +12,17 @@
  * HISTORY
  */
 import React from "react";
-import { Box, Image } from "@chakra-ui/react";
 import { useDndContext } from "@dnd-kit/core";
 
 import { PictureProps, Picture } from ".";
 
 interface FrameOverlayProps extends Omit<PictureProps, "index"> {
   activeIndex: number;
-  Component?: typeof Box | typeof Image;
 }
 
 export const FrameOverlay: React.FC<FrameOverlayProps> = ({ ...props }) => {
-  const { id, Component } = props;
-  const { activatorEvent, over } = useDndContext();
-  // const activeIndex = items.indexOf(id);
-  // const overIndex = over?.id ? items.indexOf(over?.id) : -1;
+  const { id } = props;
+  const { activatorEvent, over, willRecomputeLayouts } = useDndContext();
 
   return <Picture id={id} {...props} />;
 };

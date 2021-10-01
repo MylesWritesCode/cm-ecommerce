@@ -12,43 +12,79 @@
  * HISTORY
  */
 import React from "react";
-import { useSortable } from "@dnd-kit/sortable";
+import { rectSwappingStrategy, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import { Picture, PictureProps } from ".";
+import { Picture } from ".";
 
-interface FrameProps extends PictureProps {
-  activeIndex: number;
+interface FrameProps {
+  id: string;
   index: number;
+  src: string;
+  style(values: any): React.CSSProperties;
+  renderItem?(args: any): React.ReactElement;
+  onRemove?(id: string): void;
 }
 
-export const Frame: React.FC<FrameProps> = ({ ...props }) => {
-  const { id, activeIndex } = props;
+export const Frame: React.FC<FrameProps> = ({
+  id,
+  index,
+  src,
+  style,
+  renderItem,
+  onRemove,
+  ...props
+}) => {
   const {
     attributes,
     listeners,
-    index,
     isDragging,
     isSorting,
-    over,
     overIndex,
     setNodeRef,
     transform,
     transition,
-  } = useSortable({ id: id, animateLayoutChanges: always });
+  } = useSortable({
+    id: id,
+    // transition: {
+    //   duration: 500,
+    //   easing: "cubic-bezier(0.18, 0.67, 0.6, 1.22)",
+    // },
+    animateLayoutChanges: () => true,
+    attributes: {
+      role: "image",
+      tabIndex: index,
+    },
+    strategy: rectSwappingStrategy,
+  });
+
+  // const style = {
+  //   transition,
+  //   transform: isSorting ? undefined : CSS.Translate.toString(transform),
+  // };
 
   return (
     <Picture
       ref={setNodeRef}
+      src={id}
+      dragging={isDragging}
+      sorting={isSorting}
+      renderItem={renderItem}
       id={id}
-      active={isDragging}
-      style={{
-        transition,
-        transform: isSorting ? undefined : CSS.Translate.toString(transform),
-      }}
-      {...props}
+      index={index}
+      style={style({
+        index,
+        id,
+        isDragging,
+        isSorting,
+        overIndex,
+      })}
+      onRemove={onRemove ? () => onRemove(id) : undefined}
+      transform={transform}
+      transition={isDragging ? "none" : transition}
+      listeners={listeners}
+      dragOverlay={isDragging}
       {...attributes}
-      {...listeners}
     />
   );
 };

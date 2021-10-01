@@ -11,31 +11,96 @@
  * -----
  * HISTORY
  */
-import React, { LegacyRef, useState } from "react";
+import React, { LegacyRef, useEffect, useState } from "react";
 import { Box, Image, ImageProps } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { DraggableSyntheticListeners } from "@dnd-kit/core";
+import { Transform } from "@utils/css";
 
-export interface PictureProps extends ImageProps {
+export interface PictureProps extends Omit<ImageProps, "transform"> {
   active?: boolean;
   clone?: boolean;
+  dragOverlay?: boolean;
+  dragging?: boolean;
+  fadeIn?: boolean;
+  listeners?: DraggableSyntheticListeners;
   id: string;
   index?: number;
-  src?: string;
-  onRemove?: () => void;
+  src: string;
+  sorting?: boolean;
+  transform?: Transform | null;
+  transition?: string | null;
+  value?: React.ReactNode;
+  onRemove?(): void;
+  renderItem?(args: {
+    dragOverlay: boolean;
+    dragging: boolean;
+    sorting: boolean;
+    index: number | undefined;
+    fadeIn: boolean;
+    listeners: DraggableSyntheticListeners;
+    ref: React.Ref<HTMLElement>;
+    style: React.CSSProperties | undefined;
+    transform: PictureProps["transform"];
+    transition: PictureProps["transition"];
+    value: PictureProps["value"];
+  }): React.ReactElement;
 }
 
-export const Picture = React.forwardRef<HTMLImageElement, PictureProps>(
-  function Item({ ...props }, ref) {
-    const { id, index, active, clone, style, onRemove } = props;
-
+export const Picture = React.memo(
+  React.forwardRef<HTMLImageElement, PictureProps>((
+    {
+      id,
+      index,
+      active,
+      clone,
+      dragOverlay,
+      dragging,
+      sorting,
+      fadeIn,
+      listeners,
+      transform,
+      transition,
+      value,
+      style,
+      onRemove,
+      renderItem,
+      ...props
+    },
+    ref
+  ) => {
     const [isComponentLoaded, setIsComponentLoaded] = useState(false);
 
-    console.log(props);
-    return (
+    useEffect(() => {
+      if (!dragOverlay) return;
+
+      document.body.style.cursor = "grabbing";
+
+      return () => {
+        document.body.style.cursor = "";
+      };
+    }, [dragOverlay]);
+
+    return renderItem ? (
+      renderItem({
+        dragOverlay: Boolean(dragOverlay),
+        dragging: Boolean(dragging),
+        sorting: Boolean(sorting),
+        index,
+        fadeIn: Boolean(fadeIn),
+        listeners,
+        ref,
+        style,
+        transform,
+        transition,
+        value,
+      })
+    ) : (
       <Box
         position="relative"
         mb="8px"
         transform={clone ? "scale(1.025)" : null}
+        transition={transition}
         animation={
           clone ? "pop 150ms cubic-bezier(0.18, 0.67, 0.6, 1.22)" : null
         }
@@ -53,6 +118,7 @@ export const Picture = React.forwardRef<HTMLImageElement, PictureProps>(
           onLoad={() => setIsComponentLoaded(true)}
           style={style}
           {...props}
+          {...listeners}
         />
         {!active && onRemove && isComponentLoaded ? (
           <DeleteIcon
@@ -64,5 +130,5 @@ export const Picture = React.forwardRef<HTMLImageElement, PictureProps>(
         ) : null}
       </Box>
     );
-  }
+  })
 );
