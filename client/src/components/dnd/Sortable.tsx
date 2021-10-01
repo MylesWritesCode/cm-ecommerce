@@ -1,4 +1,7 @@
 /*
+ * WIP: Probably not going to use this file since I want more of the logic 
+ *      within their components. Keep it, just in case I want a more generalized
+ *      impl of SortableContext, but honestly the other way is much easier.
  * File: /src/components/dnd/Sortable.tsx
  * Project: cm-ecommerce/cm-ecommerce-client
  * Created Date: Thursday September 30th 2021
@@ -13,7 +16,7 @@
  */
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
-import { Box, Flex, Image } from "@chakra-ui/react";
+import { Box, BoxProps, Flex, Image,  } from "@chakra-ui/react";
 import {
   closestCenter,
   CollisionDetection,
@@ -33,17 +36,19 @@ import {
   SortableContext,
   SortingStrategy,
 } from "@dnd-kit/sortable";
-import { Item } from ".";
+import { Item, ItemOverlay, SortableItem } from ".";
 import { VH } from "@/constants/Constants";
 
 interface SortableProps {
   items: string[];
+  Container?: typeof Box | typeof Flex; 
+  SortableComponent?: typeof Box | typeof Image;
   activationConstraint?: PointerActivationConstraint;
-  Container?: typeof Box | typeof Flex; // Not sure if I want to add Grid here.
   collisionDetection?: CollisionDetection;
   dropAnimation?: DropAnimation | null;
   strategy?: SortingStrategy;
   useDragOverlay?: boolean;
+  wrapperProps?: BoxProps;
 }
 
 const defaultDropAnimationConfig: DropAnimation = {
@@ -53,14 +58,18 @@ const defaultDropAnimationConfig: DropAnimation = {
 
 export const Sortable: React.FC<SortableProps> = ({ ...props }) => {
   const {
+    Container,
+    SortableComponent = Box,
     activationConstraint,
     collisionDetection = closestCenter,
     dropAnimation = defaultDropAnimationConfig,
     strategy = rectSwappingStrategy,
     useDragOverlay = true,
-    children
+    wrapperProps,
+    children,
+    items: propItems,
   } = props;
-  const [items, setItems] = useState<string[]>(props.items);
+  const [items, setItems] = useState<string[]>(propItems);
   const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint }),
@@ -97,18 +106,32 @@ export const Sortable: React.FC<SortableProps> = ({ ...props }) => {
       }}
       onDragCancel={() => setActiveId(null)}
     >
-      <Box>
+      <Box {...wrapperProps}>
         <SortableContext items={items} strategy={strategy}>
-          {children}
+          {items.map((item, index) => (
+            <SortableItem
+              key={item}
+              id={item}
+              index={index + 1}
+              activeIndex={activeIndex}
+              onRemove={() => {
+                setItems((items) => items.filter((i) => i !== item));
+              }}
+              Component={SortableComponent}
+              src={item}
+            />
+          ))}
         </SortableContext>
       </Box>
       {useDragOverlay
         ? createPortal(
             <DragOverlay dropAnimation={dropAnimation}>
               {activeId ? (
-                <Item id={items[activeIndex]}>
-                  <Image src={items[activeIndex]} />
-                </Item>
+                <ItemOverlay
+                  activeIndex={activeIndex}
+                  id={activeId}
+                  src={activeId}
+                />
               ) : null}
             </DragOverlay>,
             document.body

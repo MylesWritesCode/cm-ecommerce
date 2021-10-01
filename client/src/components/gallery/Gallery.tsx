@@ -11,28 +11,8 @@
  * -----
  * HISTORY
  */
-import React, {
-  forwardRef,
-  HTMLAttributes,
-  LegacyRef,
-  useEffect,
-  useState,
-} from "react";
-import {
-  Box,
-  BoxProps,
-  Image,
-  ImageProps,
-  Heading,
-  UnorderedList,
-  ListItem,
-  Button,
-  Icon,
-  ButtonProps,
-  Grid,
-  GridItem,
-  ChakraProps,
-} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Box, BoxProps, Image } from "@chakra-ui/react";
 import {
   DndContext,
   PointerSensor,
@@ -45,21 +25,17 @@ import {
   DragCancelEvent,
   MeasuringConfiguration,
   MeasuringStrategy,
-  useDndContext,
 } from "@dnd-kit/core";
 import {
   SortableContext,
   arrayMove,
   rectSwappingStrategy,
-  useSortable,
+  rectSortingStrategy,
 } from "@dnd-kit/sortable";
 import dynamic from "next/dynamic";
 
-import { Draggable, Droppable } from "@components/dnd";
+import { SortableItem, ItemOverlay } from "@components/dnd";
 import Sortable from "../dnd/Sortable";
-import { DeleteIcon } from "@chakra-ui/icons";
-import { CSS } from "@dnd-kit/utilities";
-import { ChakraInputProps } from "../ChakraInput";
 
 interface GalleryProps {
   src: string[];
@@ -81,7 +57,7 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
 
   const activeIndex = activeId ? images.indexOf(activeId) : -1;
 
-  // This will run once on mount.
+  // This will run once, on mount.
   useEffect(() => {
     setIsWindowReady(true);
   }, []);
@@ -108,11 +84,10 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
         return arrayMove(images, oldIndex, newIndex);
       });
     }
-
     setActiveId(null);
   };
 
-  const sortableComp = (
+  const SortableComp = (
     <DndContext
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
@@ -121,10 +96,11 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
       collisionDetection={closestCenter}
       measuring={measuring}
     >
-      <SortableContext items={images}>
+      <SortableContext items={images} strategy={rectSwappingStrategy}>
         <Box sx={sx}>
           {images.map((image, index) => (
             <SortableItem
+              Component={Image}
               key={image}
               id={image}
               index={index + 1}
@@ -139,7 +115,7 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
       </SortableContext>
       <DragOverlay>
         {activeId ? (
-          <ItemOverlay id={activeId} items={images} src={images[activeId]} />
+          <ItemOverlay Component={Image} activeIndex={activeIndex} id={activeId} src={activeId} />
         ) : null}
       </DragOverlay>
     </DndContext>
@@ -147,99 +123,7 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
 
   // Need to wait for the window to be ready before loading everything,
   // otherwise the drag handles aren't going to load correctly.
-  return isWindowReady ? sortableComp : null;
+  return isWindowReady ? SortableComp : null;
 };
 
 export default Gallery;
-
-interface ItemOverlayProps extends Omit<ItemProps, "index"> {
-  items: string[];
-}
-
-const ItemOverlay: React.FC<ItemOverlayProps> = ({ ...props }) => {
-  const { id, items } = props;
-  const { activatorEvent, over } = useDndContext();
-  const activeIndex = items.indexOf(id);
-  const overIndex = over?.id ? items.indexOf(over?.id) : -1;
-
-  return <Item id={id} {...props} clone />;
-};
-
-interface SortableItemProps extends ItemProps {
-  activeIndex: number;
-}
-
-const SortableItem: React.FC<SortableItemProps> = ({ ...props }) => {
-  const { id, activeIndex } = props;
-  const {
-    attributes,
-    listeners,
-    index,
-    isDragging,
-    isSorting,
-    over,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id: id, animateLayoutChanges: () => true });
-
-  return (
-    <Item
-      ref={setNodeRef}
-      id={id}
-      active={isDragging}
-      transition={transition}
-      transform={isSorting ? undefined : CSS.Translate.toString(transform)}
-      {...props}
-      {...attributes}
-      {...listeners}
-    />
-  );
-};
-
-interface ItemProps extends ChakraProps {
-  active?: boolean;
-  clone?: boolean;
-  id: string;
-  index?: number;
-  Container?: typeof Box | typeof Image;
-  src?: string;
-  onRemove?: () => void;
-}
-
-const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
-  { ...props },
-  ref
-) {
-  const { id, index, active, clone, onRemove, Container = Image } = props;
-  console.log(props);
-  return (
-    <Box
-      position="relative"
-      mb="8px"
-      transform={clone ? "scale(1.025)" : null}
-      animation={clone ? "pop 150ms cubic-bezier(0.18, 0.67, 0.6, 1.22)" : null}
-      cursor={clone ? "grabbing" : "pointer"}
-    >
-      <Container
-        width="100%"
-        height="100%"
-        backgroundSize="cover"
-        outline="none"
-        appearance="none"
-        cursor="grab"
-        borderRadius="0"
-        ref={ref as LegacyRef<HTMLDivElement> & LegacyRef<HTMLImageElement>}
-        {...props}
-      />
-      {!active && onRemove ? (
-        <DeleteIcon
-          position="absolute"
-          top="10px"
-          right="10px"
-          onClick={onRemove}
-        />
-      ) : null}
-    </Box>
-  );
-});

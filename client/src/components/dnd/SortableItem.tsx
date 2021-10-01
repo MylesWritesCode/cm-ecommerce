@@ -14,37 +14,43 @@
  * HISTORY
  */
 import React, { useEffect } from "react";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { Box, Image } from '@chakra-ui/react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
-interface SortableProps {
-  id: string | number;
-  dragOverlay?: boolean;
+import { Item, ItemProps } from '.';
+
+interface SortableItemProps extends ItemProps {
+  activeIndex: number;
+  Component?: typeof Box | typeof Image; 
 }
 
-export const SortableItem: React.FC<SortableProps> = ({ ...props }) => {
-  const { id, dragOverlay = true, children } = props;
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: id.toString() });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
+export const SortableItem: React.FC<SortableItemProps> = ({ ...props }) => {
+  const { id, activeIndex, Component = Box } = props;
+  const {
+    attributes,
+    listeners,
+    index,
+    isDragging,
+    isSorting,
+    over,
+    setNodeRef,
+    transform,
     transition,
-  };
-
-  useEffect(() => {
-    if (!dragOverlay) return;
-    document.body.style.cursor = "grabbing";
-
-    return () => {
-      document.body.style.cursor = "";
-    };
-  }, [dragOverlay]);
+  } = useSortable({ id: id, animateLayoutChanges: () => true });
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      {children}
-    </div>
+    <Item
+      Component={Component}
+      ref={setNodeRef}
+      id={id}
+      active={isDragging}
+      transition={transition}
+      transform={isSorting ? undefined : CSS.Translate.toString(transform)}
+      {...props}
+      {...attributes}
+      {...listeners}
+    />
   );
 };
 
