@@ -34,8 +34,7 @@ import {
 } from "@dnd-kit/sortable";
 import dynamic from "next/dynamic";
 
-import { SortableItem, ItemOverlay } from "@components/dnd";
-import Sortable from "../dnd/Sortable";
+import { Frame, Picture, FrameOverlay } from ".";
 
 interface GalleryProps {
   src: string[];
@@ -99,7 +98,7 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
       <SortableContext items={images} strategy={rectSwappingStrategy}>
         <Box sx={sx}>
           {images.map((image, index) => (
-            <SortableItem
+            <Frame
               key={image}
               id={image}
               index={index + 1}
@@ -114,7 +113,7 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
       </SortableContext>
       <DragOverlay>
         {activeId ? (
-          <ItemOverlay activeIndex={activeIndex} id={activeId} src={activeId} />
+          <FrameOverlay activeIndex={activeIndex} id={activeId} src={activeId} />
         ) : null}
       </DragOverlay>
     </DndContext>

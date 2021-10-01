@@ -11,7 +11,9 @@
  * HISTORY
  */
 export * from "./Gallery";
-export * from "./Frame"
+export * from "./Frame";
+export * from "./FrameOverlay";
+export * from "./Picture";
 
 export const devStockImages = [
   "/stock-images/charlie-harris-z3PPXbkuocE-unsplash.jpg",

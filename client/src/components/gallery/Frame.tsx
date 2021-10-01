@@ -1,23 +1,60 @@
 /*
  * File: /src/components/gallery/Frame.tsx
  * Project: cm-ecommerce/cm-ecommerce-client
- * Created Date: Tuesday September 28th 2021
+ * Created Date: Wednesday September 29th 2021
  * Author: Myles Berueda
- * Note: This would then be responsible for each image frame.
+ * Note: THIS IS THE SORTABLE ITEM
  * -----
- * Last Modified: Tuesday September 28th 2021 11:27:07 pm
+ * Last Modified: Wednesday September 29th 2021 3:00:36 pm
  * -----
  * Copyright (c) 2021 MylesWritesCode
  * -----
  * HISTORY
  */
 import React from "react";
-import { Box } from "@chakra-ui/react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
-interface FrameProps {}
+import { Picture, PictureProps } from ".";
+
+interface FrameProps extends PictureProps {
+  activeIndex: number;
+  index: number;
+}
 
 export const Frame: React.FC<FrameProps> = ({ ...props }) => {
-  return <Box></Box>;
+  const { id, activeIndex } = props;
+  const {
+    attributes,
+    listeners,
+    index,
+    isDragging,
+    isSorting,
+    over,
+    overIndex,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({ id: id, animateLayoutChanges: always });
+
+  return (
+    <Picture
+      ref={setNodeRef}
+      id={id}
+      active={isDragging}
+      style={{
+        transition,
+        transform: isSorting ? undefined : CSS.Translate.toString(transform),
+      }}
+      {...props}
+      {...attributes}
+      {...listeners}
+    />
+  );
 };
 
 export default Frame;
+
+function always() {
+  return true;
+}
