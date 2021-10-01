@@ -11,25 +11,24 @@
  * HISTORY
  */
 import React, { LegacyRef, useEffect, useState } from "react";
-import { Box, Image, ChakraProps } from "@chakra-ui/react";
+import { Box, Image, ImageProps } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 
-export interface ItemProps extends ChakraProps {
+export interface ItemProps extends ImageProps {
   active?: boolean;
   clone?: boolean;
   id: string;
   index?: number;
-  Component?: typeof Box | typeof Image;
   src?: string;
   onRemove?: () => void;
 }
 
-export const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
+export const Item = React.forwardRef<HTMLImageElement, ItemProps>(function Item(
   { ...props },
   ref
 ) {
-  const { id, index, active, clone, onRemove, Component = Box } = props;
-  
+  const { id, index, active, clone, style, onRemove } = props;
+
   const [isComponentLoaded, setIsComponentLoaded] = useState(false);
 
   console.log(props);
@@ -41,7 +40,7 @@ export const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
       animation={clone ? "pop 150ms cubic-bezier(0.18, 0.67, 0.6, 1.22)" : null}
       cursor={clone ? "grabbing" : "pointer"}
     >
-      <Component
+      <Image
         width="100%"
         height="100%"
         backgroundSize="cover"
@@ -49,8 +48,9 @@ export const Item = React.forwardRef<HTMLElement, ItemProps>(function Item(
         appearance="none"
         cursor="grab"
         borderRadius="0"
-        ref={ref as LegacyRef<HTMLDivElement> & LegacyRef<HTMLImageElement>}
+        ref={ref as LegacyRef<HTMLImageElement>}
         onLoad={() => setIsComponentLoaded(true)}
+        style={style}
         {...props}
       />
       {!active && onRemove && isComponentLoaded ? (

@@ -100,7 +100,6 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
         <Box sx={sx}>
           {images.map((image, index) => (
             <SortableItem
-              Component={Image}
               key={image}
               id={image}
               index={index + 1}
@@ -115,7 +114,7 @@ export const Gallery: React.FC<Props> = ({ ...props }) => {
       </SortableContext>
       <DragOverlay>
         {activeId ? (
-          <ItemOverlay Component={Image} activeIndex={activeIndex} id={activeId} src={activeId} />
+          <ItemOverlay activeIndex={activeIndex} id={activeId} src={activeId} />
         ) : null}
       </DragOverlay>
     </DndContext>

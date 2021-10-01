@@ -22,31 +22,32 @@ import { Item, ItemProps } from '.';
 
 interface SortableItemProps extends ItemProps {
   activeIndex: number;
-  Component?: typeof Box | typeof Image; 
+  index: number;
 }
 
 export const SortableItem: React.FC<SortableItemProps> = ({ ...props }) => {
-  const { id, activeIndex, Component = Box } = props;
+  const { id, activeIndex, } = props;
   const {
     attributes,
     listeners,
     index,
     isDragging,
     isSorting,
-    over,
+    overIndex,
     setNodeRef,
     transform,
     transition,
-  } = useSortable({ id: id, animateLayoutChanges: () => true });
+  } = useSortable({ id: id, animateLayoutChanges: always, });
 
   return (
     <Item
-      Component={Component}
       ref={setNodeRef}
       id={id}
       active={isDragging}
-      transition={transition}
-      transform={isSorting ? undefined : CSS.Translate.toString(transform)}
+      style={{
+        transition,
+        transform: isSorting ? undefined : CSS.Translate.toString(transform),
+      }}
       {...props}
       {...attributes}
       {...listeners}
@@ -55,3 +56,7 @@ export const SortableItem: React.FC<SortableItemProps> = ({ ...props }) => {
 };
 
 export default SortableItem;
+
+function always() {
+  return true;
+}

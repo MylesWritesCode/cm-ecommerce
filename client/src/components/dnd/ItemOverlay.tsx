@@ -27,5 +27,5 @@ export const ItemOverlay: React.FC<ItemOverlayProps> = ({ ...props }) => {
   // const activeIndex = items.indexOf(id);
   // const overIndex = over?.id ? items.indexOf(over?.id) : -1;
 
-  return <Item Component={Component} id={id} {...props} clone />;
+  return <Item Component={Component} id={id} {...props} />;
 };

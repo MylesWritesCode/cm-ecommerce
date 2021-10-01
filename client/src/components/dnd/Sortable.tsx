@@ -117,7 +117,6 @@ export const Sortable: React.FC<SortableProps> = ({ ...props }) => {
               onRemove={() => {
                 setItems((items) => items.filter((i) => i !== item));
               }}
-              Component={SortableComponent}
               src={item}
             />
           ))}
