@@ -43,14 +43,11 @@ export const Frame: React.FC<FrameProps> = ({
     overIndex,
     setNodeRef,
     transform,
-    transition,
+    // transition,
   } = useSortable({
     id: id,
-    // transition: {
-    //   duration: 500,
-    //   easing: "cubic-bezier(0.18, 0.67, 0.6, 1.22)",
-    // },
-    animateLayoutChanges: () => true,
+    transition: null,
+    // animateLayoutChanges: () => true,
     attributes: {
       role: "image",
       tabIndex: index,
@@ -80,10 +77,8 @@ export const Frame: React.FC<FrameProps> = ({
         overIndex,
       })}
       onRemove={onRemove ? () => onRemove(id) : undefined}
-      transform={transform}
-      transition={isDragging ? "none" : transition}
-      listeners={listeners}
       dragOverlay={isDragging}
+      {...listeners}
       {...attributes}
     />
   );

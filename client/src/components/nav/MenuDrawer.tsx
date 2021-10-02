@@ -39,13 +39,13 @@ const variants = {
 };
 
 export const MenuDrawer: React.FC<MenuDrawerProps & FlexProps> = ({
+  status,
+  toggle,
   ...props
 }) => {
-  const { status, toggle } = props;
   return (
     <MotionFlex zIndex="modal" initial={false} variants={variants}>
       <MotionFlex
-        // display={status ? "flex" : "none"}
         width={NavbarConfig.drawer.width}
         position="absolute"
         pt={5}

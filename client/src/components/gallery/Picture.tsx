@@ -12,9 +12,11 @@
  * HISTORY
  */
 import React, { LegacyRef, useEffect, useState } from "react";
-import { Box, Image, ImageProps } from "@chakra-ui/react";
+import { Box, BoxProps, Image, ImageProps } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { DraggableSyntheticListeners } from "@dnd-kit/core";
+import { motion } from "framer-motion";
+
 import { Transform } from "@utils/css";
 
 export interface PictureProps extends Omit<ImageProps, "transform"> {
@@ -44,91 +46,100 @@ export interface PictureProps extends Omit<ImageProps, "transform"> {
     transform: PictureProps["transform"];
     transition: PictureProps["transition"];
     value: PictureProps["value"];
+    src: PictureProps["src"];
   }): React.ReactElement;
 }
 
 export const Picture = React.memo(
-  React.forwardRef<HTMLImageElement, PictureProps>((
-    {
-      id,
-      index,
-      active,
-      clone,
-      dragOverlay,
-      dragging,
-      sorting,
-      fadeIn,
-      listeners,
-      transform,
-      transition,
-      value,
-      style,
-      onRemove,
-      renderItem,
-      ...props
-    },
-    ref
-  ) => {
-    const [isComponentLoaded, setIsComponentLoaded] = useState(false);
-
-    useEffect(() => {
-      if (!dragOverlay) return;
-
-      document.body.style.cursor = "grabbing";
-
-      return () => {
-        document.body.style.cursor = "";
-      };
-    }, [dragOverlay]);
-
-    return renderItem ? (
-      renderItem({
-        dragOverlay: Boolean(dragOverlay),
-        dragging: Boolean(dragging),
-        sorting: Boolean(sorting),
+  React.forwardRef<HTMLImageElement, PictureProps>(
+    (
+      {
+        id,
         index,
-        fadeIn: Boolean(fadeIn),
+        active,
+        clone,
+        dragOverlay,
+        dragging,
+        sorting,
+        fadeIn,
         listeners,
-        ref,
-        style,
         transform,
         transition,
         value,
-      })
-    ) : (
-      <Box
-        position="relative"
-        mb="8px"
-        transform={clone ? "scale(1.025)" : null}
-        transition={transition}
-        animation={
-          clone ? "pop 150ms cubic-bezier(0.18, 0.67, 0.6, 1.22)" : null
-        }
-        cursor={clone ? "grabbing" : "pointer"}
-      >
-        <Image
-          width="100%"
-          height="100%"
-          backgroundSize="cover"
-          outline="none"
-          appearance="none"
-          cursor="grab"
-          borderRadius="0"
-          ref={ref as LegacyRef<HTMLImageElement>}
-          onLoad={() => setIsComponentLoaded(true)}
-          style={style}
-          {...props}
+        src,
+        style,
+        onRemove,
+        renderItem,
+        ...props
+      },
+      ref
+    ) => {
+      const [isComponentLoaded, setIsComponentLoaded] = useState(false);
+
+      useEffect(() => {
+        if (!dragOverlay) return;
+
+        document.body.style.cursor = "grabbing";
+
+        return () => {
+          document.body.style.cursor = "";
+        };
+      }, [dragOverlay]);
+
+      console.log(`from ${src} `, renderItem);
+
+      return renderItem ? (
+        renderItem({
+          dragOverlay: Boolean(dragOverlay),
+          dragging: Boolean(dragging),
+          sorting: Boolean(sorting),
+          index,
+          fadeIn: Boolean(fadeIn),
+          listeners,
+          ref,
+          style,
+          transform,
+          transition,
+          value,
+          src,
+        })
+      ) : (
+        <Box
+          position="relative"
+          mb="8px"
+          transform={clone ? "scale(1.025)" : null}
+          transition={transition}
+          animation={
+            clone ? "pop 150ms cubic-bezier(0.18, 0.67, 0.6, 1.22)" : null
+          }
+          cursor={clone ? "grabbing" : "pointer"}
           {...listeners}
-        />
-        {!active && onRemove && isComponentLoaded ? (
-          <DeleteIcon
-            position="absolute"
-            top="10px"
-            right="10px"
-            onClick={onRemove}
+          style={{}}
+        >
+          <Image
+            width="100%"
+            height="100%"
+            backgroundSize="cover"
+            outline="none"
+            appearance="none"
+            cursor="grab"
+            borderRadius="0"
+            ref={ref as LegacyRef<HTMLImageElement>}
+            onLoad={() => setIsComponentLoaded(true)}
+            style={style}
+            src={src}
+            {...props}
           />
-        ) : null}
-      </Box>
-    );
-  })
+          {!active && onRemove && isComponentLoaded ? (
+            <DeleteIcon
+              position="absolute"
+              top="10px"
+              right="10px"
+              onClick={onRemove}
+            />
+          ) : null}
+        </Box>
+      );
+    }
+  )
 );

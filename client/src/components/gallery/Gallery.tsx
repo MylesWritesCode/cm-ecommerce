@@ -53,12 +53,13 @@ const measuring: MeasuringConfiguration = {
 };
 
 type Props = GalleryProps & BoxProps;
-export const Gallery: React.FC<Props> = ({ 
+export const Gallery: React.FC<Props> = ({
   src,
   getItemStyles = () => ({}),
   renderItem,
   sx,
-  ...props }) => {
+  ...props
+}) => {
   const [images, setImages] = useState(src);
   const [isWindowReady, setIsWindowReady] = useState(false);
   const [activeId, setActiveId] = useState(null);
@@ -76,7 +77,6 @@ export const Gallery: React.FC<Props> = ({
 
   const onDragStart = ({ active }) => {
     setActiveId(active.id);
-    console.log(active);
   };
 
   const onDragCancel = () => {
@@ -95,9 +95,7 @@ export const Gallery: React.FC<Props> = ({
     setActiveId(null);
   };
 
-  const onFrameDrag = (ev) => {
-    console.log(ev);
-  };
+  const onFrameDrag = (ev) => {};
 
   const ForwardComp = (
     <DndContext
@@ -122,10 +120,10 @@ export const Gallery: React.FC<Props> = ({
                 id={image}
                 index={index}
                 renderItem={renderItem}
+                style={getItemStyles}
                 onRemove={() => {
                   setImages((images) => images.filter((i) => i !== image));
                 }}
-                style={getItemStyles}
               />
             ))}
           </Box>
@@ -139,9 +137,9 @@ export const Gallery: React.FC<Props> = ({
               }}
             >
               {activeId ? (
-                <Picture 
-                  id={activeId} 
-                  src={activeId} 
+                <Picture
+                  id={activeId}
+                  src={activeId}
                   style={getItemStyles({
                     id: images[activeIndex],
                     index: activeIndex,
