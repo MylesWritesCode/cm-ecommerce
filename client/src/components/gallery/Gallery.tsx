@@ -29,9 +29,11 @@ import {
   SortableContext,
   arrayMove,
   rectSwappingStrategy,
+  rectSortingStrategy,
 } from "@dnd-kit/sortable";
 
 import { Frame, FrameOverlay, Picture } from ".";
+import { SortableFrame } from "./SortableFrame";
 
 interface GalleryProps {
   src: string[];
@@ -97,6 +99,49 @@ export const Gallery: React.FC<Props> = ({
 
   const onFrameDrag = (ev) => {};
 
+  const FramerMotionComp = (
+    <DndContext
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      onDragCancel={onDragCancel}
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      measuring={measuring}
+    >
+      <Box>
+        <SortableContext
+          id="gallery"
+          items={images}
+          strategy={rectSortingStrategy}
+        >
+          <Box sx={sx}>
+            {images.map((image, index) => (
+              <SortableFrame
+                src={image}
+                key={image}
+                id={image}
+                onRemove={() => {
+                  setImages((images) => images.filter((i) => i !== image));
+                }}
+              />
+            ))}
+          </Box>
+        </SortableContext>
+        {isWindowReady &&
+          createPortal(
+            <DragOverlay
+              dropAnimation={{
+                duration: 500,
+                easing: "cubic-bezier(0.18, 0.67, 0.6, 1.22)",
+              }}
+            >
+            </DragOverlay>,
+            document.body
+          )}
+      </Box>
+    </DndContext>
+  );
+
   const ForwardComp = (
     <DndContext
       onDragStart={onDragStart}
@@ -160,7 +205,8 @@ export const Gallery: React.FC<Props> = ({
 
   // Need to wait for the window to be ready before loading everything,
   // otherwise the drag handles aren't going to load correctly.
-  return isWindowReady ? ForwardComp : null;
+  // return isWindowReady ? ForwardComp : null;
+  return isWindowReady ? FramerMotionComp : null;
 };
 
 export default Gallery;
