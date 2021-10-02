@@ -13,7 +13,7 @@
  * -----
  * HISTORY
  */
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Button, Flex, Grid, GridItem, Heading, Image } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
@@ -23,6 +23,7 @@ import {
   useCreateProductMutation,
   CreateProductMutationVariables as CreateProductValues,
 } from "@generated/graphql";
+import { Gallery } from "@components/gallery";
 
 interface EditProps {}
 
@@ -35,6 +36,10 @@ export const Edit: React.FC<EditProps> = ({}) => {
   const [imagePreviews, setImagePreviews] = useState([]);
   const imageInputRef = useRef(null);
   const [createProduct] = useCreateProductMutation();
+  
+  useEffect(() => {
+    console.log("order changed!");
+  }, [imagePreviews])
 
   // Idk if there's a cleaner way to do this. This is kinda gross. I wanted just
   // an inline function on the button's `onClick` cb, but...ya'know.
@@ -61,7 +66,6 @@ export const Edit: React.FC<EditProps> = ({}) => {
     // "5px solid #a755c2" : "5px solid #323338"
     const image: HTMLImageElement = event.target as HTMLImageElement;
     const imgPrev = imagePreviews;
-    
 
     const index = imgPrev.findIndex((v: string) => {
       return v === image.src;
@@ -171,27 +175,17 @@ export const Edit: React.FC<EditProps> = ({}) => {
               <GridItem
                 colSpan={[12, 10]}
                 max-width="600px"
-                sx={{ columnCount: [1, 2, 3], columnGap: "8px" }}
               >
-                {imagePreviews.map((ip, index) => {
-                  return (
-                    <Image
-                      key={index}
-                      src={ip}
-                      width="100%"
-                      minWidth="100%"
-                      maxWidth="450px"
-                      mb={2}
-                      // p={2}
-                      border={
-                        index === 0 ? "5px solid #a755c2" : "5px solid #323338"
-                      }
-                      objectFit="cover"
-                      bgGradient="linear(-45deg, #A755C2, #2a2c37)"
-                      onClick={handleImageClick}
-                    />
-                  );
-                })}
+                <Gallery
+                  src={imagePreviews}
+                  sx={{
+                    width: "100%",
+                    columnCount: [1, 2, 3],
+                    columnGap: "8px",
+                    columnFill: "balance-all",
+                  }}
+                  setOrderCb={setImagePreviews}
+                />
               </GridItem>
               <GridItem overflow="hidden" colSpan={[2]}>
                 <Flex

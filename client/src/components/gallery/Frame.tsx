@@ -63,19 +63,11 @@ export const Frame: React.FC<FrameProps> = ({
   return (
     <Picture
       ref={setNodeRef}
+      id={id}
       src={id}
+      index={index}
       dragging={isDragging}
       sorting={isSorting}
-      renderItem={renderItem}
-      id={id}
-      index={index}
-      style={style({
-        index,
-        id,
-        isDragging,
-        isSorting,
-        overIndex,
-      })}
       onRemove={onRemove ? () => onRemove(id) : undefined}
       dragOverlay={isDragging}
       {...listeners}

@@ -23,29 +23,19 @@ import {
   DragOverlay,
   MeasuringConfiguration,
   MeasuringStrategy,
-  UniqueIdentifier,
 } from "@dnd-kit/core";
 import {
   SortableContext,
   arrayMove,
-  rectSwappingStrategy,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
 
-import { Frame, FrameOverlay, Picture } from ".";
 import { SortableFrame } from "./SortableFrame";
 
 interface GalleryProps {
   src: string[];
-  getItemStyles?(args: {
-    id: UniqueIdentifier;
-    index: number;
-    isSorting: boolean;
-    isDragOverlay: boolean;
-    overIndex: number;
-    isDragging: boolean;
-  }): React.CSSProperties;
   renderItem?: any;
+  setOrderCb?: (arr: string[]) => void;
 }
 
 const measuring: MeasuringConfiguration = {
@@ -56,26 +46,37 @@ const measuring: MeasuringConfiguration = {
 
 type Props = GalleryProps & BoxProps;
 export const Gallery: React.FC<Props> = ({
-  src,
-  getItemStyles = () => ({}),
+  src: initialSrc,
   renderItem,
   sx,
+  setOrderCb,
   ...props
 }) => {
-  const [images, setImages] = useState(src);
+  const [images, setImages] = useState(initialSrc);
   const [isWindowReady, setIsWindowReady] = useState(false);
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(useSensor(PointerSensor));
-
-  const activeIndex = activeId ? images.indexOf(activeId) : -1;
 
   // This will run once, on mount.
   useEffect(() => {
     setIsWindowReady(true);
   }, []);
+  
+  useEffect(() => {
+    if (images !== initialSrc) {
+      setImages(initialSrc);
+      return;
+    }
+  }, [initialSrc])
+  
+  useEffect(() => {
+    // Used to tell the parent that the order of images changed.
+    setOrderCb(images);
+    return;
+  }, [images])
 
   // If there's no images, just return a simple box.
-  if (!src) return <Box></Box>;
+  if (!initialSrc) return <Box></Box>;
 
   const onDragStart = ({ active }) => {
     setActiveId(active.id);
@@ -96,8 +97,6 @@ export const Gallery: React.FC<Props> = ({
     }
     setActiveId(null);
   };
-
-  const onFrameDrag = (ev) => {};
 
   const FramerMotionComp = (
     <DndContext
@@ -134,69 +133,7 @@ export const Gallery: React.FC<Props> = ({
                 duration: 500,
                 easing: "cubic-bezier(0.18, 0.67, 0.6, 1.22)",
               }}
-            >
-            </DragOverlay>,
-            document.body
-          )}
-      </Box>
-    </DndContext>
-  );
-
-  const ForwardComp = (
-    <DndContext
-      onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
-      onDragCancel={onDragCancel}
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      measuring={measuring}
-    >
-      <Box>
-        <SortableContext
-          id="gallery"
-          items={images}
-          strategy={rectSwappingStrategy}
-        >
-          <Box sx={sx}>
-            {images.map((image, index) => (
-              <Frame
-                src={image}
-                key={image}
-                id={image}
-                index={index}
-                renderItem={renderItem}
-                style={getItemStyles}
-                onRemove={() => {
-                  setImages((images) => images.filter((i) => i !== image));
-                }}
-              />
-            ))}
-          </Box>
-        </SortableContext>
-        {isWindowReady &&
-          createPortal(
-            <DragOverlay
-              dropAnimation={{
-                duration: 500,
-                easing: "cubic-bezier(0.18, 0.67, 0.6, 1.22)",
-              }}
-            >
-              {activeId ? (
-                <Picture
-                  id={activeId}
-                  src={activeId}
-                  style={getItemStyles({
-                    id: images[activeIndex],
-                    index: activeIndex,
-                    isSorting: activeId !== null,
-                    isDragging: true,
-                    overIndex: -1,
-                    isDragOverlay: true,
-                  })}
-                  dragOverlay
-                />
-              ) : null}
-            </DragOverlay>,
+            ></DragOverlay>,
             document.body
           )}
       </Box>

@@ -12,42 +12,27 @@
  * HISTORY
  */
 import React, { LegacyRef, useEffect, useState } from "react";
-import { Box, BoxProps, Image, ImageProps } from "@chakra-ui/react";
+import { Box, Image, ImageProps } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { DraggableSyntheticListeners } from "@dnd-kit/core";
-import { motion } from "framer-motion";
 
 import { Transform } from "@utils/css";
 
 export interface PictureProps extends Omit<ImageProps, "transform"> {
+  id: string;
+  src: string;
   active?: boolean;
   clone?: boolean;
   dragOverlay?: boolean;
   dragging?: boolean;
   fadeIn?: boolean;
   listeners?: DraggableSyntheticListeners;
-  id: string;
   index?: number;
-  src: string;
   sorting?: boolean;
   transform?: Transform | null;
   transition?: string | null;
   value?: React.ReactNode;
   onRemove?(): void;
-  renderItem?(args: {
-    dragOverlay: boolean;
-    dragging: boolean;
-    sorting: boolean;
-    index: number | undefined;
-    fadeIn: boolean;
-    listeners: DraggableSyntheticListeners;
-    ref: React.Ref<HTMLElement>;
-    style: React.CSSProperties | undefined;
-    transform: PictureProps["transform"];
-    transition: PictureProps["transition"];
-    value: PictureProps["value"];
-    src: PictureProps["src"];
-  }): React.ReactElement;
 }
 
 export const Picture = React.memo(
@@ -67,9 +52,7 @@ export const Picture = React.memo(
         transition,
         value,
         src,
-        style,
         onRemove,
-        renderItem,
         ...props
       },
       ref
@@ -85,34 +68,10 @@ export const Picture = React.memo(
           document.body.style.cursor = "";
         };
       }, [dragOverlay]);
-
-      console.log(`from ${src} `, renderItem);
-
-      return renderItem ? (
-        renderItem({
-          dragOverlay: Boolean(dragOverlay),
-          dragging: Boolean(dragging),
-          sorting: Boolean(sorting),
-          index,
-          fadeIn: Boolean(fadeIn),
-          listeners,
-          ref,
-          style,
-          transform,
-          transition,
-          value,
-          src,
-        })
-      ) : (
+      return (
         <Box
           position="relative"
           mb="8px"
-          transform={clone ? "scale(1.025)" : null}
-          transition={transition}
-          animation={
-            clone ? "pop 150ms cubic-bezier(0.18, 0.67, 0.6, 1.22)" : null
-          }
-          cursor={clone ? "grabbing" : "pointer"}
           {...listeners}
           style={{}}
         >
@@ -126,7 +85,6 @@ export const Picture = React.memo(
             borderRadius="0"
             ref={ref as LegacyRef<HTMLImageElement>}
             onLoad={() => setIsComponentLoaded(true)}
-            style={style}
             src={src}
             {...props}
           />
