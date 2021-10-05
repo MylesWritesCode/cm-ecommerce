@@ -61,19 +61,23 @@ export const Gallery: React.FC<Props> = ({
   useEffect(() => {
     setIsWindowReady(true);
   }, []);
-  
+
   useEffect(() => {
     if (images !== initialSrc) {
       setImages(initialSrc);
       return;
     }
-  }, [initialSrc])
-  
-  useEffect(() => {
-    // Used to tell the parent that the order of images changed.
-    setOrderCb(images);
-    return;
-  }, [images])
+  }, [initialSrc]);
+
+  // If setOrderCb is provided, then we care about the order of the images in
+  // the parent component. If not, we don't care, so don't run the useEffect.
+  if (setOrderCb) {
+    useEffect(() => {
+      // Used to tell the parent that the order of images changed.
+      setOrderCb(images);
+      return;
+    }, [images]);
+  }
 
   // If there's no images, just return a simple box.
   if (!initialSrc) return <Box></Box>;

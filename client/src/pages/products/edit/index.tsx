@@ -37,10 +37,6 @@ export const Edit: React.FC<EditProps> = ({}) => {
   const imageInputRef = useRef(null);
   const [createProduct] = useCreateProductMutation();
   
-  useEffect(() => {
-    console.log("order changed!");
-  }, [imagePreviews])
-
   // Idk if there's a cleaner way to do this. This is kinda gross. I wanted just
   // an inline function on the button's `onClick` cb, but...ya'know.
   const onImageUploadClick = () => {
@@ -58,23 +54,6 @@ export const Edit: React.FC<EditProps> = ({}) => {
       }
       setImagePreviews(imgPre_);
     }
-  };
-
-  const handleImageClick = (
-    event: React.MouseEvent<HTMLImageElement, MouseEvent>
-  ) => {
-    // "5px solid #a755c2" : "5px solid #323338"
-    const image: HTMLImageElement = event.target as HTMLImageElement;
-    const imgPrev = imagePreviews;
-
-    const index = imgPrev.findIndex((v: string) => {
-      return v === image.src;
-    });
-
-    // This is the TS way to swap elements:
-    [imgPrev[0], imgPrev[index]] = [imgPrev[index], imgPrev[0]];
-
-    setImagePreviews(imgPrev);
   };
 
   return (
@@ -196,6 +175,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
                   <input
                     type="file"
                     accept="image/*"
+                    name="images"
                     id="imageInput"
                     style={{ display: "none" }}
                     multiple={true}
