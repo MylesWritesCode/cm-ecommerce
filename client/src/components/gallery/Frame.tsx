@@ -13,7 +13,6 @@
  */
 import React from "react";
 import { rectSwappingStrategy, useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 
 import { Picture } from ".";
 
@@ -47,18 +46,13 @@ export const Frame: React.FC<FrameProps> = ({
   } = useSortable({
     id: id,
     transition: null,
-    // animateLayoutChanges: () => true,
+    animateLayoutChanges: () => true,
     attributes: {
       role: "image",
       tabIndex: index,
     },
     strategy: rectSwappingStrategy,
   });
-
-  // const style = {
-  //   transition,
-  //   transform: isSorting ? undefined : CSS.Translate.toString(transform),
-  // };
 
   return (
     <Picture
@@ -77,7 +71,3 @@ export const Frame: React.FC<FrameProps> = ({
 };
 
 export default Frame;
-
-function always() {
-  return true;
-}
