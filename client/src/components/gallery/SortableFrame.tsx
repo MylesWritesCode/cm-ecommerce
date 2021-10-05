@@ -18,13 +18,17 @@ import { Picture } from ".";
 
 const baseStyles: React.CSSProperties = {
   position: "relative",
+  boxShadow: "0 0 0 0 rgba(63, 63, 68, 0.05)",
 };
 
 const initialStyles = {
   x: 0,
   y: 0,
   scale: 1,
+  boxShadow: "0 0 0 0 rgba(63, 63, 68, 0.05)",
 };
+
+
 
 interface SortableFrameProps {
   id: string;
@@ -56,8 +60,8 @@ export const SortableFrame: React.FC<SortableFrameProps> = ({
                 scale: isDragging ? 1.05 : 1,
                 zIndex: isDragging ? 1 : 0,
                 boxShadow: isDragging
-                  ? "0 0 0 1px rgba(63, 63, 68, 0.05), 0px 15px 15px 0 rgba(34, 33, 81, 0.25)"
-                  : undefined,
+                  ? "0px 15px 15px 0 rgba(34, 33, 81, 0.25)"
+                  : "0 0 1px 1px rgba(63, 63, 68, 0.05)",
               }
             : initialStyles
         }
