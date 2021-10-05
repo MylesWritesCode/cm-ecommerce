@@ -69,9 +69,12 @@ export const Picture = React.memo(
         };
       }, [dragOverlay]);
 
+      console.log(props);
+
       return (
         <Box
           position="relative"
+          height="100%"
           mb="8px"
           ref={ref as LegacyRef<HTMLDivElement>}
           {...listeners}
@@ -79,15 +82,12 @@ export const Picture = React.memo(
           <Image
             width="100%"
             height="100%"
-            backgroundSize="cover"
-            outline="none"
-            appearance="none"
-            cursor="grab"
             borderRadius="0"
             ref={ref as LegacyRef<HTMLImageElement>}
             onLoad={() => setIsComponentLoaded(true)}
             src={src}
             {...props}
+            objectFit="contain"
           />
           {!active && onRemove && isComponentLoaded ? (
             <DeleteIcon

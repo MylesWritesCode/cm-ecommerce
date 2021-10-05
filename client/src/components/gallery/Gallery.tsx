@@ -40,6 +40,7 @@ interface GalleryProps {
   renderItem?: any;
   setOrderCb?: (arr: string[]) => void;
   wrapperSx?: React.CSSProperties;
+  pictureSx?: React.CSSProperties;
 }
 
 const measuring: MeasuringConfiguration = {
@@ -55,6 +56,7 @@ export const Gallery: React.FC<Props> = ({
   sx,
   setOrderCb,
   wrapperSx,
+  pictureSx,
   ...props
 }) => {
   const [images, setImages] = useState(initialSrc);
@@ -137,6 +139,8 @@ export const Gallery: React.FC<Props> = ({
                   setImages((images) => images.filter((i) => i !== image));
                 }}
                 sx={wrapperSx}
+                // Gets passed down to picture
+                pictureSx={pictureSx}
               />
             ))}
           </Box>

@@ -36,7 +36,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
   const [imagePreviews, setImagePreviews] = useState([]);
   const imageInputRef = useRef(null);
   const [createProduct] = useCreateProductMutation();
-  
+
   // Idk if there's a cleaner way to do this. This is kinda gross. I wanted just
   // an inline function on the button's `onClick` cb, but...ya'know.
   const onImageUploadClick = () => {
@@ -151,10 +151,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
                 type="money"
                 colSpan={[6, 2]}
               />
-              <GridItem
-                colSpan={[12, 10]}
-                max-width="600px"
-              >
+              <GridItem colSpan={[12, 10]} max-width="600px">
                 <Gallery
                   src={imagePreviews}
                   sx={{
@@ -169,7 +166,14 @@ export const Edit: React.FC<EditProps> = ({}) => {
                   }}
                   wrapperSx={{
                     width: "100%",
-                    height: "100%"
+                    height: "100%",
+                    maxHeight: "200px",
+                    overflow: "hidden",
+                  }}
+                  pictureSx={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
                   }}
                   setOrderCb={setImagePreviews}
                 />

@@ -33,6 +33,7 @@ interface SortableFrameProps {
   id: string;
   src: string;
   onRemove?(id: string): void;
+  pictureSx: React.CSSProperties;
   sx: React.CSSProperties;
 }
 
@@ -40,6 +41,7 @@ export const SortableFrame: React.FC<SortableFrameProps> = ({
   id,
   src,
   onRemove,
+  pictureSx,
   sx,
   ...props
 }) => {
@@ -87,6 +89,7 @@ export const SortableFrame: React.FC<SortableFrameProps> = ({
           id={id}
           src={src}
           onRemove={onRemove ? () => onRemove(id) : undefined}
+          sx={pictureSx}
         />
       </MotionBox>
     </>
