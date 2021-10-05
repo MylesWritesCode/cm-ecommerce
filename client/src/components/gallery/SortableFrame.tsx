@@ -19,26 +19,28 @@ import { Picture } from ".";
 
 const baseStyles: React.CSSProperties = {
   position: "relative",
-  boxShadow: "0 0 0 0 rgba(63, 63, 68, 0.05)",
+  boxShadow: "0 0 1px 1px rgba(63, 63, 68, 0.05)",
 };
 
 const initialStyles = {
   x: 0,
   y: 0,
   scale: 1,
-  boxShadow: "0 0 0 0 rgba(63, 63, 68, 0.05)",
+  boxShadow: "0 0 1px 1px rgba(63, 63, 68, 0.05)",
 };
 
 interface SortableFrameProps {
   id: string;
   src: string;
   onRemove?(id: string): void;
+  sx: React.CSSProperties;
 }
 
 export const SortableFrame: React.FC<SortableFrameProps> = ({
   id,
   src,
   onRemove,
+  sx,
   ...props
 }) => {
   const { attributes, setNodeRef, listeners, transform, isDragging } =
@@ -49,6 +51,7 @@ export const SortableFrame: React.FC<SortableFrameProps> = ({
       <MotionBox
         id={id}
         style={baseStyles}
+        sx={sx}
         ref={setNodeRef}
         tabIndex={0}
         layoutId={id}
@@ -61,7 +64,7 @@ export const SortableFrame: React.FC<SortableFrameProps> = ({
                 zIndex: isDragging ? 1 : 0,
                 boxShadow: isDragging
                   ? "0px 15px 15px 0 rgba(34, 33, 81, 0.25)"
-                  : "0 0 1px 1px rgba(63, 63, 68, 0.05)",
+                  : "0 0 3px 3px rgba(63, 63, 68, 0.05)",
               }
             : initialStyles
         }

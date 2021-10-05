@@ -16,7 +16,6 @@ import { createPortal } from "react-dom";
 import { Box, BoxProps } from "@chakra-ui/react";
 import {
   DndContext,
-  PointerSensor,
   useSensor,
   useSensors,
   closestCenter,
@@ -40,6 +39,7 @@ interface GalleryProps {
   src: string[];
   renderItem?: any;
   setOrderCb?: (arr: string[]) => void;
+  wrapperSx?: React.CSSProperties;
 }
 
 const measuring: MeasuringConfiguration = {
@@ -54,6 +54,7 @@ export const Gallery: React.FC<Props> = ({
   renderItem,
   sx,
   setOrderCb,
+  wrapperSx,
   ...props
 }) => {
   const [images, setImages] = useState(initialSrc);
@@ -135,6 +136,7 @@ export const Gallery: React.FC<Props> = ({
                 onRemove={() => {
                   setImages((images) => images.filter((i) => i !== image));
                 }}
+                sx={wrapperSx}
               />
             ))}
           </Box>

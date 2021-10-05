@@ -159,9 +159,17 @@ export const Edit: React.FC<EditProps> = ({}) => {
                   src={imagePreviews}
                   sx={{
                     width: "100%",
-                    columnCount: [1, 2, 3],
-                    columnGap: "8px",
-                    columnFill: "balance-all",
+                    display: "grid",
+                    gridTemplateColumns: "repeat(3, 1fr)",
+                    gridTemplateRows: "200px",
+                    gridGap: "8px",
+                    // columnCount: [1, 2, 3],
+                    // columnGap: "8px",
+                    // columnFill: "balance-all",
+                  }}
+                  wrapperSx={{
+                    width: "100%",
+                    height: "100%"
                   }}
                   setOrderCb={setImagePreviews}
                 />
