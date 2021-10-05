@@ -68,12 +68,13 @@ export const Picture = React.memo(
           document.body.style.cursor = "";
         };
       }, [dragOverlay]);
+
       return (
         <Box
           position="relative"
           mb="8px"
+          ref={ref as LegacyRef<HTMLDivElement>}
           {...listeners}
-          style={{}}
         >
           <Image
             width="100%"

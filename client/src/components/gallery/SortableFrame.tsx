@@ -10,7 +10,8 @@
  * -----
  * HISTORY
  */
-import React from "react";
+import React, { useEffect } from "react";
+import { DeleteIcon } from "@chakra-ui/icons";
 import { useSortable } from "@dnd-kit/sortable";
 
 import { MotionBox } from "@/lib/chakra-motion";
@@ -27,8 +28,6 @@ const initialStyles = {
   scale: 1,
   boxShadow: "0 0 0 0 rgba(63, 63, 68, 0.05)",
 };
-
-
 
 interface SortableFrameProps {
   id: string;
@@ -48,6 +47,7 @@ export const SortableFrame: React.FC<SortableFrameProps> = ({
   return (
     <>
       <MotionBox
+        id={id}
         style={baseStyles}
         ref={setNodeRef}
         tabIndex={0}

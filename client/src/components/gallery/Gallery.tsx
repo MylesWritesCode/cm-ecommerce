@@ -23,6 +23,8 @@ import {
   DragOverlay,
   MeasuringConfiguration,
   MeasuringStrategy,
+  MouseSensor,
+  TouchSensor,
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -31,6 +33,8 @@ import {
 } from "@dnd-kit/sortable";
 
 import { SortableFrame } from "./SortableFrame";
+import { Frame } from ".";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 interface GalleryProps {
   src: string[];
@@ -55,7 +59,12 @@ export const Gallery: React.FC<Props> = ({
   const [images, setImages] = useState(initialSrc);
   const [isWindowReady, setIsWindowReady] = useState(false);
   const [activeId, setActiveId] = useState(null);
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 250, tolerance: 5 },
+    })
+  );
 
   // This will run once, on mount.
   useEffect(() => {
@@ -146,7 +155,6 @@ export const Gallery: React.FC<Props> = ({
 
   // Need to wait for the window to be ready before loading everything,
   // otherwise the drag handles aren't going to load correctly.
-  // return isWindowReady ? ForwardComp : null;
   return isWindowReady ? FramerMotionComp : null;
 };
 
