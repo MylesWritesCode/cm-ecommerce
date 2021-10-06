@@ -160,9 +160,6 @@ export const Edit: React.FC<EditProps> = ({}) => {
                     gridTemplateColumns: "repeat(3, 1fr)",
                     gridTemplateRows: "200px",
                     gridGap: "8px",
-                    // columnCount: [1, 2, 3],
-                    // columnGap: "8px",
-                    // columnFill: "balance-all",
                   }}
                   wrapperSx={{
                     width: "100%",

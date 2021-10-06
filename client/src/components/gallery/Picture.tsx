@@ -69,8 +69,6 @@ export const Picture = React.memo(
         };
       }, [dragOverlay]);
 
-      console.log(props);
-
       return (
         <Box
           position="relative"
@@ -87,7 +85,6 @@ export const Picture = React.memo(
             onLoad={() => setIsComponentLoaded(true)}
             src={src}
             {...props}
-            objectFit="contain"
           />
           {!active && onRemove && isComponentLoaded ? (
             <DeleteIcon
