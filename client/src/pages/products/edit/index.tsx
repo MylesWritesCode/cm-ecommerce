@@ -13,7 +13,7 @@
  * -----
  * HISTORY
  */
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import { Button, Flex, Grid, GridItem, Heading, Image } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
@@ -25,7 +25,7 @@ import {
 } from "@generated/graphql";
 import { Gallery } from "@components/gallery";
 import { firebaseStorage } from "@lib/firebase";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
 
 interface EditProps {}
 
@@ -98,19 +98,25 @@ export const Edit: React.FC<EditProps> = ({}) => {
             setIsSubmitting(true);
 
             // Upload images to FB, set to images
+            const bucket = process.env.NEXT_PUBLIC_FIREBASE_IMAGE_BUCKET;
             const images = "";
             const storage = firebaseStorage;
+            const image: string = imagePreviews[0]
+              .substr(imagePreviews[0].lastIndexOf("/") + 1);
+
             const imageStorageRef = ref(
               storage,
-              process.env.NEXT_PUBLIC_FIREBASE_IMAGE_BUCKET
+              `${ bucket }/${ image }`
             );
-
-            const uploadedImage = await uploadBytes(
+            
+            const uploadTask = await uploadBytesResumable(
               imageStorageRef,
               imagePreviews[0]
             );
             
-            console.log(uploadedImage);
+            console.log(uploadTask);
+
+            // console.log(uploadedImage);
 
             await createProduct({
               variables: {

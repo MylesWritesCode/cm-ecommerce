@@ -18,6 +18,8 @@ import { getAnalytics } from "firebase/analytics";
 import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
 
+console.log(process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET);
+
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -35,8 +37,7 @@ if (DEBUG) console.log("Initializing Firebase...");
 const app = initializeApp(firebaseConfig);
 if (DEBUG) console.log("...Firebase initialized!");
 
-const firebaseStorage = getStorage(app);
-const firebaseFirestore = getFirestore(app); // Probably not using this
-// const analytics = getAnalytics(app);
+export const firebaseStorage = getStorage(app);
+export const firebaseFirestore = getFirestore(app); // Probably not using this
+// export const analytics = getAnalytics(app);
 
-export { firebaseStorage, firebaseFirestore };
