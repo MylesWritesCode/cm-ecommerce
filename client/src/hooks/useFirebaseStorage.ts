@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import { firebaseStorage } from "@lib/firebase";
 import { ref, uploadBytes } from "firebase/storage";
 
-const useFirebaseStorage = (file) => {
+export const useFirebaseStorage = (file) => {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState(null);
   const [url, setUrl] = useState(null);

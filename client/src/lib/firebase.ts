@@ -15,24 +15,28 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { getStorage } from 'firebase/storage';
+import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
 
-const env = process.env;
 const firebaseConfig = {
-  apiKey: env.FIREBASE_API_KEY,
-  authDomain: env.FIREBASE_AUTH_DOMAIN,
-  projectId: env.FIREBASE_PROJECT_ID,
-  storageBucket: env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: env.FIREBASE_APP_ID,
-  measurementId: env.FIREBASE_MEASUREMENT_ID
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
+const DEBUG = process.env.NODE_ENV === 'development';
+
 // Initialize Firebase
+if (DEBUG) console.log("Initializing Firebase...");
 const app = initializeApp(firebaseConfig);
+if (DEBUG) console.log("...Firebase initialized!");
+
 const firebaseStorage = getStorage(app);
 const firebaseFirestore = getFirestore(app); // Probably not using this
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
 
-export { firebaseStorage, firebaseFirestore, };
+export { firebaseStorage, firebaseFirestore };

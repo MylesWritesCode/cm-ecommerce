@@ -24,6 +24,8 @@ import {
   CreateProductMutationVariables as CreateProductValues,
 } from "@generated/graphql";
 import { Gallery } from "@components/gallery";
+import { firebaseStorage } from "@lib/firebase";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 interface EditProps {}
 
@@ -45,14 +47,14 @@ export const Edit: React.FC<EditProps> = ({}) => {
 
   const handleImageInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const images: FileList = event.target.files;
-    let imgPre_: string[] = [];
+    let imgPreviews_: string[] = [];
 
     if (images) {
       for (let i = 0; i < images.length; ++i) {
         // Create an object URL to be used in image previews div.
-        imgPre_.push(URL.createObjectURL(images[i]));
+        imgPreviews_.push(URL.createObjectURL(images[i]));
       }
-      setImagePreviews(imgPre_);
+      setImagePreviews(imgPreviews_);
     }
   };
 
@@ -95,8 +97,24 @@ export const Edit: React.FC<EditProps> = ({}) => {
           onSubmit={async (values: CreateProductValues, { setErrors }) => {
             setIsSubmitting(true);
 
+            // Upload images to FB, set to images
+            const images = "";
+            const storage = firebaseStorage;
+            const imageStorageRef = ref(
+              storage,
+              process.env.NEXT_PUBLIC_FIREBASE_IMAGE_BUCKET
+            );
+
+            const uploadedImage = await uploadBytes(
+              imageStorageRef,
+              imagePreviews[0]
+            );
+            
+            console.log(uploadedImage);
+
             await createProduct({
               variables: {
+                images: images,
                 ...values,
               },
               update: (cache, { data }) => {
@@ -180,6 +198,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
                   height="100%"
                   flexDirection="column"
                   justifyContent="start"
+                  padding="0.125em"
                 >
                   <input
                     type="file"
@@ -199,6 +218,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
                     width="100%"
                     borderRadius={0}
                     onClick={onImageUploadClick}
+                    boxShadow="none !important"
                   >
                     Select Images
                   </Button>
@@ -209,6 +229,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
                     type="submit"
                     ml="auto"
                     borderRadius={0}
+                    boxShadow="none !important"
                     // isLoading={isSubmitting}
                   >
                     Publish
