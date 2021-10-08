@@ -14,18 +14,17 @@
  * HISTORY
  */
 import React, { ChangeEvent, useRef, useState } from "react";
-import { Button, Flex, Grid, GridItem, Heading, Image } from "@chakra-ui/react";
+import { Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
 import { VH, NavbarConfig } from "@constants";
-import ChakraGridInput from "@components/ChakraGridInput";
 import {
   useCreateProductMutation,
   CreateProductMutationVariables as CreateProductValues,
 } from "@generated/graphql";
+
+import ChakraGridInput from "@components/ChakraGridInput";
 import { Gallery } from "@components/gallery";
-import { firebaseStorage } from "@lib/firebase";
-import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
 
 interface EditProps {}
 
@@ -97,30 +96,14 @@ export const Edit: React.FC<EditProps> = ({}) => {
           onSubmit={async (values: CreateProductValues, { setErrors }) => {
             setIsSubmitting(true);
 
-            // Upload images to FB, set to images
-            const bucket = process.env.NEXT_PUBLIC_FIREBASE_IMAGE_BUCKET;
-            const images = "";
-            const storage = firebaseStorage;
-            const image: string = imagePreviews[0]
-              .substr(imagePreviews[0].lastIndexOf("/") + 1);
-
-            const imageStorageRef = ref(
-              storage,
-              `${ bucket }/${ image }`
-            );
-            
-            const uploadTask = await uploadBytesResumable(
-              imageStorageRef,
-              imagePreviews[0]
-            );
-            
-            console.log(uploadTask);
-
-            // console.log(uploadedImage);
+            // First, upload images to cloud storage.
+            for (const image of imagePreviews) {
+              console.log(image);
+            }
 
             await createProduct({
               variables: {
-                images: images,
+                // images: images,
                 ...values,
               },
               update: (cache, { data }) => {

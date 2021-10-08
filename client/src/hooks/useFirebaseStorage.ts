@@ -12,24 +12,58 @@
  */
 import { useState, useEffect } from "react";
 import { firebaseStorage } from "@lib/firebase";
-import { ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
-export const useFirebaseStorage = (file) => {
+type firebaseFileTypes = Blob | Uint8Array | ArrayBuffer;
+const useFirebaseStorage = async (file: firebaseFileTypes) => {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState(null);
   const [url, setUrl] = useState(null);
 
-  const storageRef = ref(firebaseStorage, process.env.FIREBASE_IMAGE_BUCKET);
-  
-  type firebaseFileType = Blob | Uint8Array | ArrayBuffer;
-  // Upload the file to firebase
-  const uploadFile = async (f: firebaseFileType) => {
-    await uploadBytes(storageRef, f).then((snapshot) => {
-      console.log(snapshot);
-    })
-  }
+  const storageRef = ref(
+    firebaseStorage,
+    `${process.env.NEXT_PUBLIC_FIREBASE_IMAGE_BUCKET}/${file}`
+  );
+
+  const uploadFile = async (f: firebaseFileTypes) => {
+    const uploadTask = uploadBytesResumable(storageRef, f);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        setProgress((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+
+        console.log(`Upload is ${progress}% done`);
+
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+        }
+      },
+      (error) => {
+        // Handle unsuccessful uploads
+        console.log(error); // Idk what this looks like yet
+      },
+      async () => {
+        // Upload resolved successfully. Do something.
+        setUrl(
+          await getDownloadURL(uploadTask.snapshot.ref).then((uri) => {
+            console.log(`File available at ${uri}`);
+          })
+        );
+      }
+    );
+
+    return { progress, url, error };
+  };
 
   useEffect(() => {
     uploadFile(file);
   }, [file]);
-}
+};
+
+export default useFirebaseStorage;

@@ -11,14 +11,13 @@
  * HISTORY
  */
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import { initializeApp, } from "firebase/app";
+import { initializeAppCheck, ReCaptchaV3Provider, } from "firebase/app-check";
 import { getAnalytics } from "firebase/analytics";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
-
-console.log(process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET);
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -30,14 +29,19 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-const DEBUG = process.env.NODE_ENV === 'development';
+const DEBUG = process.env.NODE_ENV === "development";
 
 // Initialize Firebase
 if (DEBUG) console.log("Initializing Firebase...");
 const app = initializeApp(firebaseConfig);
+const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider(
+    process.env.NEXT_PUBLIC_FIREBASE_ATTESTATION_PROVIDER
+  ),
+  isTokenAutoRefreshEnabled: true,
+});
 if (DEBUG) console.log("...Firebase initialized!");
 
 export const firebaseStorage = getStorage(app);
 export const firebaseFirestore = getFirestore(app); // Probably not using this
 // export const analytics = getAnalytics(app);
-
