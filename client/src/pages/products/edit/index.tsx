@@ -51,6 +51,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
     if (images) {
       for (let i = 0; i < images.length; ++i) {
         // Create an object URL to be used in image previews div.
+        console.log(URL.createObjectURL(images[i]));
         blobs.push(URL.createObjectURL(images[i]));
       }
       setImages(blobs);
