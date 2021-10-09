@@ -54,16 +54,19 @@ export const Edit: React.FC<EditProps> = ({}) => {
       for (let i = 0; i < images.length; ++i) {
         // Create an object URL to be used in image previews div.
         const blob = URL.createObjectURL(images[i]);
-        filesWithBlobsAsKeys[blob] = images[i];
+        filesWithBlobsAsKeys[blob as string] = images[i];
         blobs.push(blob);
       }
       setImgs(filesWithBlobsAsKeys);
       setImgPreviews(blobs);
+      
     }
   };
   
   useEffect(() => {
-    console.log(imgs);
+    if (imgs) {
+      console.log(Object.keys(imgs));
+    }
   }, [imgPreviews]);
 
   return (
