@@ -10,8 +10,7 @@
  * -----
  * HISTORY
  */
-import React, { useEffect } from "react";
-import { DeleteIcon } from "@chakra-ui/icons";
+import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 
 import { MotionBox } from "@/lib/chakra-motion";

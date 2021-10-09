@@ -34,7 +34,7 @@ const style = {
 
 export const Edit: React.FC<EditProps> = ({}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [imagePreviews, setImagePreviews] = useState([]);
+  const [images, setImages] = useState([]);
   const imageInputRef = useRef(null);
   const [createProduct] = useCreateProductMutation();
 
@@ -46,14 +46,14 @@ export const Edit: React.FC<EditProps> = ({}) => {
 
   const handleImageInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const images: FileList = event.target.files;
-    let imgPreviews_: string[] = [];
+    let blobs: string[] = [];
 
     if (images) {
       for (let i = 0; i < images.length; ++i) {
         // Create an object URL to be used in image previews div.
-        imgPreviews_.push(URL.createObjectURL(images[i]));
+        blobs.push(URL.createObjectURL(images[i]));
       }
-      setImagePreviews(imgPreviews_);
+      setImages(blobs);
     }
   };
 
@@ -97,7 +97,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
             setIsSubmitting(true);
 
             // First, upload images to cloud storage.
-            for (const image of imagePreviews) {
+            for (const image of images) {
               console.log(image);
             }
 
@@ -160,7 +160,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
               />
               <GridItem colSpan={[12, 10]} max-width="600px">
                 <Gallery
-                  src={imagePreviews}
+                  src={images}
                   sx={{
                     width: "100%",
                     display: "grid",
@@ -179,7 +179,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
                     height: "100%",
                     objectFit: "cover",
                   }}
-                  setOrderCb={setImagePreviews}
+                  setOrderCb={setImages}
                 />
               </GridItem>
               <GridItem overflow="hidden" colSpan={[2]}>
