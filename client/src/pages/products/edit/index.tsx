@@ -13,7 +13,7 @@
  * -----
  * HISTORY
  */
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Button, Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 
@@ -34,7 +34,8 @@ const style = {
 
 export const Edit: React.FC<EditProps> = ({}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [images, setImages] = useState([]);
+  const [imgPreviews, setImgPreviews] = useState([]);
+  const [imgs, setImgs] = useState<File[]>();
   const imageInputRef = useRef(null);
   const [createProduct] = useCreateProductMutation();
 
@@ -47,16 +48,23 @@ export const Edit: React.FC<EditProps> = ({}) => {
   const handleImageInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const images: FileList = event.target.files;
     let blobs: string[] = [];
+    let filesWithBlobsAsKeys: File[] = []
 
     if (images) {
       for (let i = 0; i < images.length; ++i) {
         // Create an object URL to be used in image previews div.
-        console.log(URL.createObjectURL(images[i]));
-        blobs.push(URL.createObjectURL(images[i]));
+        const blob = URL.createObjectURL(images[i]);
+        filesWithBlobsAsKeys[blob] = images[i];
+        blobs.push(blob);
       }
-      setImages(blobs);
+      setImgs(filesWithBlobsAsKeys);
+      setImgPreviews(blobs);
     }
   };
+  
+  useEffect(() => {
+    console.log(imgs);
+  }, [imgPreviews]);
 
   return (
     <Flex flexDirection="column" minHeight={VH}>
@@ -98,7 +106,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
             setIsSubmitting(true);
 
             // First, upload images to cloud storage.
-            for (const image of images) {
+            for (const image of imgPreviews) {
               console.log(image);
             }
 
@@ -161,7 +169,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
               />
               <GridItem colSpan={[12, 10]} max-width="600px">
                 <Gallery
-                  src={images}
+                  src={imgPreviews}
                   sx={{
                     width: "100%",
                     display: "grid",
@@ -180,7 +188,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
                     height: "100%",
                     objectFit: "cover",
                   }}
-                  setOrderCb={setImages}
+                  setOrderCb={setImgPreviews}
                 />
               </GridItem>
               <GridItem overflow="hidden" colSpan={[2]}>
