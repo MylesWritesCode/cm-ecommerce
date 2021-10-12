@@ -25,6 +25,7 @@ import {
 
 import ChakraGridInput from "@components/ChakraGridInput";
 import { Gallery } from "@components/gallery";
+import axios, { AxiosRequestConfig } from "axios";
 
 interface EditProps {}
 
@@ -33,9 +34,9 @@ const style = {
 };
 
 export const Edit: React.FC<EditProps> = ({}) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [imgPreviews, setImgPreviews] = useState([]);
-  const [imgs, setImgs] = useState<File[]>();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [imgPreviews, setImgPreviews] = useState<string[]>([]);
+  const [imgs, setImgs] = useState<Map<string, File>>();
   const imageInputRef = useRef(null);
   const [createProduct] = useCreateProductMutation();
 
@@ -48,24 +49,24 @@ export const Edit: React.FC<EditProps> = ({}) => {
   const handleImageInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const images: FileList = event.target.files;
     let blobs: string[] = [];
-    let filesWithBlobsAsKeys: File[] = []
+    let filesWithBlobsAsKeys: Map<string, File> = new Map([]);
 
     if (images) {
       for (let i = 0; i < images.length; ++i) {
         // Create an object URL to be used in image previews div.
         const blob = URL.createObjectURL(images[i]);
-        filesWithBlobsAsKeys[blob as string] = images[i];
+        filesWithBlobsAsKeys.set(blob as string, images[i]);
         blobs.push(blob);
       }
+
       setImgs(filesWithBlobsAsKeys);
       setImgPreviews(blobs);
-      
     }
   };
-  
+
   useEffect(() => {
     if (imgs) {
-      console.log(Object.keys(imgs));
+      // console.log(Object.keys(imgs));
     }
   }, [imgPreviews]);
 
@@ -108,10 +109,61 @@ export const Edit: React.FC<EditProps> = ({}) => {
           onSubmit={async (values: CreateProductValues, { setErrors }) => {
             setIsSubmitting(true);
 
+            console.log("In onSubmit!");
+
+            // Move all this to another file later:
+
             // First, upload images to cloud storage.
-            for (const image of imgPreviews) {
-              console.log(image);
+            for (let i = 0; i < imgPreviews.length; ++i) {
+              const file = imgs.get(imgPreviews[i]);
+              const fileExt = file.name.substr(file.name.lastIndexOf("."));
+
+              console.log(file);
+
+              const objectName = imgPreviews[i].substr(
+                imgPreviews[i].lastIndexOf("/") + 1
+              );
+
+              const url = `${process.env.NEXT_PUBLIC_ORACLE_IMAGE_BUCKET_PAR}`;
+              const urlAppend = `images/${objectName}${fileExt}`;
+
+              const fullURL = `${url}${urlAppend}`;
+
+              console.log(fullURL);
+
+              const fd = new FormData();
+              const nameWithExt = `${objectName}${fileExt}`;
+              fd.append("image", file, nameWithExt);
+              
+              // console.log(imgPreviews[i]);
+
+              const config: AxiosRequestConfig<FormData> = {
+                headers: {
+                  // authorization: `keyId=${process.env.NEXT_PUBLIC_TENANCY_ID}/${process.env.NEXT_PUBLIC_USER_ID}/${process.env.NEXT_PUBLIC_ORACLE_CLOUD_SECRET_KEY}`,
+                  "content-type": `${imgs.get(imgPreviews[i]).type}`,
+                },
+              };
+
+              try {
+                // const response = await axios.post(fullURL, fd, config);
+                const response = await axios.put(fullURL, fd, config);
+                // const response = await axios({
+                //  method: 'POST',
+                //  data: fd,
+                //  url: fullURL,
+                //  headers: {
+                //    Authorization: "this is an authorization",
+                //    something: "this is something else please send"
+                //  }
+                // });
+
+                console.log(response);
+              } catch (e) {
+                console.log(e);
+              }
             }
+
+            // End upload, start createProduct GraphQL call to our backend
 
             await createProduct({
               variables: {
