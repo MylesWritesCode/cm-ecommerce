@@ -140,7 +140,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
               const config: AxiosRequestConfig<FormData> = {
                 headers: {
                   // authorization: `keyId=${process.env.NEXT_PUBLIC_TENANCY_ID}/${process.env.NEXT_PUBLIC_USER_ID}/${process.env.NEXT_PUBLIC_ORACLE_CLOUD_SECRET_KEY}`,
-                  "content-type": `${imgs.get(imgPreviews[i]).type}`,
+                  // "content-type": `${imgs.get(imgPreviews[i]).type}`,
                 },
               };
 
