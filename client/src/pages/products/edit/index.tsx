@@ -134,8 +134,6 @@ export const Edit: React.FC<EditProps> = ({}) => {
               const fd = new FormData();
               const nameWithExt = `${objectName}${fileExt}`;
               fd.append("image", file, nameWithExt);
-              
-              // console.log(imgPreviews[i]);
 
               const config: AxiosRequestConfig<FormData> = {
                 headers: {
