@@ -138,13 +138,14 @@ export const Edit: React.FC<EditProps> = ({}) => {
               const config: AxiosRequestConfig<FormData> = {
                 headers: {
                   // authorization: `keyId=${process.env.NEXT_PUBLIC_TENANCY_ID}/${process.env.NEXT_PUBLIC_USER_ID}/${process.env.NEXT_PUBLIC_ORACLE_CLOUD_SECRET_KEY}`,
-                  // "content-type": `${imgs.get(imgPreviews[i]).type}`,
+                  "content-type": `${file.type}`,
+                  "content-length": `${file.size}`,
                 },
               };
 
               try {
                 // const response = await axios.post(fullURL, fd, config);
-                const response = await axios.put(fullURL, fd, config);
+                const response = await axios.put(fullURL, file);
                 // const response = await axios({
                 //  method: 'POST',
                 //  data: fd,
