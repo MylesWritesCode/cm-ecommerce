@@ -137,7 +137,6 @@ export const Edit: React.FC<EditProps> = ({}) => {
 
               const config: AxiosRequestConfig<FormData> = {
                 headers: {
-                  // authorization: `keyId=${process.env.NEXT_PUBLIC_TENANCY_ID}/${process.env.NEXT_PUBLIC_USER_ID}/${process.env.NEXT_PUBLIC_ORACLE_CLOUD_SECRET_KEY}`,
                   "content-type": `${file.type}`,
                   "content-length": `${file.size}`,
                 },
@@ -156,7 +155,7 @@ export const Edit: React.FC<EditProps> = ({}) => {
                 //  }
                 // });
 
-                console.log(response);
+                console.log("response: ", response);
               } catch (e) {
                 console.log(e);
               }
