@@ -1,35 +1,36 @@
-# Example app with [chakra-ui](https://github.com/chakra-ui/chakra-ui)
+# Overview
+The client is what will be served to the browser when a user visits the website.
 
-This example features how to use [chakra-ui](https://github.com/chakra-ui/chakra-ui) as the component library within a Next.js app.
+# Notes
+### Public image uploads
+Using Oracle Cloud Object Storage has proven a little difficult to implement. I 
+can get the images uploaded just fine, with a public URL, but anyone with the 
+URL will be able to upload by just creating a POST request with some file.
 
-We are connecting the Next.js `_app.js` with `chakra-ui`'s Theme and ColorMode containers so the pages can have app-wide dark/light mode. We are also creating some components which shows the usage of `chakra-ui`'s style props.
+This can prove problamatic for a production website, so I have a few things
+to consider:
 
-## Preview
-
-Preview the example live on [StackBlitz](http://stackblitz.com/):
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-chakra-ui)
-
-## Deploy your own
-
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-chakra-ui&project-name=with-chakra-ui&repository-name=with-chakra-ui)
-
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-chakra-ui with-chakra-ui-app
-# or
-yarn create next-app --example with-chakra-ui with-chakra-ui-app
-```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
-
-## Notes
-
-Chakra has supported Gradients and RTL in `v1.1`. To utilize RTL, [add RTL direction and swap](https://chakra-ui.com/docs/features/rtl-support).
-
-If you don't have multi-direction app, you should make `<Html lang="ar" dir="rtl">` inside `_document.js`.
+- Using Firebase with Firebase Authentication to upload images to a bucket. This
+  seems like the easiest choice, with multiple writeups on their API and a
+  fairly simple SDK that I can include in the project. Part of me doesn't want 
+  to add *yet another* dependency though, so it's something I'll have to think
+  about.
+- Accepting images to the server, then uploading files from there. This could be
+  useful, but I'll have to think about the extra work that the server is going
+  to have to do. Essentially, we're going to take up double the image space - 
+  even if just temporarily - and we'll definitely have to perform double the
+  work (client file -> server -> storage, vs client file -> storage).
+  
+# ~Changelog?~ Roadmap?
+**26 Oct 2021** I've been away from the project for a while, learning Rust
+because of shiny object syndrome. I do need to finish this project so I can move
+on to another one within the next month. As such, I think I'm just going to 
+complete the following in the client:
+  - Image uploads
+  - Product view page
+  - Home page
+In addition, there are some things that will be useful for my next scheduled
+project, that I'll work on within this application:
+  - User profile page
+    - edit
+    - view

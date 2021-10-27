@@ -1,4 +1,4 @@
-/*
+/**
  * File: /src/pages/products/Edit.tsx
  * Project: cm-ecommerce/cm-ecommerce-client
  * Created Date: Thursday September 23rd 2021
