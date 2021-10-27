@@ -20,6 +20,19 @@ to consider:
   to have to do. Essentially, we're going to take up double the image space - 
   even if just temporarily - and we'll definitely have to perform double the
   work (client file -> server -> storage, vs client file -> storage).
+
+Honestly both seem like a lot of work. On one hand, I have to setup Firebase 
+with authentication, and the end result is only like 1GB of storage space. On 
+the other hand, I'll have to set up networking on Oracle Cloud, but I'll have 
+20GB of space to mess with. Oracle's documentation isn't the greatest with
+examples either - it's actually kinda hard for me to read because it's all tech
+jargon specific to networking, something that I'm not as adept at.
+
+### User profiles
+Something that'll be more useful to me in one of my upcoming projects is to 
+create user profiles, and have a structure to view other profiles, and edit your
+own profile. I think I'll end up setting this up first, though I will eventually
+run into the same image upload problem I'm running into with product images. 
   
 # ~Changelog?~ Roadmap?
 **26 Oct 2021** I've been away from the project for a while, learning Rust
