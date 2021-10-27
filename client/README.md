@@ -26,11 +26,14 @@ to consider:
 because of shiny object syndrome. I do need to finish this project so I can move
 on to another one within the next month. As such, I think I'm just going to 
 complete the following in the client:
+
   - Image uploads
   - Product view page
   - Home page
+
 In addition, there are some things that will be useful for my next scheduled
 project, that I'll work on within this application:
+
   - User profile page
     - edit
     - view
