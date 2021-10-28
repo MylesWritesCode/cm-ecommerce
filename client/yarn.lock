@@ -5404,7 +5404,7 @@ oci-cloudguard@2.6.0:
     oci-common "2.6.0"
     oci-workrequests "2.6.0"
 
-oci-common@2.6.0:
+oci-common@2.6.0, oci-common@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/oci-common/-/oci-common-2.6.0.tgz#d58ebbda268ebf8763e7e96f3477b3c90a78d0dd"
   integrity sha512-WLzODzR9JKhDdQEBo4xQAtODUPG3h+m+RUqRlgdXlaplwhbamCppBIX+avPyvNeXE+cP8LaCD1sissRCuKY1nw==
@@ -5743,7 +5743,7 @@ oci-nosql@2.6.0:
     oci-common "2.6.0"
     oci-workrequests "2.6.0"
 
-oci-objectstorage@2.6.0:
+oci-objectstorage@2.6.0, oci-objectstorage@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/oci-objectstorage/-/oci-objectstorage-2.6.0.tgz#cfcfe584fba3daeafd21108ce409256563056876"
   integrity sha512-T7SGjnXMQy11WeKiEuwXtGrvyyB7bkChjrDWsnpZJaL/TQQKWrLLa/NHMvgr+zTWo3HxxGGQKNMZSMRRtelqCA==

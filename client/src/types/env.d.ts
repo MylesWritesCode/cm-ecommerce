@@ -13,6 +13,8 @@ declare namespace NodeJS {
     NEXT_PUBLIC_ORACLE_CLOUD_SECRET_KEY: string;
     NEXT_PUBLIC_TENANCY_ID: string;
     NEXT_PUBLIC_USER_ID: string;
-    NEXT_PUBLIC_ORACLE_IMAGE_BUCKET_PAR: string;
+    NEXT_PUBLIC_OCI_COMPARTMENT_ID: string;
+    NEXT_PUBLIC_OCI_BUCKET_ID: string;
+    NEXT_PUBLIC_OCI_BUCKET_NAME: string;
   }
 }

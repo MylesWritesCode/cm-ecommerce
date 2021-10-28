@@ -25,7 +25,22 @@ import {
 
 import ChakraGridInput from "@components/ChakraGridInput";
 import { Gallery } from "@components/gallery";
-import axios, { AxiosRequestConfig } from "axios";
+
+// TODO: Used for image uploads. Move to another file later.
+import * as os from "oci-objectstorage";
+import * as common from "oci-common";
+import * as st from "stream";
+import { createReadStream, statSync } from "fs";
+import { NodeFSBlob } from "oci-objectstorage";
+
+const provider: common.ConfigFileAuthenticationDetailsProvider =
+  new common.ConfigFileAuthenticationDetailsProvider();
+const compartmentId: string = process.env.NEXT_PUBLIC_OCI_COMPARTMENT_ID;
+const bucket: string = process.env.NEXT_PUBLIC_OCI_BUCKET_ID;
+
+const client = new os.ObjectStorageClient({
+  authenticationDetailsProvider: provider,
+});
 
 interface EditProps {}
 
@@ -109,56 +124,37 @@ export const Edit: React.FC<EditProps> = ({}) => {
           onSubmit={async (values: CreateProductValues, { setErrors }) => {
             setIsSubmitting(true);
 
-            console.log("In onSubmit!");
+            try {
+              // TODO: Move all this to another file later
+              console.log("Getting the namespace...");
+              const request: os.requests.GetNamespaceRequest = {};
+              const response = await client.getNamespace(request);
+              const namespace = response.value;
 
-            // Move all this to another file later:
+              console.log("Fetching the bucket...");
+              const getBucketRequest: os.requests.GetBucketRequest = {
+                namespaceName: namespace,
+                bucketName: process.env.NEXT_PUBLIC_OCI_BUCKET_NAME,
+              };
+              const getBucketResponse = await client.getBucket(
+                getBucketRequest
+              );
+              console.log(
+                "Retrieved bucket successfully: ",
+                getBucketResponse.bucket
+              );
+            } catch (e) {
+              console.log("Error: ", e);
+            }
 
             // First, upload images to cloud storage.
             for (let i = 0; i < imgPreviews.length; ++i) {
               const file = imgs.get(imgPreviews[i]);
               const fileExt = file.name.substr(file.name.lastIndexOf("."));
 
-              console.log(file);
-
               const objectName = imgPreviews[i].substr(
                 imgPreviews[i].lastIndexOf("/") + 1
               );
-
-              const url = `${process.env.NEXT_PUBLIC_ORACLE_IMAGE_BUCKET_PAR}`;
-              const urlAppend = `images/${objectName}${fileExt}`;
-
-              const fullURL = `${url}${urlAppend}`;
-
-              console.log(fullURL);
-
-              const fd = new FormData();
-              const nameWithExt = `${objectName}${fileExt}`;
-              fd.append("image", file, nameWithExt);
-
-              const config: AxiosRequestConfig<FormData> = {
-                headers: {
-                  "content-type": `${file.type}`,
-                  "content-length": `${file.size}`,
-                },
-              };
-
-              try {
-                // const response = await axios.post(fullURL, fd, config);
-                const response = await axios.put(fullURL, file);
-                // const response = await axios({
-                //  method: 'POST',
-                //  data: fd,
-                //  url: fullURL,
-                //  headers: {
-                //    Authorization: "this is an authorization",
-                //    something: "this is something else please send"
-                //  }
-                // });
-
-                console.log("response: ", response);
-              } catch (e) {
-                console.log(e);
-              }
             }
 
             // End upload, start createProduct GraphQL call to our backend
