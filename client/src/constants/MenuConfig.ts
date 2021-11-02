@@ -25,7 +25,7 @@ import {
   RepeatClockIcon,
 } from "@chakra-ui/icons";
 import { IconType } from "react-icons/lib";
-import { MdSettings } from "react-icons/md";
+import { MdSettings, MdCameraAlt } from "react-icons/md";
 
 export interface MenuConfigItem {
   name: string;
@@ -46,9 +46,9 @@ export const MenuConfig: MenuConfigItem[] = [
         icon: AddIcon,
       },
       {
-        name: "react-beautiful-dnd",
-        link: "/react-beautiful-dnd",
-        icon: MdSettings,
+        name: "Gallery",
+        link: "/gallery",
+        icon: MdCameraAlt,
       },
       {
         name: "the third child item",

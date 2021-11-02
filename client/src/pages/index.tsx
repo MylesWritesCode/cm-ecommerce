@@ -31,14 +31,6 @@ const Index: React.FC<{}> = ({}) => {
         alignItems="center"
         justifyContent="flex-start"
       >
-        <Gallery
-          src={devStockImages}
-          sx={{
-            columnCount: [1, 2, 3],
-            columnGap: "8px",
-            columnFill: "balance-all",
-          }}
-        />
       </Flex>
     </>
   );

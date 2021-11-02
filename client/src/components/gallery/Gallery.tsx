@@ -32,8 +32,6 @@ import {
 } from "@dnd-kit/sortable";
 
 import { SortableFrame } from "./SortableFrame";
-import { Frame } from ".";
-import { DeleteIcon } from "@chakra-ui/icons";
 
 interface GalleryProps {
   src: string[];

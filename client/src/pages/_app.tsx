@@ -11,7 +11,7 @@
  * HISTORY
  */
 import { ApolloProvider } from "@apollo/client";
-import { ChakraProvider, ColorModeProvider } from "@chakra-ui/react";
+import { ChakraProvider, ColorModeProvider, Flex } from "@chakra-ui/react";
 
 import { Navbar } from "@components/nav";
 import { useApollo } from "@lib/apollo";
@@ -28,7 +28,17 @@ function MyApp({ Component, pageProps }) {
           }}
         >
           <Navbar />
-          <Component {...pageProps} />
+          <Flex
+            minWidth="100%"
+            width="100%"
+            maxWidth="100%"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Flex maxWidth={[1200]} justifyContent="center" alignItems="center">
+              <Component {...pageProps} />
+            </Flex>
+          </Flex>
         </ColorModeProvider>
       </ChakraProvider>
     </ApolloProvider>
