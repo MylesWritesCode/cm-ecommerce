@@ -29,9 +29,9 @@ import { Gallery } from "@components/gallery";
 // TODO: Used for image uploads. Move to another file later.
 import * as os from "oci-objectstorage";
 import * as common from "oci-common";
-import * as st from "stream";
-import { createReadStream, statSync } from "fs";
-import { NodeFSBlob } from "oci-objectstorage";
+// import * as st from "stream";
+// import { createReadStream, statSync } from "fs";
+// import { NodeFSBlob } from "oci-objectstorage";
 
 const provider: common.ConfigFileAuthenticationDetailsProvider =
   new common.ConfigFileAuthenticationDetailsProvider();

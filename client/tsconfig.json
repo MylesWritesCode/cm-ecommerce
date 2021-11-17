@@ -19,14 +19,29 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@/*": ["./src/*"],
-      "@components/*": ["./src/components/*"],
-      "@generated/*": ["./src/generated/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@lib/*": ["./src/lib/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@constants": ["./src/constants/Constants.ts"],
-    }
+      "@/*": [
+        "./src/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@generated/*": [
+        "./src/generated/*"
+      ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@lib/*": [
+        "./src/lib/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+      "@constants": [
+        "./src/constants/Constants.ts"
+      ]
+    },
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
