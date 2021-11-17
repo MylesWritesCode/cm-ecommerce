@@ -26,22 +26,6 @@ import {
 import ChakraGridInput from "@components/ChakraGridInput";
 import { Gallery } from "@components/gallery";
 
-// TODO: Used for image uploads. Move to another file later.
-import * as os from "oci-objectstorage";
-import * as common from "oci-common";
-// import * as st from "stream";
-// import { createReadStream, statSync } from "fs";
-// import { NodeFSBlob } from "oci-objectstorage";
-
-const provider: common.ConfigFileAuthenticationDetailsProvider =
-  new common.ConfigFileAuthenticationDetailsProvider();
-const compartmentId: string = process.env.NEXT_PUBLIC_OCI_COMPARTMENT_ID;
-const bucket: string = process.env.NEXT_PUBLIC_OCI_BUCKET_ID;
-
-const client = new os.ObjectStorageClient({
-  authenticationDetailsProvider: provider,
-});
-
 interface EditProps {}
 
 const style = {
@@ -124,29 +108,6 @@ export const Edit: React.FC<EditProps> = ({}) => {
           onSubmit={async (values: CreateProductValues, { setErrors }) => {
             setIsSubmitting(true);
 
-            try {
-              // TODO: Move all this to another file later
-              console.log("Getting the namespace...");
-              const request: os.requests.GetNamespaceRequest = {};
-              const response = await client.getNamespace(request);
-              const namespace = response.value;
-
-              console.log("Fetching the bucket...");
-              const getBucketRequest: os.requests.GetBucketRequest = {
-                namespaceName: namespace,
-                bucketName: process.env.NEXT_PUBLIC_OCI_BUCKET_NAME,
-              };
-              const getBucketResponse = await client.getBucket(
-                getBucketRequest
-              );
-              console.log(
-                "Retrieved bucket successfully: ",
-                getBucketResponse.bucket
-              );
-            } catch (e) {
-              console.log("Error: ", e);
-            }
-
             // First, upload images to cloud storage.
             for (let i = 0; i < imgPreviews.length; ++i) {
               const file = imgs.get(imgPreviews[i]);
@@ -158,7 +119,6 @@ export const Edit: React.FC<EditProps> = ({}) => {
             }
 
             // End upload, start createProduct GraphQL call to our backend
-
             await createProduct({
               variables: {
                 // images: images,

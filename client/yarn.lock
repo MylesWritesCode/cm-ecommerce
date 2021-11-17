@@ -5391,7 +5391,7 @@ oci-common@2.7.0:
     sshpk "1.16.1"
     uuid "3.3.3"
 
-oci-common@2.8.0, oci-common@^2.8.0:
+oci-common@2.8.0:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/oci-common/-/oci-common-2.8.0.tgz#50b77e60ce4c3d8df88f47b81d774e36d28bfa18"
   integrity sha512-kUas8PWRCYE9Ul5R0r3fX98d2coBPn105xHF3lfQiii940TAU3sZy966uZihhVLYk0n2b7hA9OKvFDjfwrxnXw==
@@ -5738,7 +5738,7 @@ oci-nosql@2.8.0:
     oci-common "2.8.0"
     oci-workrequests "2.8.0"
 
-oci-objectstorage@2.8.0, oci-objectstorage@^2.8.0:
+oci-objectstorage@2.8.0:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/oci-objectstorage/-/oci-objectstorage-2.8.0.tgz#0af5a403c13ea29d1ae00a88e6cd75feb2feb8f7"
   integrity sha512-wBgvvYavotRFJDXjsf1kDSRxdtddcGQlhXIE5sdhUttxWsTfJ/EaRHetxv89slhuih6qJ0k68OOIXGR2R8FKbQ==
