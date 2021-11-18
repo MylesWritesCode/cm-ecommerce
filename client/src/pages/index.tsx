@@ -11,13 +11,29 @@
  * HISTORY
  */
 import React from "react";
-import { Flex, useColorMode } from "@chakra-ui/react";
+import { NextPage } from "next";
+import {
+  Flex,
+  Heading as ChakraHeading,
+  HeadingProps,
+  Text,
+  useColorMode,
+  chakra,
+  extendTheme,
+  ChakraComponent,
+  ComponentWithAs,
+} from "@chakra-ui/react";
 import { VH } from "@constants";
 import Gallery from "@/components/gallery/Gallery";
+import { StyledOptions } from "@emotion/styled";
 
-import { devStockImages } from "@/components/gallery";
+const Heading = chakra(ChakraHeading, {
+  baseStyle: {
 
-const Index: React.FC<{}> = ({}) => {
+  },
+});
+
+const Index: NextPage<{}> = ({}) => {
   // Color mode for bg
   const { colorMode } = useColorMode();
   const bgColor = { light: "gray.50", dark: "gray.900" };
@@ -26,11 +42,22 @@ const Index: React.FC<{}> = ({}) => {
     <>
       <Flex
         minHeight={VH}
+        width="100vw"
         background={bgColor[colorMode]}
         direction="column"
         alignItems="center"
         justifyContent="flex-start"
       >
+        <Flex padding="2em" flexDirection="column">
+          <Heading>So, what is this project 🤔</Heading>
+          <Text>
+            This is a little playground that I'm using to learn more about web
+            development. It's just a test-box that will eventually be
+            implemented in other projects. If something is broken, it's broken
+            because I'm figuring it out. If you have any suggestions, feel free
+            to DM me on Twitter @mylescodesemoji.{" "}
+          </Text>
+        </Flex>
       </Flex>
     </>
   );

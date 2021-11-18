@@ -39,8 +39,6 @@ export const Edit: React.FC<EditProps> = ({}) => {
   const imageInputRef = useRef(null);
   const [createProduct] = useCreateProductMutation();
 
-  // Idk if there's a cleaner way to do this. This is kinda gross. I wanted just
-  // an inline function on the button's `onClick` cb, but...ya'know.
   const onImageUploadClick = () => {
     imageInputRef.current.click();
   };

@@ -51,8 +51,8 @@ export const MenuConfig: MenuConfigItem[] = [
         icon: MdCameraAlt,
       },
       {
-        name: "the third child item",
-        link: "third-child-href",
+        name: "View product",
+        link: "/products/view",
         icon: AtSignIcon,
       },
     ],
