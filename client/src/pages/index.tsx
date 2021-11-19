@@ -15,17 +15,11 @@ import { NextPage } from "next";
 import {
   Flex,
   Heading as ChakraHeading,
-  HeadingProps,
   Text,
   useColorMode,
   chakra,
-  extendTheme,
-  ChakraComponent,
-  ComponentWithAs,
 } from "@chakra-ui/react";
 import { VH } from "@constants";
-import Gallery from "@/components/gallery/Gallery";
-import { StyledOptions } from "@emotion/styled";
 
 const Heading = chakra(ChakraHeading, {
   baseStyle: {
