@@ -16,14 +16,24 @@ import {
   Flex,
   Heading as ChakraHeading,
   Text,
+  Link as ChakraLink,
+  Icon,
   useColorMode,
   chakra,
 } from "@chakra-ui/react";
 import { VH } from "@constants";
+import { FaTwitter } from "react-icons/fa";
 
 const Heading = chakra(ChakraHeading, {
-  baseStyle: {
+  baseStyle: {},
+});
 
+const Link = chakra(ChakraLink, {
+  baseStyle: {
+    _hover: {
+      textDecoration: "none",
+      boxShadow: "0px 2px",
+    },
   },
 });
 
@@ -49,7 +59,19 @@ const Index: NextPage<{}> = ({}) => {
             development. It's just a test-box that will eventually be
             implemented in other projects. If something is broken, it's broken
             because I'm figuring it out. If you have any suggestions, feel free
-            to DM me on Twitter @mylescodesemoji.{" "}
+            to DM me on Twitter{" "}
+            <Link
+              href="https://www.twitter.com/mylescodesemoji"
+              target="_blank"
+              rel="noreferrer"
+              display="inline-flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Icon as={FaTwitter} />
+              @mylescodesemoji
+            </Link>
+            {". "}
           </Text>
         </Flex>
       </Flex>
