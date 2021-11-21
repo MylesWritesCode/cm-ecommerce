@@ -14,19 +14,20 @@ import React from "react";
 import { NextPage } from "next";
 import {
   Flex,
-  Heading as ChakraHeading,
+  Heading,
   Text,
+  List,
+  ListIcon,
   Link as ChakraLink,
   Icon,
   useColorMode,
   chakra,
+  ListItem,
 } from "@chakra-ui/react";
 import { VH } from "@constants";
-import { FaTwitter } from "react-icons/fa";
 
-const Heading = chakra(ChakraHeading, {
-  baseStyle: {},
-});
+import { FaTwitter } from "react-icons/fa";
+import { MdCheckCircle } from "react-icons/md";
 
 const Link = chakra(ChakraLink, {
   baseStyle: {
@@ -73,6 +74,75 @@ const Index: NextPage<{}> = ({}) => {
             </Link>
             {". "}
           </Text>
+          <Flex margin="2em 0em" flexDirection="column">
+            <Heading>What does this project use?</Heading>
+            <Text>
+              The technology that I chose for this stack largely depends on what
+              I want to learn or mess around with. This is a fullstack project,
+              leveraging PostgreSQL for the backend, though this could be
+              changed to any other DB as needed.
+            </Text>
+            <Heading marginTop="1em" fontSize="2xl">
+              Frontend
+            </Heading>
+            <Text>
+              Lorem ipsum random content text. I should write something here
+              eventually. Like the word placeholder. Plethora. Thanks, that
+              means a lot.
+            </Text>
+            <List spacing={2}>
+              <ListItem>
+                <ListIcon as={MdCheckCircle} color="green.500" />
+                React with Typescript
+              </ListItem>
+              <ListItem>
+                <ListIcon as={MdCheckCircle} color="green.500" />
+                Next.js
+              </ListItem>
+              <ListItem>
+                <ListIcon as={MdCheckCircle} color="green.500" />
+                ChakraUI
+              </ListItem>
+              <ListItem>
+                <ListIcon as={MdCheckCircle} color="green.500" />
+                Formik
+              </ListItem>
+              <ListItem>
+                <ListIcon as={MdCheckCircle} color="green.500" />
+                Yup
+              </ListItem>
+              <ListItem>
+                <ListIcon as={MdCheckCircle} color="green.500" />
+                Framer Motion
+              </ListItem>
+            </List>
+            <Heading marginTop="1em" fontSize="2xl">
+              Backend
+            </Heading>
+            <Text>
+              Lorem ipsum random content text. I should write something here
+              eventually. Like the word placeholder. Plethora. Thanks, that
+              means a lot.
+            </Text>
+            <List spacing={2}>
+              <ListItem>
+                <ListIcon as={MdCheckCircle} color="green.500" />
+                Express with Typescript
+              </ListItem>
+              <ListItem>
+                <ListIcon as={MdCheckCircle} color="green.500" />
+                Apollo
+              </ListItem>
+              <ListItem>
+                <ListIcon as={MdCheckCircle} color="green.500" />
+                TypeORM
+              </ListItem>
+              <ListItem>
+                <ListIcon as={MdCheckCircle} color="green.500" />
+                GraphQL
+              </ListItem>
+            </List>
+          </Flex>
         </Flex>
       </Flex>
     </>
